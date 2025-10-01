@@ -8,3 +8,5 @@ version = "0.1.0"
 [tasks]
 
 [dependencies]
+python = ">=3.13.7,<3.14"
+fastapi = ">=0.118.0,<0.119"
