@@ -18,7 +18,7 @@ class PromptRequest(BaseModel):
     prompt: str
     text: str
     model: Model
-    structured_output_class: str | None = None
+    response_format: dict | None = None
 
 
 class PromptResponse(BaseModel):
@@ -33,11 +33,19 @@ async def healthcheck():
 @app.post("/test-prompt", response_model=PromptResponse)
 async def test_prompt(request: PromptRequest):
     try:
+        response_format = None
+
+        # Use custom response format if provided, otherwise fall back to structured_output flag
+        if request.response_format:
+            response_format = request.response_format
+
         output = generate_response(
             prompt=request.prompt,
             text=request.text,
-            model=request.model
+            model=request.model,
+            response_format=response_format,
         )
         return {"output": output}
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))

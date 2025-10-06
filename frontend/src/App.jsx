@@ -5,6 +5,8 @@ function App() {
   const [prompt, setPrompt] = useState('')
   const [text, setText] = useState('')
   const [model, setModel] = useState('gpt-4o-mini')
+  const [structuredOutput, setStructuredOutput] = useState(false)
+  const [responseFormat, setResponseFormat] = useState('')
   const [output, setOutput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -24,6 +26,18 @@ function App() {
     setOutput('')
 
     try {
+      // Parse response format if provided
+      let parsedResponseFormat = null
+      if (responseFormat.trim()) {
+        try {
+          parsedResponseFormat = JSON.parse(responseFormat)
+        } catch (err) {
+          setError('Invalid JSON in response format: ' + err.message)
+          setLoading(false)
+          return
+        }
+      }
+
       const response = await fetch('http://localhost:8000/test-prompt', {
         method: 'POST',
         headers: {
@@ -32,7 +46,9 @@ function App() {
         body: JSON.stringify({
           prompt,
           text,
-          model
+          model,
+          structured_output: structuredOutput,
+          response_format: parsedResponseFormat
         })
       })
 
@@ -65,6 +81,20 @@ function App() {
               <option key={m} value={m}>{m}</option>
             ))}
           </select>
+        </div>
+
+        <div className="form-group">
+          <label htmlFor="response-format">Response Format (JSON Schema):</label>
+          <textarea
+            id="response-format"
+            value={responseFormat}
+            onChange={(e) => setResponseFormat(e.target.value)}
+            placeholder='Optional: Enter JSON response format, e.g., {"type": "object", "properties": {"varients": {"type": "array", "items": {"type": "object", "properties": {"varient": {"type": "string"}, "gene": {"type": "string"}, "allele": {"type": "string"}}}}}}'
+            rows={4}
+          />
+          <small style={{color: '#666', fontSize: '0.85em'}}>
+            Leave empty to use default. Overrides "Structured Output" checkbox if provided.
+          </small>
         </div>
 
         <div className="form-group">
