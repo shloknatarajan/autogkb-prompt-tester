@@ -1,0 +1,7 @@
+### Environmental Variables
+Add the following environmental variables to your `.env` file:
+
+```
+OPENAPI_API_KEY=your_openai_api_key_here
+ANTHROPIC_API_KEY=your_anthropic_api_key_here
+```
