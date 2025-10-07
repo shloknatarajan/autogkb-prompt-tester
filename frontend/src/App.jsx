@@ -65,6 +65,35 @@ function App() {
     }
   }
 
+  const handleExport = () => {
+    // Try to parse output as JSON, fallback to string if it fails
+    let parsedOutput = output
+    try {
+      parsedOutput = JSON.parse(output)
+    } catch {
+      // Keep as string if not valid JSON
+    }
+
+    const exportData = {
+      prompt,
+      text,
+      model,
+      response_format: responseFormat ? JSON.parse(responseFormat) : null,
+      output: parsedOutput,
+      timestamp: new Date().toISOString()
+    }
+
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `prompt-test-${Date.now()}.json`
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+    URL.revokeObjectURL(url)
+  }
+
   return (
     <div className="app">
       <h1>Prompt Tester</h1>
@@ -135,7 +164,12 @@ function App() {
 
       {output && (
         <div className="output">
-          <h3>Output:</h3>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+            <h3>Output:</h3>
+            <button type="button" onClick={handleExport}>
+              Export to JSON
+            </button>
+          </div>
           <pre>{output}</pre>
         </div>
       )}

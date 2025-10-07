@@ -42,7 +42,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/markupsafe-3.0.3-py313h7d74516_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/mdurl-0.1.2-pyhd8ed1ab_1.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/ncurses-6.5-h5e97a16_3.conda
-      - conda: https://conda.anaconda.org/conda-forge/noarch/openai-2.1.0-pyhd8ed1ab_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/openai-2.2.0-pyhd8ed1ab_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/openssl-3.5.3-h5503f6c_1.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/pydantic-2.11.9-pyh3cfb1c2_0.conda
       - conda: https://conda.anaconda.org/conda-forge/osx-arm64/pydantic-core-2.33.2-py313hf3ab51e_0.conda
@@ -480,9 +480,9 @@ packages:
   license: X11 AND BSD-3-Clause
   size: 797030
   timestamp: 1738196177597
-- conda: https://conda.anaconda.org/conda-forge/noarch/openai-2.1.0-pyhd8ed1ab_0.conda
-  sha256: 5532218fec6acfcbdebf8ef0e721163eb1d99e45b062268450868daf0f51ee9b
-  md5: 3098147aef5613b0c4b584760a51c7e4
+- conda: https://conda.anaconda.org/conda-forge/noarch/openai-2.2.0-pyhd8ed1ab_0.conda
+  sha256: c8f057100305c11c9d5db81381635791f06edb16a1b381b4ef7761ea45cd7cee
+  md5: c8d64d0a4de32b24008e025226d54607
   depends:
   - anyio >=3.5.0,<5
   - distro >=1.7.0,<2
@@ -496,8 +496,8 @@ packages:
   - typing_extensions >=4.11,<5
   license: MIT
   license_family: MIT
-  size: 356609
-  timestamp: 1759463143210
+  size: 369277
+  timestamp: 1759780032892
 - conda: https://conda.anaconda.org/conda-forge/osx-arm64/openssl-3.5.3-h5503f6c_1.conda
   sha256: d5499ee2611a0ca9d84e9d60a5978d1f17350e94915c89026f5d9346ccf0a987
   md5: 4b23b1e2aa9d81b16204e1304241ccae
