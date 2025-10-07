@@ -99,80 +99,86 @@ function App() {
       <h1>Prompt Tester</h1>
 
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="model">Model:</label>
-          <select
-            id="model"
-            value={model}
-            onChange={(e) => setModel(e.target.value)}
-          >
-            {models.map(m => (
-              <option key={m} value={m}>{m}</option>
-            ))}
-          </select>
+        <div className="left-side">
+          <div className="form-group">
+            <label htmlFor="model">Model:</label>
+            <select
+              id="model"
+              value={model}
+              onChange={(e) => setModel(e.target.value)}
+            >
+              {models.map(m => (
+                <option key={m} value={m}>{m}</option>
+              ))}
+            </select>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="response-format">Response Format (JSON Schema):</label>
+            <textarea
+              id="response-format"
+              value={responseFormat}
+              onChange={(e) => setResponseFormat(e.target.value)}
+              placeholder='Optional: Enter JSON response format, e.g., {"type": "object", "properties": {"varients": {"type": "array", "items": {"type": "object", "properties": {"varient": {"type": "string"}, "gene": {"type": "string"}, "allele": {"type": "string"}}}}}}'
+              rows={4}
+            />
+            <small style={{color: '#666', fontSize: '0.85em'}}>
+              Leave empty to use default. Overrides "Structured Output" checkbox if provided.
+            </small>
+          </div>
+
+          <div className="form-group">
+            <label htmlFor="prompt">Prompt:</label>
+            <textarea
+              id="prompt"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              placeholder="Enter your prompt here..."
+              rows={4}
+              required
+            />
+          </div>
         </div>
 
-        <div className="form-group">
-          <label htmlFor="response-format">Response Format (JSON Schema):</label>
-          <textarea
-            id="response-format"
-            value={responseFormat}
-            onChange={(e) => setResponseFormat(e.target.value)}
-            placeholder='Optional: Enter JSON response format, e.g., {"type": "object", "properties": {"varients": {"type": "array", "items": {"type": "object", "properties": {"varient": {"type": "string"}, "gene": {"type": "string"}, "allele": {"type": "string"}}}}}}'
-            rows={4}
-          />
-          <small style={{color: '#666', fontSize: '0.85em'}}>
-            Leave empty to use default. Overrides "Structured Output" checkbox if provided.
-          </small>
+        <div className="middle">
+          <div className="form-group">
+            <label htmlFor="text">Text:</label>
+            <textarea
+              id="text"
+              value={text}
+              onChange={(e) => setText(e.target.value)}
+              placeholder="Enter the text to process..."
+              rows={6}
+              required
+            />
+          </div>
+          <button type="submit" disabled={loading}>
+            {loading ? 'Processing...' : 'Test Prompt'}
+          </button>
         </div>
-
-        <div className="form-group">
-          <label htmlFor="prompt">Prompt:</label>
-          <textarea
-            id="prompt"
-            value={prompt}
-            onChange={(e) => setPrompt(e.target.value)}
-            placeholder="Enter your prompt here..."
-            rows={4}
-            required
-          />
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="text">Text:</label>
-          <textarea
-            id="text"
-            value={text}
-            onChange={(e) => setText(e.target.value)}
-            placeholder="Enter the text to process..."
-            rows={6}
-            required
-          />
-        </div>
-
-        <button type="submit" disabled={loading}>
-          {loading ? 'Processing...' : 'Test Prompt'}
-        </button>
       </form>
 
-      {error && (
-        <div className="error">
-          <h3>Error:</h3>
-          <p>{error}</p>
-        </div>
-      )}
-
-      {output && (
-        <div className="output">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-            <h3>Output:</h3>
-            <button type="button" onClick={handleExport}>
-              Export to JSON
-            </button>
+      <div className="right-side">
+        {error && (
+          <div className="error">
+            <h3>Error:</h3>
+            <p>{error}</p>
           </div>
-          <pre>{output}</pre>
-        </div>
-      )}
+        )}
+
+        {output && (
+          <div className="output">
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <h3>Output:</h3>
+              <button type="button" onClick={handleExport}>
+                Export to JSON
+              </button>
+            </div>
+            <pre>{output}</pre>
+          </div>
+        )}
+      </div>
+
     </div>
   )
 }
