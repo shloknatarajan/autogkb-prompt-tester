@@ -5,7 +5,6 @@ name = "autogkb-prompt-tester"
 platforms = ["osx-arm64"]
 version = "0.1.0"
 
-[tasks]
 
 [dependencies]
 python = ">=3.13.7,<3.14"
@@ -14,3 +13,16 @@ python-dotenv = ">=1.1.1,<2"
 fastapi = ">=0.118.0,<0.119"
 uvicorn = ">=0.37.0,<0.38"
 openai = ">=2.2.0,<3"
+
+[tasks]
+# Backend tasks
+be = "uvicorn main:app --reload"
+backend = { depends-on = ["be"] }
+
+# Frontend tasks
+fe = { cmd = "npm run dev", cwd = "frontend" }
+frontend = { depends-on = ["fe"] }
+
+# Run both frontend and backend concurrently
+dev = { depends-on = ["be", "fe"] }
+start = { depends-on = ["dev"] }
