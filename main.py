@@ -40,6 +40,11 @@ class SavePromptRequest(BaseModel):
     output: str
 
 
+class SaveAllPromptsRequest(BaseModel):
+    prompts: list[dict]
+    text: str
+
+
 @app.get("/healthcheck")
 async def healthcheck():
     return {"status": "ok"}
@@ -113,5 +118,44 @@ async def get_prompts():
             return {"prompts": prompts}
         else:
             return {"prompts": []}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/save-all-prompts")
+async def save_all_prompts(request: SaveAllPromptsRequest):
+    try:
+        saved_prompts = []
+
+        for prompt_data in request.prompts:
+            # Try to parse output as JSON if possible
+            try:
+                parsed_output = json.loads(prompt_data['output']) if prompt_data.get('output') else None
+            except:
+                parsed_output = prompt_data.get('output')
+
+            # Try to parse response format if it's a string
+            response_format = prompt_data.get('responseFormat')
+            if response_format and isinstance(response_format, str):
+                try:
+                    response_format = json.loads(response_format)
+                except:
+                    response_format = None
+
+            saved_prompt = {
+                "prompt": prompt_data.get('prompt', ''),
+                "text": request.text,
+                "model": prompt_data.get('model', 'gpt-4o-mini'),
+                "response_format": response_format,
+                "output": parsed_output,
+                "timestamp": datetime.now().isoformat()
+            }
+            saved_prompts.append(saved_prompt)
+
+        # Overwrite the file with current prompts
+        with open(PROMPTS_FILE, 'w') as f:
+            json.dump(saved_prompts, f, indent=2)
+
+        return {"status": "success", "message": f"Saved {len(saved_prompts)} prompts successfully"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

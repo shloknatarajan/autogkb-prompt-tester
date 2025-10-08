@@ -125,6 +125,30 @@ function App() {
     }
   }
 
+  const saveAllPrompts = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/save-all-prompts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompts: prompts,
+          text
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+      alert(data.message)
+    } catch (err) {
+      alert('Failed to save all prompts: ' + err.message)
+    }
+  }
+
   return (
     <div className="app">
       <h1>Prompt Tester</h1>
@@ -235,17 +259,6 @@ function App() {
                 {prompts[selectedPromptIndex].loading ? 'Running...' : 'Run This Prompt'}
               </button>
 
-              {prompts[selectedPromptIndex].output && (
-                <div className="output">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h4>Output:</h4>
-                    <button onClick={() => savePrompt(selectedPromptIndex)}>
-                      Save Prompt
-                    </button>
-                  </div>
-                  <pre>{prompts[selectedPromptIndex].output}</pre>
-                </div>
-              )}
             </div>
           )}
 
@@ -285,6 +298,13 @@ function App() {
               ))
             )}
           </div>
+          <button
+            onClick={saveAllPrompts}
+            disabled={prompts.length === 0}
+            className="save-all-btn"
+          >
+            Save All Prompts
+          </button>
         </div>
       </div>
     </div>
