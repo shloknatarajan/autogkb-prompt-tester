@@ -1,7 +1,7 @@
 .app {
-  /* max-width: 900px; */
   margin: 0 auto;
   padding: 2rem;
+  max-width: 100%;
 }
 
 h1 {
@@ -9,17 +9,230 @@ h1 {
   margin-bottom: 2rem;
 }
 
-form {
+.container {
   display: flex;
-  flex-direction: row;
+  gap: 2rem;
+  height: calc(100vh - 150px);
+}
+
+.sidebar {
+  width: 250px;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #333;
+  padding-right: 1rem;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.sidebar-header h3 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.add-btn {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.9rem;
+  background-color: #28a745;
+}
+
+.add-btn:hover {
+  background-color: #218838;
+}
+
+.prompts-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.prompt-item {
+  padding: 0.75rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+  position: relative;
+}
+
+.prompt-item:hover {
+  background-color: #2a2a2a;
+}
+
+.prompt-item.selected {
+  background-color: #1a4d7a;
+  border-color: #007bff;
+}
+
+.prompt-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.prompt-name-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: inherit;
+  font-size: 0.9rem;
+  padding: 0.2rem;
+  border-radius: 2px;
+}
+
+.prompt-name-input:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.prompt-name-input:focus {
+  outline: 1px solid #007bff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.delete-btn {
+  padding: 0.2rem 0.5rem;
+  background-color: #dc3545;
+  font-size: 1.2rem;
+  line-height: 1;
+  min-width: unset;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
+}
+
+.status-indicator {
+  position: absolute;
+  top: 0.5rem;
+  right: 2rem;
+  color: #28a745;
+  font-weight: bold;
+}
+
+.run-all-btn {
+  width: 100%;
+  background-color: #17a2b8;
+}
+
+.run-all-btn:hover:not(:disabled) {
+  background-color: #138496;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   gap: 1.5rem;
-  margin-bottom: 2rem;
+  overflow-y: auto;
+  min-width: 0;
+}
+
+.outputs-sidebar {
+  width: 350px;
+  display: flex;
+  flex-direction: column;
+  border-left: 2px solid #333;
+  padding-left: 1rem;
+}
+
+.outputs-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.empty-state {
+  text-align: center;
+  color: #666;
+  padding: 2rem;
+  font-style: italic;
+}
+
+.output-item {
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border: 1px solid #444;
+  border-radius: 4px;
+}
+
+.output-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.output-item-header strong {
+  color: #007bff;
+  font-size: 0.95rem;
+}
+
+.loading-indicator {
+  font-size: 1rem;
+}
+
+.save-output-btn {
+  padding: 0.3rem 0.6rem;
+  font-size: 0.85rem;
+  background-color: #28a745;
+}
+
+.save-output-btn:hover {
+  background-color: #218838;
+}
+
+.output-preview {
+  font-size: 0.85rem;
+  max-height: 200px;
+  overflow-y: auto;
+  background-color: #0d0d0d;
+  padding: 0.75rem;
+  border-radius: 4px;
+  margin: 0;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  line-height: 1.4;
+}
+
+.no-output {
+  color: #666;
+  font-style: italic;
+  font-size: 0.9rem;
+}
+
+.text-section {
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+}
+
+.prompt-details {
+  padding: 1rem;
+  background-color: #1a1a1a;
+  border-radius: 4px;
+}
+
+.prompt-details h3 {
+  margin-top: 0;
+  margin-bottom: 1rem;
 }
 
 .form-group {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 label {
@@ -30,10 +243,12 @@ label {
 select,
 textarea {
   padding: 0.75rem;
-  border: 1px solid #ccc;
+  border: 1px solid #444;
   border-radius: 4px;
   font-family: inherit;
   font-size: 1rem;
+  background-color: #2a2a2a;
+  color: inherit;
 }
 
 select {
@@ -46,28 +261,7 @@ textarea {
 }
 
 #text {
-  min-height:500px;
-}
-
-.left-side {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.middle {
-  display: flex;
-  flex: 2;
-  flex-direction: column;
-  justify-content: center;
-}
-
-.right-side {
-  display: flex;
-  flex: 1;
-  flex-direction: column;
-  align-items: flex-end;
+  min-height: 200px;
 }
 
 button {

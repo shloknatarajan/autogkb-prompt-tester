@@ -1,13 +1,10 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
-  const [prompt, setPrompt] = useState('')
+  const [prompts, setPrompts] = useState([])
+  const [selectedPromptIndex, setSelectedPromptIndex] = useState(null)
   const [text, setText] = useState('')
-  const [model, setModel] = useState('gpt-4o-mini')
-  const [structuredOutput, setStructuredOutput] = useState(false)
-  const [responseFormat, setResponseFormat] = useState('')
-  const [output, setOutput] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
@@ -19,21 +16,39 @@ function App() {
     'gpt-3.5-turbo'
   ]
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setLoading(true)
+  const addNewPrompt = () => {
+    const newPrompt = {
+      id: Date.now(),
+      name: `Prompt ${prompts.length + 1}`,
+      prompt: '',
+      model: 'gpt-4o-mini',
+      responseFormat: '',
+      output: null,
+      loading: false
+    }
+    setPrompts([...prompts, newPrompt])
+    setSelectedPromptIndex(prompts.length)
+  }
+
+  const updatePrompt = (index, field, value) => {
+    const updated = [...prompts]
+    updated[index][field] = value
+    setPrompts(updated)
+  }
+
+  const runPrompt = async (index) => {
+    const prompt = prompts[index]
+    updatePrompt(index, 'loading', true)
     setError('')
-    setOutput('')
 
     try {
-      // Parse response format if provided
       let parsedResponseFormat = null
-      if (responseFormat.trim()) {
+      if (prompt.responseFormat?.trim()) {
         try {
-          parsedResponseFormat = JSON.parse(responseFormat)
+          parsedResponseFormat = JSON.parse(prompt.responseFormat)
         } catch (err) {
           setError('Invalid JSON in response format: ' + err.message)
-          setLoading(false)
+          updatePrompt(index, 'loading', false)
           return
         }
       }
@@ -44,10 +59,9 @@ function App() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          prompt,
+          prompt: prompt.prompt,
           text,
-          model,
-          structured_output: structuredOutput,
+          model: prompt.model,
           response_format: parsedResponseFormat
         })
       })
@@ -57,128 +71,222 @@ function App() {
       }
 
       const data = await response.json()
-      setOutput(data.output)
+      updatePrompt(index, 'output', data.output)
     } catch (err) {
       setError(err.message)
     } finally {
-      setLoading(false)
+      updatePrompt(index, 'loading', false)
     }
   }
 
-  const handleExport = () => {
-    // Try to parse output as JSON, fallback to string if it fails
-    let parsedOutput = output
+  const runAllPrompts = async () => {
+    setLoading(true)
+    for (let i = 0; i < prompts.length; i++) {
+      await runPrompt(i)
+    }
+    setLoading(false)
+  }
+
+  const savePrompt = async (index) => {
+    const prompt = prompts[index]
     try {
-      parsedOutput = JSON.parse(output)
-    } catch {
-      // Keep as string if not valid JSON
-    }
+      const response = await fetch('http://localhost:8000/save-prompt', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          prompt: prompt.prompt,
+          text,
+          model: prompt.model,
+          response_format: prompt.responseFormat ? JSON.parse(prompt.responseFormat) : null,
+          output: prompt.output
+        })
+      })
 
-    const exportData = {
-      prompt,
-      text,
-      model,
-      response_format: responseFormat ? JSON.parse(responseFormat) : null,
-      output: parsedOutput,
-      timestamp: new Date().toISOString()
-    }
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`)
+      }
 
-    const blob = new Blob([JSON.stringify(exportData, null, 2)], { type: 'application/json' })
-    const url = URL.createObjectURL(blob)
-    const link = document.createElement('a')
-    link.href = url
-    link.download = `prompt-test-${Date.now()}.json`
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-    URL.revokeObjectURL(url)
+      const data = await response.json()
+      alert(data.message)
+    } catch (err) {
+      alert('Failed to save: ' + err.message)
+    }
+  }
+
+  const deletePrompt = (index) => {
+    const updated = prompts.filter((_, i) => i !== index)
+    setPrompts(updated)
+    if (selectedPromptIndex === index) {
+      setSelectedPromptIndex(null)
+    } else if (selectedPromptIndex > index) {
+      setSelectedPromptIndex(selectedPromptIndex - 1)
+    }
   }
 
   return (
     <div className="app">
       <h1>Prompt Tester</h1>
 
-      <form onSubmit={handleSubmit}>
-        <div className="left-side">
-          <div className="form-group">
-            <label htmlFor="model">Model:</label>
-            <select
-              id="model"
-              value={model}
-              onChange={(e) => setModel(e.target.value)}
-            >
-              {models.map(m => (
-                <option key={m} value={m}>{m}</option>
-              ))}
-            </select>
+      <div className="container">
+        <div className="sidebar">
+          <div className="sidebar-header">
+            <h3>Prompts</h3>
+            <button onClick={addNewPrompt} className="add-btn">+ Add</button>
           </div>
-
-          <div className="form-group">
-            <label htmlFor="response-format">Response Format (JSON Schema):</label>
-            <textarea
-              id="response-format"
-              value={responseFormat}
-              onChange={(e) => setResponseFormat(e.target.value)}
-              placeholder='Optional: Enter JSON response format, e.g., {"type": "object", "properties": {"varients": {"type": "array", "items": {"type": "object", "properties": {"varient": {"type": "string"}, "gene": {"type": "string"}, "allele": {"type": "string"}}}}}}'
-              rows={4}
-            />
-            <small style={{color: '#666', fontSize: '0.85em'}}>
-              Leave empty to use default. Overrides "Structured Output" checkbox if provided.
-            </small>
+          <div className="prompts-list">
+            {prompts.map((prompt, index) => (
+              <div
+                key={prompt.id}
+                className={`prompt-item ${selectedPromptIndex === index ? 'selected' : ''}`}
+                onClick={() => setSelectedPromptIndex(index)}
+              >
+                <div className="prompt-item-header">
+                  <input
+                    type="text"
+                    value={prompt.name}
+                    onChange={(e) => {
+                      e.stopPropagation()
+                      updatePrompt(index, 'name', e.target.value)
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                    className="prompt-name-input"
+                  />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation()
+                      deletePrompt(index)
+                    }}
+                    className="delete-btn"
+                  >
+                    ×
+                  </button>
+                </div>
+                {prompt.output && <span className="status-indicator">✓</span>}
+              </div>
+            ))}
           </div>
-
-          <div className="form-group">
-            <label htmlFor="prompt">Prompt:</label>
-            <textarea
-              id="prompt"
-              value={prompt}
-              onChange={(e) => setPrompt(e.target.value)}
-              placeholder="Enter your prompt here..."
-              rows={4}
-              required
-            />
-          </div>
-        </div>
-
-        <div className="middle">
-          <div className="form-group">
-            <label htmlFor="text">Text:</label>
-            <textarea
-              id="text"
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Enter the text to process..."
-              rows={6}
-              required
-            />
-          </div>
-          <button type="submit" disabled={loading}>
-            {loading ? 'Processing...' : 'Test Prompt'}
+          <button
+            onClick={runAllPrompts}
+            disabled={loading || prompts.length === 0}
+            className="run-all-btn"
+          >
+            {loading ? 'Running All...' : 'Run All Prompts'}
           </button>
         </div>
-      </form>
 
-      <div className="right-side">
-        {error && (
-          <div className="error">
-            <h3>Error:</h3>
-            <p>{error}</p>
-          </div>
-        )}
-
-        {output && (
-          <div className="output">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-              <h3>Output:</h3>
-              <button type="button" onClick={handleExport}>
-                Export to JSON
-              </button>
+        <div className="main-content">
+          <div className="text-section">
+            <div className="form-group">
+              <label htmlFor="text">Input Text:</label>
+              <textarea
+                id="text"
+                value={text}
+                onChange={(e) => setText(e.target.value)}
+                placeholder="Enter the text to process..."
+                rows={6}
+              />
             </div>
-            <pre>{output}</pre>
           </div>
-        )}
-      </div>
 
+          {selectedPromptIndex !== null && prompts[selectedPromptIndex] && (
+            <div className="prompt-details">
+              <h3>Configure Prompt</h3>
+              <div className="form-group">
+                <label htmlFor="model">Model:</label>
+                <select
+                  id="model"
+                  value={prompts[selectedPromptIndex].model}
+                  onChange={(e) => updatePrompt(selectedPromptIndex, 'model', e.target.value)}
+                >
+                  {models.map(m => (
+                    <option key={m} value={m}>{m}</option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="response-format">Response Format (JSON Schema):</label>
+                <textarea
+                  id="response-format"
+                  value={prompts[selectedPromptIndex].responseFormat}
+                  onChange={(e) => updatePrompt(selectedPromptIndex, 'responseFormat', e.target.value)}
+                  placeholder='Optional: Enter JSON response format'
+                  rows={3}
+                />
+              </div>
+
+              <div className="form-group">
+                <label htmlFor="prompt">Prompt:</label>
+                <textarea
+                  id="prompt"
+                  value={prompts[selectedPromptIndex].prompt}
+                  onChange={(e) => updatePrompt(selectedPromptIndex, 'prompt', e.target.value)}
+                  placeholder="Enter your prompt here..."
+                  rows={4}
+                />
+              </div>
+
+              <button
+                onClick={() => runPrompt(selectedPromptIndex)}
+                disabled={prompts[selectedPromptIndex].loading}
+              >
+                {prompts[selectedPromptIndex].loading ? 'Running...' : 'Run This Prompt'}
+              </button>
+
+              {prompts[selectedPromptIndex].output && (
+                <div className="output">
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h4>Output:</h4>
+                    <button onClick={() => savePrompt(selectedPromptIndex)}>
+                      Save Prompt
+                    </button>
+                  </div>
+                  <pre>{prompts[selectedPromptIndex].output}</pre>
+                </div>
+              )}
+            </div>
+          )}
+
+          {error && (
+            <div className="error">
+              <h3>Error:</h3>
+              <p>{error}</p>
+            </div>
+          )}
+        </div>
+
+        <div className="outputs-sidebar">
+          <div className="sidebar-header">
+            <h3>All Outputs</h3>
+          </div>
+          <div className="outputs-list">
+            {prompts.length === 0 ? (
+              <div className="empty-state">No prompts added yet</div>
+            ) : (
+              prompts.map((prompt, index) => (
+                <div key={prompt.id} className="output-item">
+                  <div className="output-item-header">
+                    <strong>{prompt.name}</strong>
+                    {prompt.loading && <span className="loading-indicator">⏳</span>}
+                    {prompt.output && !prompt.loading && (
+                      <button onClick={() => savePrompt(index)} className="save-output-btn">
+                        Save
+                      </button>
+                    )}
+                  </div>
+                  {prompt.output ? (
+                    <pre className="output-preview">{prompt.output}</pre>
+                  ) : (
+                    <div className="no-output">No output yet</div>
+                  )}
+                </div>
+              ))
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
