@@ -201,7 +201,6 @@ export default function PromptsSidebar({
                   ×
                 </button>
               </div>
-              {prompt.output && <span className="status-indicator">✓</span>}
             </div>
           )
         })}
