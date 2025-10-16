@@ -15,6 +15,7 @@ function App() {
     selectedPromptIndex,
     loading,
     error,
+    bestPrompts,
     addNewPrompt,
     updatePrompt,
     deletePrompt,
@@ -26,7 +27,9 @@ function App() {
     setSelectedTask,
     addTask,
     deleteTask,
-    renameTask
+    renameTask,
+    setBestPrompt,
+    runBestPrompts
   } = usePrompts()
 
   return (
@@ -51,10 +54,13 @@ function App() {
             deletePrompt(actualIndex)
           }}
           onRunAll={() => runAllPrompts(text)}
+          onRunBest={() => runBestPrompts(text)}
           onSelectTask={setSelectedTask}
           onAddTask={addTask}
           onDeleteTask={deleteTask}
           onRenameTask={renameTask}
+          bestPrompts={bestPrompts}
+          onSetBestPrompt={setBestPrompt}
           loading={loading}
         />
 

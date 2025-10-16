@@ -7,6 +7,7 @@ export function usePrompts() {
   const [selectedPromptIndex, setSelectedPromptIndex] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [bestPrompts, setBestPrompts] = useState({}) // { taskName: promptId }
 
   // Filter prompts by selected task
   const filteredPrompts = prompts.filter(p => p.task === selectedTask)
@@ -245,6 +246,106 @@ export function usePrompts() {
     if (selectedTask === oldName) {
       setSelectedTask(newName)
     }
+
+    // Update best prompts mapping
+    if (bestPrompts[oldName]) {
+      const updated = { ...bestPrompts }
+      updated[newName] = updated[oldName]
+      delete updated[oldName]
+      setBestPrompts(updated)
+    }
+  }
+
+  const setBestPrompt = (task, promptId) => {
+    setBestPrompts(prev => ({
+      ...prev,
+      [task]: promptId
+    }))
+  }
+
+  const runBestPrompts = async (text) => {
+    setLoading(true)
+    setError('')
+
+    try {
+      // Collect best prompts for all tasks
+      const bestPromptsData = []
+
+      for (const task of tasks) {
+        const bestPromptId = bestPrompts[task]
+        if (!bestPromptId) {
+          setError(`No best prompt selected for task: ${task}`)
+          setLoading(false)
+          return
+        }
+
+        const prompt = prompts.find(p => p.id === bestPromptId)
+        if (!prompt) {
+          setError(`Best prompt not found for task: ${task}`)
+          setLoading(false)
+          return
+        }
+
+        // Parse response format if needed
+        let parsedResponseFormat = null
+        if (prompt.responseFormat?.trim()) {
+          try {
+            parsedResponseFormat = JSON.parse(prompt.responseFormat)
+          } catch (err) {
+            setError(`Invalid JSON in response format for ${task}: ${err.message}`)
+            setLoading(false)
+            return
+          }
+        }
+
+        bestPromptsData.push({
+          task: prompt.task,
+          prompt: prompt.prompt,
+          model: prompt.model,
+          response_format: parsedResponseFormat,
+          name: prompt.name
+        })
+      }
+
+      // Call backend
+      const response = await fetch('http://localhost:8000/run-best-prompts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          text,
+          best_prompts: bestPromptsData
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`)
+      }
+
+      const data = await response.json()
+
+      // Update outputs for best prompts
+      const updatedPrompts = [...prompts]
+      for (const task of tasks) {
+        const bestPromptId = bestPrompts[task]
+        const promptIndex = prompts.findIndex(p => p.id === bestPromptId)
+        if (promptIndex !== -1 && data.results[task]) {
+          updatedPrompts[promptIndex].output =
+            typeof data.results[task] === 'string'
+              ? data.results[task]
+              : JSON.stringify(data.results[task], null, 2)
+        }
+      }
+      setPrompts(updatedPrompts)
+
+      alert(`Success! Output saved to ${data.output_file}`)
+    } catch (err) {
+      setError(err.message)
+      alert('Failed to run best prompts: ' + err.message)
+    } finally {
+      setLoading(false)
+    }
   }
 
   return {
@@ -255,6 +356,7 @@ export function usePrompts() {
     selectedPromptIndex,
     loading,
     error,
+    bestPrompts,
     addNewPrompt,
     updatePrompt,
     deletePrompt,
@@ -266,6 +368,8 @@ export function usePrompts() {
     setSelectedTask,
     addTask,
     deleteTask,
-    renameTask
+    renameTask,
+    setBestPrompt,
+    runBestPrompts
   }
 }

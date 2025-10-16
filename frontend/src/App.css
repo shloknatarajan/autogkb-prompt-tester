@@ -200,9 +200,24 @@ h1 {
 
 .prompt-item-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   gap: 0.5rem;
+}
+
+.best-indicator {
+  font-size: 1.2rem;
+  cursor: pointer;
+  opacity: 0.3;
+  transition: opacity 0.2s;
+  user-select: none;
+}
+
+.best-indicator:hover {
+  opacity: 0.6;
+}
+
+.best-indicator.active {
+  opacity: 1;
 }
 
 .prompt-name-input {
@@ -247,10 +262,26 @@ h1 {
 .run-all-btn {
   width: 100%;
   background-color: #17a2b8;
+  margin-bottom: 0.5rem;
 }
 
 .run-all-btn:hover:not(:disabled) {
   background-color: #138496;
+}
+
+.run-best-btn {
+  width: 100%;
+  background-color: #28a745;
+  font-weight: 600;
+}
+
+.run-best-btn:hover:not(:disabled) {
+  background-color: #218838;
+}
+
+.run-best-btn:disabled {
+  background-color: #6c757d;
+  cursor: not-allowed;
 }
 
 .main-content {

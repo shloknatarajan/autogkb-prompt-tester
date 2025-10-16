@@ -17,8 +17,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# File path for storing prompts
+# File paths
 PROMPTS_FILE = "stored_prompts.json"
+BENCHMARK_OUTPUT_FILE = "benchmark_output.json"
+
+# Task output key mappings (hardcoded based on stable schema)
+TASK_OUTPUT_KEYS = {
+    "var-pheno": "var_pheno_ann",
+    "var-drug": "var_drug_ann",
+    "var-fa": "var_fa_ann",
+}
 
 
 class PromptRequest(BaseModel):
@@ -45,6 +53,19 @@ class SavePromptRequest(BaseModel):
 class SaveAllPromptsRequest(BaseModel):
     prompts: list[dict]
     text: str
+
+
+class BestPrompt(BaseModel):
+    task: str
+    prompt: str
+    model: Model
+    response_format: dict | None = None
+    name: str
+
+
+class RunBestPromptsRequest(BaseModel):
+    text: str
+    best_prompts: list[BestPrompt]
 
 
 @app.get("/healthcheck")
@@ -78,7 +99,7 @@ async def save_prompt(request: SavePromptRequest):
     try:
         # Read existing prompts
         if os.path.exists(PROMPTS_FILE):
-            with open(PROMPTS_FILE, 'r') as f:
+            with open(PROMPTS_FILE, "r") as f:
                 prompts = json.load(f)
         else:
             prompts = []
@@ -98,14 +119,14 @@ async def save_prompt(request: SavePromptRequest):
             "model": request.model,
             "response_format": request.response_format,
             "output": parsed_output,
-            "timestamp": datetime.now().isoformat()
+            "timestamp": datetime.now().isoformat(),
         }
 
         # Append new prompt
         prompts.append(new_prompt)
 
         # Save back to file
-        with open(PROMPTS_FILE, 'w') as f:
+        with open(PROMPTS_FILE, "w") as f:
             json.dump(prompts, f, indent=2)
 
         return {"status": "success", "message": "Prompt saved successfully"}
@@ -117,7 +138,7 @@ async def save_prompt(request: SavePromptRequest):
 async def get_prompts():
     try:
         if os.path.exists(PROMPTS_FILE):
-            with open(PROMPTS_FILE, 'r') as f:
+            with open(PROMPTS_FILE, "r") as f:
                 prompts = json.load(f)
             return {"prompts": prompts}
         else:
@@ -134,12 +155,16 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
         for prompt_data in request.prompts:
             # Try to parse output as JSON if possible
             try:
-                parsed_output = json.loads(prompt_data['output']) if prompt_data.get('output') else None
+                parsed_output = (
+                    json.loads(prompt_data["output"])
+                    if prompt_data.get("output")
+                    else None
+                )
             except:
-                parsed_output = prompt_data.get('output')
+                parsed_output = prompt_data.get("output")
 
             # Try to parse response format if it's a string
-            response_format = prompt_data.get('responseFormat')
+            response_format = prompt_data.get("responseFormat")
             if response_format and isinstance(response_format, str):
                 try:
                     response_format = json.loads(response_format)
@@ -147,21 +172,77 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
                     response_format = None
 
             saved_prompt = {
-                "task": prompt_data.get('task', 'Default'),
-                "name": prompt_data.get('name', 'Untitled Prompt'),
-                "prompt": prompt_data.get('prompt', ''),
+                "task": prompt_data.get("task", "Default"),
+                "name": prompt_data.get("name", "Untitled Prompt"),
+                "prompt": prompt_data.get("prompt", ""),
                 "text": request.text,
-                "model": prompt_data.get('model', 'gpt-4o-mini'),
+                "model": prompt_data.get("model", "gpt-4o-mini"),
                 "response_format": response_format,
                 "output": parsed_output,
-                "timestamp": datetime.now().isoformat()
+                "timestamp": datetime.now().isoformat(),
             }
             saved_prompts.append(saved_prompt)
 
         # Overwrite the file with current prompts
-        with open(PROMPTS_FILE, 'w') as f:
+        with open(PROMPTS_FILE, "w") as f:
             json.dump(saved_prompts, f, indent=2)
 
-        return {"status": "success", "message": f"Saved {len(saved_prompts)} prompts successfully"}
+        return {
+            "status": "success",
+            "message": f"Saved {len(saved_prompts)} prompts successfully",
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/run-best-prompts")
+async def run_best_prompts(request: RunBestPromptsRequest):
+    try:
+        task_results = {}
+        prompts_used = {}
+
+        # Run each best prompt
+        for best_prompt in request.best_prompts:
+            try:
+                # Generate response
+                output = generate_response(
+                    prompt=best_prompt.prompt,
+                    text=request.text,
+                    model=best_prompt.model,
+                    response_format=best_prompt.response_format,
+                )
+
+                # Parse output as JSON
+                try:
+                    parsed_output = json.loads(output)
+                except:
+                    parsed_output = output
+
+                task_results[best_prompt.task] = parsed_output
+                prompts_used[best_prompt.task] = best_prompt.name
+
+            except Exception as e:
+                # Include error in results
+                task_results[best_prompt.task] = {"error": str(e)}
+                prompts_used[best_prompt.task] = best_prompt.name
+
+        # Combine outputs
+        combined_output = {
+            **task_results,
+            "input_text": request.text,
+            "timestamp": datetime.now().isoformat(),
+            "prompts_used": prompts_used,
+        }
+
+        # Save to file
+        with open(BENCHMARK_OUTPUT_FILE, "w") as f:
+            json.dump(combined_output, f, indent=2)
+
+        return {
+            "status": "success",
+            "message": f"Ran {len(request.best_prompts)} prompts successfully",
+            "output_file": BENCHMARK_OUTPUT_FILE,
+            "results": combined_output,
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

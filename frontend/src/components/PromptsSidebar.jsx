@@ -10,10 +10,13 @@ export default function PromptsSidebar({
   onUpdatePrompt,
   onDeletePrompt,
   onRunAll,
+  onRunBest,
   onSelectTask,
   onAddTask,
   onDeleteTask,
   onRenameTask,
+  bestPrompts,
+  onSetBestPrompt,
   loading
 }) {
   const [showTaskManager, setShowTaskManager] = useState(false)
@@ -159,36 +162,49 @@ export default function PromptsSidebar({
       </div>
 
       <div className="prompts-list">
-        {prompts.map((prompt, index) => (
-          <div
-            key={prompt.id}
-            className={`prompt-item ${selectedPromptIndex === index ? 'selected' : ''}`}
-            onClick={() => onSelectPrompt(index)}
-          >
-            <div className="prompt-item-header">
-              <input
-                type="text"
-                value={prompt.name}
-                onChange={(e) => {
-                  e.stopPropagation()
-                  onUpdatePrompt(index, 'name', e.target.value)
-                }}
-                onClick={(e) => e.stopPropagation()}
-                className="prompt-name-input"
-              />
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onDeletePrompt(index)
-                }}
-                className="delete-btn"
-              >
-                ×
-              </button>
+        {prompts.map((prompt, index) => {
+          const isBest = bestPrompts[selectedTask] === prompt.id
+          return (
+            <div
+              key={prompt.id}
+              className={`prompt-item ${selectedPromptIndex === index ? 'selected' : ''}`}
+              onClick={() => onSelectPrompt(index)}
+            >
+              <div className="prompt-item-header">
+                <span
+                  className={`best-indicator ${isBest ? 'active' : ''}`}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onSetBestPrompt(selectedTask, prompt.id)
+                  }}
+                  title={isBest ? 'Best prompt for this task' : 'Set as best prompt'}
+                >
+                  ⭐
+                </span>
+                <input
+                  type="text"
+                  value={prompt.name}
+                  onChange={(e) => {
+                    e.stopPropagation()
+                    onUpdatePrompt(index, 'name', e.target.value)
+                  }}
+                  onClick={(e) => e.stopPropagation()}
+                  className="prompt-name-input"
+                />
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    onDeletePrompt(index)
+                  }}
+                  className="delete-btn"
+                >
+                  ×
+                </button>
+              </div>
+              {prompt.output && <span className="status-indicator">✓</span>}
             </div>
-            {prompt.output && <span className="status-indicator">✓</span>}
-          </div>
-        ))}
+          )
+        })}
       </div>
       <button
         onClick={onRunAll}
@@ -196,6 +212,14 @@ export default function PromptsSidebar({
         className="run-all-btn"
       >
         {loading ? 'Running All...' : 'Run All Prompts'}
+      </button>
+      <button
+        onClick={onRunBest}
+        disabled={loading || Object.keys(bestPrompts).length !== tasks.length}
+        className="run-best-btn"
+        title={Object.keys(bestPrompts).length !== tasks.length ? 'Select best prompt for all tasks first' : ''}
+      >
+        {loading ? 'Running Best...' : 'Run Best Prompts'}
       </button>
     </div>
   )
