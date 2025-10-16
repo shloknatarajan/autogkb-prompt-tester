@@ -5,3 +5,5 @@
 *.egg-info
 
 __pycache__/
+
+benchmark_output.json

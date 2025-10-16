@@ -216,9 +216,9 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                 try:
                     parsed_output = json.loads(output)
                 except:
-                    parsed_output = output
+                    parsed_output = {best_prompt.name: output}
 
-                task_results[best_prompt.task] = parsed_output
+                task_results.update(parsed_output)
                 prompts_used[best_prompt.task] = best_prompt.name
 
             except Exception as e:
