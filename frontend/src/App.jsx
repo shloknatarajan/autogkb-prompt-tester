@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import './App.css'
-import TasksSidebar from './components/TasksSidebar'
 import PromptsSidebar from './components/PromptsSidebar'
 import OutputsSidebar from './components/OutputsSidebar'
 import PromptDetails from './components/PromptDetails'
@@ -35,17 +34,9 @@ function App() {
       <h1>Prompt Tester</h1>
 
       <div className="container">
-        <TasksSidebar
-          tasks={tasks}
-          selectedTask={selectedTask}
-          onSelectTask={setSelectedTask}
-          onAddTask={addTask}
-          onDeleteTask={deleteTask}
-          onRenameTask={renameTask}
-        />
-
         <PromptsSidebar
           prompts={filteredPrompts}
+          tasks={tasks}
           selectedTask={selectedTask}
           selectedPromptIndex={selectedPromptIndex}
           onSelectPrompt={setSelectedPromptIndex}
@@ -60,6 +51,10 @@ function App() {
             deletePrompt(actualIndex)
           }}
           onRunAll={() => runAllPrompts(text)}
+          onSelectTask={setSelectedTask}
+          onAddTask={addTask}
+          onDeleteTask={deleteTask}
+          onRenameTask={renameTask}
           loading={loading}
         />
 
