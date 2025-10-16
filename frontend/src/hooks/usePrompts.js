@@ -1,15 +1,61 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export function usePrompts() {
   const [prompts, setPrompts] = useState([])
+  const [tasks, setTasks] = useState(['Default'])
+  const [selectedTask, setSelectedTask] = useState('Default')
   const [selectedPromptIndex, setSelectedPromptIndex] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
 
+  // Filter prompts by selected task
+  const filteredPrompts = prompts.filter(p => p.task === selectedTask)
+
+  // Load prompts from backend on initialization
+  useEffect(() => {
+    const loadPrompts = async () => {
+      try {
+        const response = await fetch('http://localhost:8000/prompts')
+        if (!response.ok) {
+          throw new Error(`Error: ${response.statusText}`)
+        }
+        const data = await response.json()
+
+        // Transform backend prompts to frontend format
+        const transformedPrompts = data.prompts.map((savedPrompt, index) => ({
+          id: Date.now() + index,
+          task: savedPrompt.task || 'Default',
+          name: savedPrompt.name || `Prompt ${index + 1}`,
+          prompt: savedPrompt.prompt || '',
+          model: savedPrompt.model || 'gpt-4o-mini',
+          responseFormat: savedPrompt.response_format ? JSON.stringify(savedPrompt.response_format, null, 2) : '',
+          output: savedPrompt.output ? (typeof savedPrompt.output === 'string' ? savedPrompt.output : JSON.stringify(savedPrompt.output, null, 2)) : null,
+          loading: false
+        }))
+
+        // Extract unique tasks
+        const uniqueTasks = [...new Set(transformedPrompts.map(p => p.task))]
+        if (uniqueTasks.length > 0) {
+          setTasks(uniqueTasks)
+          setSelectedTask(uniqueTasks[0])
+        }
+
+        setPrompts(transformedPrompts)
+      } catch (err) {
+        console.error('Failed to load prompts:', err)
+        setError('Failed to load saved prompts: ' + err.message)
+      }
+    }
+
+    loadPrompts()
+  }, [])
+
   const addNewPrompt = () => {
+    const taskPrompts = prompts.filter(p => p.task === selectedTask)
     const newPrompt = {
       id: Date.now(),
-      name: `Prompt ${prompts.length + 1}`,
+      task: selectedTask,
+      name: `Prompt ${taskPrompts.length + 1}`,
       prompt: '',
       model: 'gpt-4o-mini',
       responseFormat: '',
@@ -17,7 +63,7 @@ export function usePrompts() {
       loading: false
     }
     setPrompts([...prompts, newPrompt])
-    setSelectedPromptIndex(prompts.length)
+    setSelectedPromptIndex(filteredPrompts.length)
   }
 
   const updatePrompt = (index, field, value) => {
@@ -81,8 +127,14 @@ export function usePrompts() {
 
   const runAllPrompts = async (text) => {
     setLoading(true)
-    for (let i = 0; i < prompts.length; i++) {
-      await runPrompt(i, text)
+    // Only run prompts for the selected task
+    const taskPromptIndices = prompts
+      .map((p, i) => ({ prompt: p, index: i }))
+      .filter(({ prompt }) => prompt.task === selectedTask)
+      .map(({ index }) => index)
+
+    for (const index of taskPromptIndices) {
+      await runPrompt(index, text)
     }
     setLoading(false)
   }
@@ -96,6 +148,8 @@ export function usePrompts() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
+          task: prompt.task,
+          name: prompt.name,
           prompt: prompt.prompt,
           text,
           model: prompt.model,
@@ -139,8 +193,65 @@ export function usePrompts() {
     }
   }
 
+  const addTask = (taskName) => {
+    if (!tasks.includes(taskName)) {
+      setTasks([...tasks, taskName])
+      setSelectedTask(taskName)
+    }
+  }
+
+  const deleteTask = (taskName) => {
+    if (taskName === 'Default') {
+      alert('Cannot delete the Default task')
+      return
+    }
+
+    // Remove all prompts in this task
+    const updated = prompts.filter(p => p.task !== taskName)
+    setPrompts(updated)
+
+    // Remove task from list
+    const updatedTasks = tasks.filter(t => t !== taskName)
+    setTasks(updatedTasks)
+
+    // Select another task
+    if (selectedTask === taskName) {
+      setSelectedTask(updatedTasks[0] || 'Default')
+    }
+  }
+
+  const renameTask = (oldName, newName) => {
+    if (oldName === 'Default') {
+      alert('Cannot rename the Default task')
+      return
+    }
+
+    if (tasks.includes(newName)) {
+      alert('Task name already exists')
+      return
+    }
+
+    // Update all prompts with the old task name
+    const updated = prompts.map(p =>
+      p.task === oldName ? { ...p, task: newName } : p
+    )
+    setPrompts(updated)
+
+    // Update tasks list
+    const updatedTasks = tasks.map(t => t === oldName ? newName : t)
+    setTasks(updatedTasks)
+
+    // Update selected task if needed
+    if (selectedTask === oldName) {
+      setSelectedTask(newName)
+    }
+  }
+
   return {
     prompts,
+    filteredPrompts,
+    tasks,
+    selectedTask,
     selectedPromptIndex,
     loading,
     error,
@@ -151,6 +262,10 @@ export function usePrompts() {
     runAllPrompts,
     savePrompt,
     saveAllPrompts,
-    setSelectedPromptIndex
+    setSelectedPromptIndex,
+    setSelectedTask,
+    addTask,
+    deleteTask,
+    renameTask
   }
 }

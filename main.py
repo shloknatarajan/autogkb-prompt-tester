@@ -33,6 +33,8 @@ class PromptResponse(BaseModel):
 
 
 class SavePromptRequest(BaseModel):
+    task: str
+    name: str
     prompt: str
     text: str
     model: Model
@@ -89,6 +91,8 @@ async def save_prompt(request: SavePromptRequest):
 
         # Create new prompt entry
         new_prompt = {
+            "task": request.task,
+            "name": request.name,
             "prompt": request.prompt,
             "text": request.text,
             "model": request.model,
@@ -143,6 +147,8 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
                     response_format = None
 
             saved_prompt = {
+                "task": prompt_data.get('task', 'Default'),
+                "name": prompt_data.get('name', 'Untitled Prompt'),
                 "prompt": prompt_data.get('prompt', ''),
                 "text": request.text,
                 "model": prompt_data.get('model', 'gpt-4o-mini'),

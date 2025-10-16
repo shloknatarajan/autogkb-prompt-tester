@@ -15,6 +15,9 @@ class Model(str, Enum):
     OPENAI_GPT_4O = "gpt-4o"
     OPENAI_GPT_4O_MINI = "gpt-4o-mini"
     OPENAI_GPT_35_TURBO = "gpt-3.5-turbo"
+    OPENAI_GPT_5 = "gpt-5"
+    OPENAI_GPT_5_MINI = "gpt-5-mini"
+    OPENAI_GPT_5_PRO = "gpt-5-pro"
 
 
 def generate_response(

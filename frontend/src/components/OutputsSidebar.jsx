@@ -1,10 +1,10 @@
 import React from 'react'
 
-export default function OutputsSidebar({ prompts, onSavePrompt, onSaveAll }) {
+export default function OutputsSidebar({ prompts, selectedTask, onSavePrompt, onSaveAll }) {
   return (
     <div className="outputs-sidebar">
       <div className="sidebar-header">
-        <h3>All Outputs</h3>
+        <h3>Outputs - {selectedTask}</h3>
       </div>
       <div className="outputs-list">
         {prompts.length === 0 ? (

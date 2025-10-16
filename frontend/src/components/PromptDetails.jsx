@@ -5,7 +5,10 @@ const MODELS = [
   'gpt-4o-mini',
   'gpt-4-turbo',
   'gpt-4',
-  'gpt-3.5-turbo'
+  'gpt-3.5-turbo',
+  'gpt-5',
+  'gpt-5-mini',
+  'gpt-5-pro'
 ]
 
 export default function PromptDetails({ prompt, onUpdate, onRun }) {

@@ -15,6 +15,70 @@ h1 {
   height: calc(100vh - 150px);
 }
 
+.tasks-sidebar {
+  width: 200px;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #333;
+  padding-right: 1rem;
+}
+
+.tasks-list {
+  flex: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.task-item {
+  padding: 0.75rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.task-item:hover {
+  background-color: #2a2a2a;
+}
+
+.task-item.selected {
+  background-color: #1a4d7a;
+  border-color: #007bff;
+}
+
+.task-item.new-task {
+  border-style: dashed;
+}
+
+.task-item-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.task-name {
+  flex: 1;
+  cursor: pointer;
+}
+
+.task-name-input {
+  flex: 1;
+  background: transparent;
+  border: 1px solid #007bff;
+  color: inherit;
+  font-size: 0.9rem;
+  padding: 0.2rem 0.4rem;
+  border-radius: 2px;
+}
+
+.task-name-input:focus {
+  outline: 1px solid #007bff;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
 .sidebar {
   width: 250px;
   display: flex;

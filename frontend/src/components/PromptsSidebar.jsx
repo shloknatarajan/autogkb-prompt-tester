@@ -2,6 +2,7 @@ import React from 'react'
 
 export default function PromptsSidebar({
   prompts,
+  selectedTask,
   selectedPromptIndex,
   onSelectPrompt,
   onAddPrompt,
@@ -13,7 +14,7 @@ export default function PromptsSidebar({
   return (
     <div className="sidebar">
       <div className="sidebar-header">
-        <h3>Prompts</h3>
+        <h3>{selectedTask}</h3>
         <button onClick={onAddPrompt} className="add-btn">+ Add</button>
       </div>
       <div className="prompts-list">

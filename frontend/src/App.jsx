@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import './App.css'
+import TasksSidebar from './components/TasksSidebar'
 import PromptsSidebar from './components/PromptsSidebar'
 import OutputsSidebar from './components/OutputsSidebar'
 import PromptDetails from './components/PromptDetails'
@@ -9,6 +10,9 @@ function App() {
   const [text, setText] = useState('')
   const {
     prompts,
+    filteredPrompts,
+    tasks,
+    selectedTask,
     selectedPromptIndex,
     loading,
     error,
@@ -19,7 +23,11 @@ function App() {
     runAllPrompts,
     savePrompt,
     saveAllPrompts,
-    setSelectedPromptIndex
+    setSelectedPromptIndex,
+    setSelectedTask,
+    addTask,
+    deleteTask,
+    renameTask
   } = usePrompts()
 
   return (
@@ -27,13 +35,30 @@ function App() {
       <h1>Prompt Tester</h1>
 
       <div className="container">
+        <TasksSidebar
+          tasks={tasks}
+          selectedTask={selectedTask}
+          onSelectTask={setSelectedTask}
+          onAddTask={addTask}
+          onDeleteTask={deleteTask}
+          onRenameTask={renameTask}
+        />
+
         <PromptsSidebar
-          prompts={prompts}
+          prompts={filteredPrompts}
+          selectedTask={selectedTask}
           selectedPromptIndex={selectedPromptIndex}
           onSelectPrompt={setSelectedPromptIndex}
           onAddPrompt={addNewPrompt}
-          onUpdatePrompt={updatePrompt}
-          onDeletePrompt={deletePrompt}
+          onUpdatePrompt={(index, field, value) => {
+            // Find actual index in full prompts array
+            const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[index].id)
+            updatePrompt(actualIndex, field, value)
+          }}
+          onDeletePrompt={(index) => {
+            const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[index].id)
+            deletePrompt(actualIndex)
+          }}
           onRunAll={() => runAllPrompts(text)}
           loading={loading}
         />
@@ -52,11 +77,17 @@ function App() {
             </div>
           </div>
 
-          {selectedPromptIndex !== null && prompts[selectedPromptIndex] && (
+          {selectedPromptIndex !== null && filteredPrompts[selectedPromptIndex] && (
             <PromptDetails
-              prompt={prompts[selectedPromptIndex]}
-              onUpdate={(field, value) => updatePrompt(selectedPromptIndex, field, value)}
-              onRun={() => runPrompt(selectedPromptIndex, text)}
+              prompt={filteredPrompts[selectedPromptIndex]}
+              onUpdate={(field, value) => {
+                const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[selectedPromptIndex].id)
+                updatePrompt(actualIndex, field, value)
+              }}
+              onRun={() => {
+                const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[selectedPromptIndex].id)
+                runPrompt(actualIndex, text)
+              }}
             />
           )}
 
@@ -69,8 +100,12 @@ function App() {
         </div>
 
         <OutputsSidebar
-          prompts={prompts}
-          onSavePrompt={(index) => savePrompt(index, text)}
+          prompts={filteredPrompts}
+          selectedTask={selectedTask}
+          onSavePrompt={(index) => {
+            const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[index].id)
+            savePrompt(actualIndex, text)
+          }}
           onSaveAll={() => saveAllPrompts(text)}
         />
       </div>
