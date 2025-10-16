@@ -82,7 +82,7 @@ async def test_prompt(request: PromptRequest):
         if request.response_format:
             response_format = request.response_format
 
-        output = generate_response(
+        output = await generate_response(
             prompt=request.prompt,
             text=request.text,
             model=request.model,
@@ -205,7 +205,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
         for best_prompt in request.best_prompts:
             try:
                 # Generate response
-                output = generate_response(
+                output = await generate_response(
                     prompt=best_prompt.prompt,
                     text=request.text,
                     model=best_prompt.model,

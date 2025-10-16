@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function OutputsSidebar({ prompts, selectedTask, onSavePrompt, onSaveAll }) {
+export default function OutputsSidebar({ prompts, selectedTask, onSavePrompt, onSaveAll, onRunAll, onRunBest, bestPrompts, loading, tasks }) {
   return (
     <div className="outputs-sidebar">
       <div className="sidebar-header">
@@ -31,11 +31,19 @@ export default function OutputsSidebar({ prompts, selectedTask, onSavePrompt, on
         )}
       </div>
       <button
-        onClick={onSaveAll}
-        disabled={prompts.length === 0}
-        className="save-all-btn"
+        onClick={onRunAll}
+        disabled={loading || prompts.length === 0}
+        className="run-all-btn"
       >
-        Save All Prompts
+        {loading ? 'Running All...' : 'Run All Prompts'}
+      </button>
+      <button
+        onClick={onRunBest}
+        disabled={loading || Object.keys(bestPrompts).length !== tasks.length}
+        className="run-best-btn"
+        title={Object.keys(bestPrompts).length !== tasks.length ? 'Select best prompt for all tasks first' : ''}
+      >
+        {loading ? 'Running Best...' : 'Run Best Prompts'}
       </button>
     </div>
   )

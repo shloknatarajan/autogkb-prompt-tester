@@ -1,5 +1,5 @@
 from enum import Enum
-from openai import OpenAI
+from openai import AsyncOpenAI
 from dotenv import load_dotenv
 import os
 
@@ -20,11 +20,11 @@ class Model(str, Enum):
     OPENAI_GPT_5_PRO = "gpt-5-pro"
 
 
-def generate_response(
+async def generate_response(
     prompt: str, text: str, model: Model, response_format: dict | None = None
 ) -> str:
     """Generate a response using OpenAI API."""
-    client = OpenAI(api_key=OPENAI_API_KEY)
+    client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 
     # Combine the prompt with the text
     full_prompt = f"{prompt}\n\n{text}"
@@ -44,6 +44,6 @@ def generate_response(
             },
         }
 
-    response = client.chat.completions.create(**params)
+    response = await client.chat.completions.create(**params)
 
     return response.choices[0].message.content

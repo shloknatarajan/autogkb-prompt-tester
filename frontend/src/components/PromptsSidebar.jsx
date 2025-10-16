@@ -9,15 +9,13 @@ export default function PromptsSidebar({
   onAddPrompt,
   onUpdatePrompt,
   onDeletePrompt,
-  onRunAll,
-  onRunBest,
   onSelectTask,
   onAddTask,
   onDeleteTask,
   onRenameTask,
   bestPrompts,
   onSetBestPrompt,
-  loading
+  onSaveAll
 }) {
   const [showTaskManager, setShowTaskManager] = useState(false)
   const [isAddingTask, setIsAddingTask] = useState(false)
@@ -206,19 +204,11 @@ export default function PromptsSidebar({
         })}
       </div>
       <button
-        onClick={onRunAll}
-        disabled={loading || prompts.length === 0}
-        className="run-all-btn"
+        onClick={onSaveAll}
+        disabled={prompts.length === 0}
+        className="save-all-btn"
       >
-        {loading ? 'Running All...' : 'Run All Prompts'}
-      </button>
-      <button
-        onClick={onRunBest}
-        disabled={loading || Object.keys(bestPrompts).length !== tasks.length}
-        className="run-best-btn"
-        title={Object.keys(bestPrompts).length !== tasks.length ? 'Select best prompt for all tasks first' : ''}
-      >
-        {loading ? 'Running Best...' : 'Run Best Prompts'}
+        Save All Prompts
       </button>
     </div>
   )

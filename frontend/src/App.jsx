@@ -62,6 +62,7 @@ function App() {
           bestPrompts={bestPrompts}
           onSetBestPrompt={setBestPrompt}
           loading={loading}
+          onSaveAll={() => saveAllPrompts(text)}
         />
 
         <div className="main-content">
@@ -108,6 +109,11 @@ function App() {
             savePrompt(actualIndex, text)
           }}
           onSaveAll={() => saveAllPrompts(text)}
+          onRunAll={() => runAllPrompts(text)}
+          onRunBest={() => runBestPrompts(text)}
+          bestPrompts={bestPrompts}
+          loading={loading}
+          tasks={tasks}
         />
       </div>
     </div>
