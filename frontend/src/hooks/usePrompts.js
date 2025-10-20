@@ -83,7 +83,7 @@ export function usePrompts() {
     }
   }
 
-  const runPrompt = async (index, text) => {
+  const runPrompt = async (index, text, model = 'gpt-4o-mini') => {
     const prompt = prompts[index]
     updatePrompt(index, 'loading', true)
     setError('')
@@ -108,7 +108,7 @@ export function usePrompts() {
         body: JSON.stringify({
           prompt: prompt.prompt,
           text,
-          model: prompt.model,
+          model: model,
           response_format: parsedResponseFormat
         })
       })
@@ -126,7 +126,7 @@ export function usePrompts() {
     }
   }
 
-  const runAllPrompts = async (text) => {
+  const runAllPrompts = async (text, model = 'gpt-4o-mini') => {
     setLoading(true)
     // Only run prompts for the selected task
     const taskPromptIndices = prompts
@@ -135,7 +135,7 @@ export function usePrompts() {
       .map(({ index }) => index)
 
     for (const index of taskPromptIndices) {
-      await runPrompt(index, text)
+      await runPrompt(index, text, model)
     }
     setLoading(false)
   }
@@ -263,7 +263,7 @@ export function usePrompts() {
     }))
   }
 
-  const runBestPrompts = async (text) => {
+  const runBestPrompts = async (text, PMCID, model = 'gpt-4o-mini') => {
     setLoading(true)
     setError('')
 
@@ -301,7 +301,7 @@ export function usePrompts() {
         bestPromptsData.push({
           task: prompt.task,
           prompt: prompt.prompt,
-          model: prompt.model,
+          model: model,
           response_format: parsedResponseFormat,
           name: prompt.name
         })
@@ -315,6 +315,7 @@ export function usePrompts() {
         },
         body: JSON.stringify({
           text,
+          pmcid: PMCID,
           best_prompts: bestPromptsData
         })
       })

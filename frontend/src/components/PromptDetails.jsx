@@ -1,32 +1,9 @@
 import React from 'react'
 
-const MODELS = [
-  'gpt-4o',
-  'gpt-4o-mini',
-  'gpt-4-turbo',
-  'gpt-4',
-  'gpt-3.5-turbo',
-  'gpt-5',
-  'gpt-5-mini',
-  'gpt-5-pro'
-]
-
 export default function PromptDetails({ prompt, onUpdate, onRun }) {
   return (
     <div className="prompt-details">
       <h3>Configure Prompt</h3>
-      <div className="form-group">
-        <label htmlFor="model">Model:</label>
-        <select
-          id="model"
-          value={prompt.model}
-          onChange={(e) => onUpdate('model', e.target.value)}
-        >
-          {MODELS.map(m => (
-            <option key={m} value={m}>{m}</option>
-          ))}
-        </select>
-      </div>
 
       <div className="form-group">
         <label htmlFor="response-format">Response Format (JSON Schema):</label>

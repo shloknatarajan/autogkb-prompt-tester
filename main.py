@@ -20,13 +20,7 @@ app.add_middleware(
 # File paths
 PROMPTS_FILE = "stored_prompts.json"
 BENCHMARK_OUTPUT_FILE = "benchmark_output.json"
-
-# Task output key mappings (hardcoded based on stable schema)
-TASK_OUTPUT_KEYS = {
-    "var-pheno": "var_pheno_ann",
-    "var-drug": "var_drug_ann",
-    "var-fa": "var_fa_ann",
-}
+OUTPUT_DIR = "outputs"
 
 
 class PromptRequest(BaseModel):
@@ -66,6 +60,7 @@ class BestPrompt(BaseModel):
 class RunBestPromptsRequest(BaseModel):
     text: str
     best_prompts: list[BestPrompt]
+    pmcid: str | None = None
 
 
 @app.get("/healthcheck")
@@ -235,13 +230,18 @@ async def run_best_prompts(request: RunBestPromptsRequest):
         }
 
         # Save to file
-        with open(BENCHMARK_OUTPUT_FILE, "w") as f:
+        filename = (
+            f"{OUTPUT_DIR}/{request.pmcid}.json"
+            if request.pmcid
+            else f"{OUTPUT_DIR}/{BENCHMARK_OUTPUT_FILE}"
+        )
+        with open(filename, "w") as f:
             json.dump(combined_output, f, indent=2)
 
         return {
             "status": "success",
             "message": f"Ran {len(request.best_prompts)} prompts successfully",
-            "output_file": BENCHMARK_OUTPUT_FILE,
+            "output_file": filename,
             "results": combined_output,
         }
     except Exception as e:

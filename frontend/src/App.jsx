@@ -5,8 +5,21 @@ import OutputsSidebar from './components/OutputsSidebar'
 import PromptDetails from './components/PromptDetails'
 import { usePrompts } from './hooks/usePrompts'
 
+const MODELS = [
+  'gpt-4o',
+  'gpt-4o-mini',
+  'gpt-4-turbo',
+  'gpt-4',
+  'gpt-3.5-turbo',
+  'gpt-5',
+  'gpt-5-mini',
+  'gpt-5-pro'
+]
+
 function App() {
   const [text, setText] = useState('')
+  const [globalModel, setGlobalModel] = useState('gpt-4o-mini')
+  const [PMCID, setPMCID] = useState('')
   const {
     prompts,
     filteredPrompts,
@@ -53,8 +66,6 @@ function App() {
             const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[index].id)
             deletePrompt(actualIndex)
           }}
-          onRunAll={() => runAllPrompts(text)}
-          onRunBest={() => runBestPrompts(text)}
           onSelectTask={setSelectedTask}
           onAddTask={addTask}
           onDeleteTask={deleteTask}
@@ -67,6 +78,30 @@ function App() {
 
         <div className="main-content">
           <div className="text-section">
+            <div className="form-group">
+              <label htmlFor="model">Global Model:</label>
+              <select
+                id="model"
+                value={globalModel}
+                onChange={(e) => setGlobalModel(e.target.value)}
+              >
+                {MODELS.map(m => (
+                  <option key={m} value={m}>{m}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="pmcid">PMCID:</label>
+              <input
+                type="text"
+                id="pmcid"
+                value={PMCID}
+                onChange={(e) => setPMCID(e.target.value)}
+                placeholder="Enter PMCID..."
+              />
+            </div>
+
             <div className="form-group">
               <label htmlFor="text">Input Text:</label>
               <textarea
@@ -88,7 +123,7 @@ function App() {
               }}
               onRun={() => {
                 const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[selectedPromptIndex].id)
-                runPrompt(actualIndex, text)
+                runPrompt(actualIndex, text, globalModel)
               }}
             />
           )}
@@ -109,8 +144,8 @@ function App() {
             savePrompt(actualIndex, text)
           }}
           onSaveAll={() => saveAllPrompts(text)}
-          onRunAll={() => runAllPrompts(text)}
-          onRunBest={() => runBestPrompts(text)}
+          onRunAll={() => runAllPrompts(text, globalModel)}
+          onRunBest={() => runBestPrompts(text, PMCID, globalModel)}
           bestPrompts={bestPrompts}
           loading={loading}
           tasks={tasks}
