@@ -20,6 +20,7 @@ function App() {
   const [text, setText] = useState('')
   const [globalModel, setGlobalModel] = useState('gpt-4o-mini')
   const [PMCID, setPMCID] = useState('')
+  const [selectedFileName, setSelectedFileName] = useState('')
   const {
     prompts,
     filteredPrompts,
@@ -44,6 +45,27 @@ function App() {
     setBestPrompt,
     runBestPrompts
   } = usePrompts()
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0]
+    if (file) {
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setText(e.target.result)
+        setSelectedFileName(file.name)
+      }
+      reader.readAsText(file)
+    }
+  }
+
+  const clearFile = () => {
+    setSelectedFileName('')
+    // Reset the file input
+    const fileInput = document.getElementById('file-input')
+    if (fileInput) {
+      fileInput.value = ''
+    }
+  }
 
   return (
     <div className="app">
@@ -100,6 +122,27 @@ function App() {
                 onChange={(e) => setPMCID(e.target.value)}
                 placeholder="Enter PMCID..."
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="file-input">Load from File:</label>
+              <div className="file-input-wrapper">
+                <input
+                  type="file"
+                  id="file-input"
+                  accept=".md,.markdown"
+                  onChange={handleFileSelect}
+                  className="file-input"
+                />
+                {selectedFileName && (
+                  <span className="file-indicator">
+                    📄 {selectedFileName}
+                    <button onClick={clearFile} className="clear-file-btn" type="button">
+                      ×
+                    </button>
+                  </span>
+                )}
+              </div>
             </div>
 
             <div className="form-group">

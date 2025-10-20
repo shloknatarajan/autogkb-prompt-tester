@@ -230,6 +230,9 @@ async def run_best_prompts(request: RunBestPromptsRequest):
         }
 
         # Save to file
+        # Create output directory if it doesn't exist
+        os.makedirs(OUTPUT_DIR, exist_ok=True)
+
         filename = (
             f"{OUTPUT_DIR}/{request.pmcid}.json"
             if request.pmcid
@@ -245,4 +248,5 @@ async def run_best_prompts(request: RunBestPromptsRequest):
             "results": combined_output,
         }
     except Exception as e:
+        print(e)
         raise HTTPException(status_code=500, detail=str(e))
