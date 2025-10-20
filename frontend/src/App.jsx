@@ -18,7 +18,7 @@ const MODELS = [
 
 function App() {
   const [text, setText] = useState('')
-  const [globalModel, setGlobalModel] = useState('gpt-4o-mini')
+  const [globalModel, setGlobalModel] = useState('gpt-5-mini')
   const [PMCID, setPMCID] = useState('')
   const [selectedFileName, setSelectedFileName] = useState('')
   const {
