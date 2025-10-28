@@ -1,5 +1,37 @@
 import { useState, useEffect } from 'react'
 
+const DEFAULT_CITATION_PROMPT = `You are analyzing a genetic variant annotation. Your task is to find direct quotes from the article text that support this specific annotation.
+
+Annotation Details:
+- Variant/Haplotype: {variant}
+- Gene: {gene}
+- Drug(s): {drug}
+- Finding: {sentence}
+- Notes: {notes}
+
+Article Text:
+{full_text}
+
+Please identify 1-3 direct quotes from the article that provide evidence for this annotation. Focus on quotes that mention:
+1. The specific variant or haplotype
+2. The phenotype, outcome, or drug response
+3. Statistical significance or effect size
+4. Study population or methodology
+
+Return your response as a JSON object with a "citations" array containing the exact quoted text:
+{{
+  "citations": [
+    "Direct quote from article supporting this finding",
+    "Another relevant quote if available"
+  ]
+}}
+
+Important:
+- Only include quotes that directly support THIS specific annotation
+- Use exact quotes from the article text
+- Do not fabricate or modify quotes
+- Return empty array if no supporting quotes found`
+
 export function usePrompts() {
   const [prompts, setPrompts] = useState([])
   const [tasks, setTasks] = useState(['Default'])
@@ -316,7 +348,8 @@ export function usePrompts() {
         body: JSON.stringify({
           text,
           pmcid: PMCID,
-          best_prompts: bestPromptsData
+          best_prompts: bestPromptsData,
+          citation_prompt: DEFAULT_CITATION_PROMPT
         })
       })
 
@@ -340,7 +373,15 @@ export function usePrompts() {
       }
       setPrompts(updatedPrompts)
 
-      alert(`Success! Output saved to ${data.output_file}`)
+      // Show citation stats in success message if citations were generated
+      if (data.citations_generated > 0) {
+        alert(
+          `Success! Output saved to ${data.output_file}\n\n` +
+          `Generated citations for ${data.citations_generated} annotation(s).`
+        )
+      } else {
+        alert(`Success! Output saved to ${data.output_file}`)
+      }
     } catch (err) {
       setError(err.message)
       alert('Failed to run best prompts: ' + err.message)

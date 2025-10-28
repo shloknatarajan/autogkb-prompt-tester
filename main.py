@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from llm import Model, generate_response
+import asyncio
 import json
 import os
 from datetime import datetime
@@ -61,6 +62,7 @@ class RunBestPromptsRequest(BaseModel):
     text: str
     best_prompts: list[BestPrompt]
     pmcid: str | None = None
+    citation_prompt: str | None = None
 
 
 @app.get("/healthcheck")
@@ -190,36 +192,162 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+async def generate_citations_for_annotation(
+    annotation: dict, full_text: str, citation_prompt_template: str, model: Model
+) -> list[str]:
+    """Generate citations for a single annotation by finding supporting quotes in the text."""
+    try:
+        # Format prompt with annotation details
+        formatted_prompt = citation_prompt_template.format(
+            variant=annotation.get("Variant/Haplotypes", ""),
+            gene=annotation.get("Gene", ""),
+            drug=annotation.get("Drug(s)", annotation.get("Drug(s", "")),  # Handle typo
+            sentence=annotation.get("Sentence", ""),
+            notes=annotation.get("Notes", ""),
+            full_text=full_text,
+        )
+
+        # Call LLM with JSON output format
+        response = await generate_response(
+            prompt=formatted_prompt,
+            text="",
+            model=model,
+            response_format={
+                "type": "object",
+                "properties": {
+                    "citations": {
+                        "type": "array",
+                        "items": {"type": "string"},
+                    }
+                },
+                "required": ["citations"],
+            },
+        )
+
+        # Parse and return citations
+        citations_data = json.loads(response)
+        return citations_data.get("citations", [])
+    except Exception as e:
+        print(f"Error generating citations: {e}")
+        return []
+
+
+async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
+    """Run a single task and return (task_name, prompt_name, output, error)."""
+    try:
+        output = await generate_response(
+            prompt=best_prompt.prompt,
+            text=text,
+            model=best_prompt.model,
+            response_format=best_prompt.response_format,
+        )
+
+        # Parse output as JSON
+        try:
+            parsed_output = json.loads(output)
+        except:
+            parsed_output = {best_prompt.name: output}
+
+        return (best_prompt.task, best_prompt.name, parsed_output, None)
+    except Exception as e:
+        return (best_prompt.task, best_prompt.name, None, str(e))
+
+
+async def generate_single_citation(
+    ann_type: str, index: int, annotation: dict, text: str, citation_prompt: str, model: Model
+) -> tuple:
+    """Generate citation for one annotation and return (ann_type, index, citations, error)."""
+    try:
+        citations = await generate_citations_for_annotation(
+            annotation, text, citation_prompt, model
+        )
+        return (ann_type, index, citations, None)
+    except Exception as e:
+        return (ann_type, index, [], str(e))
+
+
 @app.post("/run-best-prompts")
 async def run_best_prompts(request: RunBestPromptsRequest):
     try:
         task_results = {}
         prompts_used = {}
 
-        # Run each best prompt
-        for best_prompt in request.best_prompts:
-            try:
-                # Generate response
-                output = await generate_response(
-                    prompt=best_prompt.prompt,
-                    text=request.text,
-                    model=best_prompt.model,
-                    response_format=best_prompt.response_format,
-                )
+        # Run all tasks in parallel
+        print(f"Running {len(request.best_prompts)} tasks in parallel...")
+        task_coroutines = [
+            run_single_task(best_prompt, request.text)
+            for best_prompt in request.best_prompts
+        ]
+        task_execution_results = await asyncio.gather(*task_coroutines)
 
-                # Parse output as JSON
-                try:
-                    parsed_output = json.loads(output)
-                except:
-                    parsed_output = {best_prompt.name: output}
+        # Process results
+        for task_name, prompt_name, output, error in task_execution_results:
+            if error:
+                task_results[task_name] = {"error": error}
+                print(f"✗ Task '{task_name}' failed: {error}")
+            else:
+                task_results.update(output)
+                print(f"✓ Completed task: {task_name} using prompt: {prompt_name}")
+            prompts_used[task_name] = prompt_name
 
-                task_results.update(parsed_output)
-                prompts_used[best_prompt.task] = best_prompt.name
+        # Generate citations if citation prompt is provided
+        total_annotations = 0
+        citations_generated = 0
 
-            except Exception as e:
-                # Include error in results
-                task_results[best_prompt.task] = {"error": str(e)}
-                prompts_used[best_prompt.task] = best_prompt.name
+        if request.citation_prompt:
+            print("Generating citations for annotations...")
+
+            # Collect all citation tasks
+            citation_tasks = []
+
+            if "var_pheno_ann" in task_results and isinstance(
+                task_results["var_pheno_ann"], list
+            ):
+                for i, annotation in enumerate(task_results["var_pheno_ann"]):
+                    citation_tasks.append(
+                        generate_single_citation(
+                            "var_pheno_ann",
+                            i,
+                            annotation,
+                            request.text,
+                            request.citation_prompt,
+                            request.best_prompts[0].model,
+                        )
+                    )
+
+            if "var_drug_ann" in task_results and isinstance(
+                task_results["var_drug_ann"], list
+            ):
+                for i, annotation in enumerate(task_results["var_drug_ann"]):
+                    citation_tasks.append(
+                        generate_single_citation(
+                            "var_drug_ann",
+                            i,
+                            annotation,
+                            request.text,
+                            request.citation_prompt,
+                            request.best_prompts[0].model,
+                        )
+                    )
+
+            if citation_tasks:
+                print(f"Generating {len(citation_tasks)} citations in parallel...")
+                citation_results = await asyncio.gather(*citation_tasks)
+
+                # Apply results
+                successful = 0
+                failed = 0
+                for ann_type, index, citations, error in citation_results:
+                    task_results[ann_type][index]["Citations"] = citations
+                    if error:
+                        task_results[ann_type][index]["Citation_Error"] = error
+                        failed += 1
+                    else:
+                        successful += 1
+
+                citations_generated = len(citation_results)
+                total_annotations = len(citation_results)
+                print(f"✓ Citations complete: {successful} successful, {failed} failed")
 
         # Combine outputs
         combined_output = {
@@ -245,6 +373,8 @@ async def run_best_prompts(request: RunBestPromptsRequest):
             "status": "success",
             "message": f"Ran {len(request.best_prompts)} prompts successfully",
             "output_file": filename,
+            "total_annotations": total_annotations,
+            "citations_generated": citations_generated,
             "results": combined_output,
         }
     except Exception as e:
