@@ -112,7 +112,6 @@ async def save_prompt(request: SavePromptRequest):
             "task": request.task,
             "name": request.name,
             "prompt": request.prompt,
-            "text": request.text,
             "model": request.model,
             "response_format": request.response_format,
             "output": parsed_output,
@@ -172,7 +171,6 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
                 "task": prompt_data.get("task", "Default"),
                 "name": prompt_data.get("name", "Untitled Prompt"),
                 "prompt": prompt_data.get("prompt", ""),
-                "text": request.text,
                 "model": prompt_data.get("model", "gpt-4o-mini"),
                 "response_format": response_format,
                 "output": parsed_output,
@@ -254,7 +252,12 @@ async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
 
 
 async def generate_single_citation(
-    ann_type: str, index: int, annotation: dict, text: str, citation_prompt: str, model: Model
+    ann_type: str,
+    index: int,
+    annotation: dict,
+    text: str,
+    citation_prompt: str,
+    model: Model,
 ) -> tuple:
     """Generate citation for one annotation and return (ann_type, index, citations, error)."""
     try:
@@ -330,6 +333,21 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                         )
                     )
 
+            if "var_fa_ann" in task_results and isinstance(
+                task_results["var_fa_ann"], list
+            ):
+                for i, annotation in enumerate(task_results["var_fa_ann"]):
+                    citation_tasks.append(
+                        generate_single_citation(
+                            "var_fa_ann",
+                            i,
+                            annotation,
+                            request.text,
+                            request.citation_prompt,
+                            request.best_prompts[0].model,
+                        )
+                    )
+
             if citation_tasks:
                 print(f"Generating {len(citation_tasks)} citations in parallel...")
                 citation_results = await asyncio.gather(*citation_tasks)
@@ -361,11 +379,22 @@ async def run_best_prompts(request: RunBestPromptsRequest):
         # Create output directory if it doesn't exist
         os.makedirs(OUTPUT_DIR, exist_ok=True)
 
-        filename = (
-            f"{OUTPUT_DIR}/{request.pmcid}.json"
-            if request.pmcid
-            else f"{OUTPUT_DIR}/{BENCHMARK_OUTPUT_FILE}"
-        )
+        # Extract PMCID from task results (set by summary/metadata task)
+        extracted_pmcid = task_results.get("pmcid", None)
+
+        # Determine filename: use extracted PMCID, fall back to request.pmcid, then timestamp
+        if extracted_pmcid:
+            filename = f"{OUTPUT_DIR}/{extracted_pmcid}.json"
+            print(f"Using extracted PMCID: {extracted_pmcid}")
+        elif request.pmcid:
+            filename = f"{OUTPUT_DIR}/{request.pmcid}.json"
+            print(f"Using provided PMCID: {request.pmcid}")
+        else:
+            # Fallback to timestamp-based filename
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            filename = f"{OUTPUT_DIR}/output_{timestamp}.json"
+            print(f"No PMCID found, using timestamp: output_{timestamp}.json")
+
         with open(filename, "w") as f:
             json.dump(combined_output, f, indent=2)
 

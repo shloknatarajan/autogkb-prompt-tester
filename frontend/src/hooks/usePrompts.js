@@ -295,7 +295,7 @@ export function usePrompts() {
     }))
   }
 
-  const runBestPrompts = async (text, PMCID, model = 'gpt-4o-mini') => {
+  const runBestPrompts = async (text, model = 'gpt-4o-mini') => {
     setLoading(true)
     setError('')
 
@@ -347,7 +347,6 @@ export function usePrompts() {
         },
         body: JSON.stringify({
           text,
-          pmcid: PMCID,
           best_prompts: bestPromptsData,
           citation_prompt: DEFAULT_CITATION_PROMPT
         })

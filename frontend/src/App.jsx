@@ -19,7 +19,6 @@ const MODELS = [
 function App() {
   const [text, setText] = useState('')
   const [globalModel, setGlobalModel] = useState('gpt-5-mini')
-  const [PMCID, setPMCID] = useState('')
   const [selectedFileName, setSelectedFileName] = useState('')
   const {
     prompts,
@@ -114,17 +113,6 @@ function App() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="pmcid">PMCID:</label>
-              <input
-                type="text"
-                id="pmcid"
-                value={PMCID}
-                onChange={(e) => setPMCID(e.target.value)}
-                placeholder="Enter PMCID..."
-              />
-            </div>
-
-            <div className="form-group">
               <label htmlFor="file-input">Load from File:</label>
               <div className="file-input-wrapper">
                 <input
@@ -188,7 +176,7 @@ function App() {
           }}
           onSaveAll={() => saveAllPrompts(text)}
           onRunAll={() => runAllPrompts(text, globalModel)}
-          onRunBest={() => runBestPrompts(text, PMCID, globalModel)}
+          onRunBest={() => runBestPrompts(text, globalModel)}
           bestPrompts={bestPrompts}
           loading={loading}
           tasks={tasks}
