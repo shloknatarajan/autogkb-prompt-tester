@@ -69,6 +69,14 @@ class BatchProcessor:
         self.output_dir = Path(args.output_dir)
         self.concurrency = args.concurrency
         self.skip_existing = args.skip_existing
+        self.model = args.model
+
+        # check if model is valid
+        if self.model not in [m for m in Model]:
+            print(f"Model {self.model} not recognized. Falling back to gpt-5-mini.")
+            self.model = Model.OPENAI_GPT_5_MINI
+        else:
+            self.model = Model(self.model)
 
         # Create necessary directories
         self.output_dir.mkdir(exist_ok=True)
@@ -183,7 +191,7 @@ class BatchProcessor:
         self.logger.info(f"Found {len(files)} article files in {self.data_dir}")
         return files
 
-    async def run_single_task(self, prompt: Dict, text: str) -> tuple:
+    async def run_single_task(self, prompt: Dict, text: str, model: Model) -> tuple:
         """
         Run a single task prompt and return results.
 
@@ -196,16 +204,11 @@ class BatchProcessor:
             if isinstance(response_format, str):
                 response_format = json.loads(response_format)
 
-            # Format prompt with article text
-            formatted_prompt = prompt["prompt"].replace("{article_text}", text)
-
-            # Convert model string to Model enum
-            model_str = prompt["model"]
-            try:
-                model = Model[model_str.upper().replace("-", "_").replace(".", "_")]
-            except KeyError:
-                self.logger.warning(f"Unknown model {model_str}, using GPT_4O_MINI")
-                model = Model.OPENAI_GPT_4O_MINI
+            # Format prompt with article text or append article text if no placeholder
+            if "{article_text}" not in prompt["prompt"]:
+                formatted_prompt = f"{prompt['prompt']}\n\n{text}"
+            else:
+                formatted_prompt = prompt["prompt"].replace("{article_text}", text)
 
             # Generate response
             self.logger.debug(
@@ -279,7 +282,8 @@ class BatchProcessor:
                     f"Running {len(prompts)} tasks in parallel for {file_path.name}"
                 )
                 task_coroutines = [
-                    self.run_single_task(prompt, text) for prompt in prompts
+                    self.run_single_task(prompt, text, model=self.model)
+                    for prompt in prompts
                 ]
                 task_results_list = await asyncio.gather(*task_coroutines)
 
@@ -297,7 +301,6 @@ class BatchProcessor:
 
                 # Generate citations in parallel
                 citation_tasks = []
-                citation_model = Model.OPENAI_GPT_4O_MINI
 
                 # Collect citation tasks for all annotation types
                 for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann"]:
@@ -307,7 +310,7 @@ class BatchProcessor:
                         for i, annotation in enumerate(task_results[ann_type]):
                             citation_tasks.append(
                                 self.generate_single_citation(
-                                    ann_type, i, annotation, text, citation_model
+                                    ann_type, i, annotation, text, self.model
                                 )
                             )
 
@@ -487,8 +490,15 @@ def main():
     parser.add_argument(
         "--concurrency",
         type=int,
-        default=3,
+        default=1,
         help="Number of files to process in parallel (default: 3)",
+    )
+
+    parser.add_argument(
+        "--model",
+        type=str,
+        default="gpt-4o-mini",
+        help="LLM model to use for processing (default: gpt-5-mini)",
     )
 
     parser.add_argument(
