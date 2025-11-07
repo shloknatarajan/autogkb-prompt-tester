@@ -118,6 +118,7 @@ export default function OutputViewerModal({
       { key: "var_pheno_ann", label: "Variant-Phenotype Annotations" },
       { key: "var_drug_ann", label: "Variant-Drug Annotations" },
       { key: "var_fa_ann", label: "Variant-Functional Annotations" },
+      { key: "study_parameters", label: "Study Parameters" },
     ];
 
     return (
