@@ -2,6 +2,7 @@ import { useState } from "react";
 import PromptsSidebar from "./components/PromptsSidebar";
 import OutputsSidebar from "./components/OutputsSidebar";
 import PromptDetails from "./components/PromptDetails";
+import OutputViewerModal from "./components/OutputViewerModal";
 import { usePrompts } from "./hooks/usePrompts";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -30,6 +31,7 @@ function App() {
   const [text, setText] = useState("");
   const [globalModel, setGlobalModel] = useState("gpt-4o-mini");
   const [selectedFileName, setSelectedFileName] = useState("");
+  const [outputViewerOpen, setOutputViewerOpen] = useState(false);
   const {
     prompts,
     filteredPrompts,
@@ -210,11 +212,17 @@ function App() {
           onSaveAll={() => saveAllPrompts(text)}
           onRunAll={() => runAllPrompts(text, globalModel)}
           onRunBest={() => runBestPrompts(text, globalModel)}
+          onViewOutputs={() => setOutputViewerOpen(true)}
           bestPrompts={bestPrompts}
           loading={loading}
           tasks={tasks}
         />
       </div>
+
+      <OutputViewerModal
+        open={outputViewerOpen}
+        onOpenChange={setOutputViewerOpen}
+      />
     </div>
   );
 }

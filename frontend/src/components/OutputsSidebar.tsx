@@ -9,6 +9,7 @@ interface OutputsSidebarProps {
   onSaveAll: () => void
   onRunAll: () => void
   onRunBest: () => void
+  onViewOutputs: () => void
   bestPrompts: BestPrompts
   loading: boolean
   tasks: string[]
@@ -21,6 +22,7 @@ export default function OutputsSidebar({
   onSaveAll,
   onRunAll,
   onRunBest,
+  onViewOutputs,
   bestPrompts,
   loading,
   tasks
@@ -74,10 +76,17 @@ export default function OutputsSidebar({
       <Button
         onClick={onRunBest}
         disabled={loading || Object.keys(bestPrompts).length !== tasks.length}
-        className="w-full font-semibold bg-green-600 hover:bg-green-700"
+        className="w-full font-semibold bg-green-600 hover:bg-green-700 mb-2"
         title={Object.keys(bestPrompts).length !== tasks.length ? 'Select best prompt for all tasks first' : ''}
       >
         {loading ? 'Running Best...' : 'Run Best Prompts'}
+      </Button>
+      <Button
+        onClick={onViewOutputs}
+        variant="outline"
+        className="w-full"
+      >
+        View Outputs
       </Button>
     </div>
   )

@@ -282,6 +282,55 @@ async def generate_single_citation(
         return (ann_type, index, [], str(e))
 
 
+@app.get("/outputs")
+async def list_outputs():
+    """List all output files in the outputs directory."""
+    try:
+        if not os.path.exists(OUTPUT_DIR):
+            return {"files": []}
+
+        files = []
+        for filename in os.listdir(OUTPUT_DIR):
+            if filename.endswith(".json"):
+                filepath = os.path.join(OUTPUT_DIR, filename)
+                stat = os.stat(filepath)
+                files.append(
+                    {
+                        "filename": filename,
+                        "created": datetime.fromtimestamp(stat.st_ctime).isoformat(),
+                        "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                        "size": stat.st_size,
+                    }
+                )
+
+        # Sort by modification time, newest first
+        files.sort(key=lambda x: x["modified"], reverse=True)
+        return {"files": files}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/outputs/{filename}")
+async def get_output(filename: str):
+    """Get the contents of a specific output file."""
+    try:
+        # Sanitize filename to prevent directory traversal
+        filename = os.path.basename(filename)
+        filepath = os.path.join(OUTPUT_DIR, filename)
+
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="File not found")
+
+        with open(filepath, "r") as f:
+            content = json.load(f)
+
+        return content
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid JSON file")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/run-best-prompts")
 async def run_best_prompts(request: RunBestPromptsRequest):
     try:
