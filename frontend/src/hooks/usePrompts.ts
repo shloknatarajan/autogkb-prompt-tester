@@ -47,7 +47,7 @@ export function usePrompts() {
 
   // Load prompts from backend on initialization
   useEffect(() => {
-    const loadPrompts = async () => {
+    const loadPromptsAndBest = async () => {
       try {
         const response = await fetch('http://localhost:8000/prompts')
         if (!response.ok) {
@@ -75,13 +75,44 @@ export function usePrompts() {
         }
 
         setPrompts(transformedPrompts)
+
+        // After prompts are loaded, load best prompts configuration
+        try {
+          const bestResponse = await fetch('http://localhost:8000/best-prompts')
+          if (bestResponse.ok) {
+            const bestConfig = await bestResponse.json()
+            console.log('Loaded best prompts config:', bestConfig)
+
+            // Convert prompt names to IDs
+            // bestConfig format: { "var-pheno": "structured", "var-drug": "from docs", ... }
+            const bestPromptsById: BestPrompts = {}
+
+            for (const [task, promptName] of Object.entries(bestConfig)) {
+              const prompt = transformedPrompts.find(
+                p => p.task === task && p.name === promptName
+              )
+              if (prompt) {
+                bestPromptsById[task] = prompt.id
+                console.log(`Matched best prompt for ${task}: "${promptName}" (ID: ${prompt.id})`)
+              } else {
+                console.warn(`Best prompt not found for task "${task}" with name "${promptName}"`)
+              }
+            }
+
+            setBestPrompts(bestPromptsById)
+            console.log('Applied best prompts:', bestPromptsById)
+          }
+        } catch (err) {
+          console.warn('Failed to load best prompts config:', err)
+          // Non-fatal error, continue without pre-selected best prompts
+        }
       } catch (err) {
         console.error('Failed to load prompts:', err)
         setError('Failed to load saved prompts: ' + (err as Error).message)
       }
     }
 
-    loadPrompts()
+    loadPromptsAndBest()
   }, [])
 
   const addNewPrompt = () => {

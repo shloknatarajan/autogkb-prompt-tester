@@ -143,6 +143,19 @@ async def get_prompts():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.get("/best-prompts")
+async def get_best_prompts():
+    """Return the best prompts configuration from best_prompts.json."""
+    try:
+        best_prompts_file = "best_prompts.json"
+        if os.path.exists(best_prompts_file):
+            with open(best_prompts_file, "r") as f:
+                return json.load(f)
+        return {}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/save-all-prompts")
 async def save_all_prompts(request: SaveAllPromptsRequest):
     try:

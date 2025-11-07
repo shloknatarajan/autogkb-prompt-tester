@@ -1,29 +1,35 @@
-import { useState } from 'react'
-import PromptsSidebar from './components/PromptsSidebar'
-import OutputsSidebar from './components/OutputsSidebar'
-import PromptDetails from './components/PromptDetails'
-import { usePrompts } from './hooks/usePrompts'
-import { Button } from '@/components/ui/button'
-import { Label } from '@/components/ui/label'
-import { Textarea } from '@/components/ui/textarea'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Input } from '@/components/ui/input'
+import { useState } from "react";
+import PromptsSidebar from "./components/PromptsSidebar";
+import OutputsSidebar from "./components/OutputsSidebar";
+import PromptDetails from "./components/PromptDetails";
+import { usePrompts } from "./hooks/usePrompts";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Input } from "@/components/ui/input";
 
 const MODELS = [
-  'gpt-4o',
-  'gpt-4o-mini',
-  'gpt-4-turbo',
-  'gpt-4',
-  'gpt-3.5-turbo',
-  'gpt-5',
-  'gpt-5-mini',
-  'gpt-5-pro'
-]
+  "gpt-4o",
+  "gpt-4o-mini",
+  "gpt-4-turbo",
+  "gpt-4",
+  "gpt-3.5-turbo",
+  "gpt-5",
+  "gpt-5-mini",
+  "gpt-5-pro",
+];
 
 function App() {
-  const [text, setText] = useState('')
-  const [globalModel, setGlobalModel] = useState('gpt-5-mini')
-  const [selectedFileName, setSelectedFileName] = useState('')
+  const [text, setText] = useState("");
+  const [globalModel, setGlobalModel] = useState("gpt-4o-mini");
+  const [selectedFileName, setSelectedFileName] = useState("");
   const {
     prompts,
     filteredPrompts,
@@ -46,33 +52,35 @@ function App() {
     deleteTask,
     renameTask,
     setBestPrompt,
-    runBestPrompts
-  } = usePrompts()
+    runBestPrompts,
+  } = usePrompts();
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
+    const file = event.target.files?.[0];
     if (file) {
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onload = (e) => {
-        setText(e.target?.result as string)
-        setSelectedFileName(file.name)
-      }
-      reader.readAsText(file)
+        setText(e.target?.result as string);
+        setSelectedFileName(file.name);
+      };
+      reader.readAsText(file);
     }
-  }
+  };
 
   const clearFile = () => {
-    setSelectedFileName('')
+    setSelectedFileName("");
     // Reset the file input
-    const fileInput = document.getElementById('file-input') as HTMLInputElement
+    const fileInput = document.getElementById("file-input") as HTMLInputElement;
     if (fileInput) {
-      fileInput.value = ''
+      fileInput.value = "";
     }
-  }
+  };
 
   return (
     <div className="mx-auto p-8 max-w-full">
-      <h1 className="text-center text-3xl font-bold mb-8">Prompt Tester</h1>
+      <h1 className="text-center text-3xl font-bold mb-8">
+        AutoGKB Prompt Tester
+      </h1>
 
       <div className="flex gap-8 h-[calc(100vh-150px)]">
         <PromptsSidebar
@@ -84,12 +92,16 @@ function App() {
           onAddPrompt={addNewPrompt}
           onUpdatePrompt={(index, field, value) => {
             // Find actual index in full prompts array
-            const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[index].id)
-            updatePrompt(actualIndex, field, value)
+            const actualIndex = prompts.findIndex(
+              (p) => p.id === filteredPrompts[index].id,
+            );
+            updatePrompt(actualIndex, field, value);
           }}
           onDeletePrompt={(index) => {
-            const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[index].id)
-            deletePrompt(actualIndex)
+            const actualIndex = prompts.findIndex(
+              (p) => p.id === filteredPrompts[index].id,
+            );
+            deletePrompt(actualIndex);
           }}
           onSelectTask={setSelectedTask}
           onAddTask={addTask}
@@ -110,8 +122,10 @@ function App() {
                   <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {MODELS.map(m => (
-                    <SelectItem key={m} value={m}>{m}</SelectItem>
+                  {MODELS.map((m) => (
+                    <SelectItem key={m} value={m}>
+                      {m}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
@@ -157,19 +171,24 @@ function App() {
             </div>
           </div>
 
-          {selectedPromptIndex !== null && filteredPrompts[selectedPromptIndex] && (
-            <PromptDetails
-              prompt={filteredPrompts[selectedPromptIndex]}
-              onUpdate={(field, value) => {
-                const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[selectedPromptIndex].id)
-                updatePrompt(actualIndex, field, value)
-              }}
-              onRun={() => {
-                const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[selectedPromptIndex].id)
-                runPrompt(actualIndex, text, globalModel)
-              }}
-            />
-          )}
+          {selectedPromptIndex !== null &&
+            filteredPrompts[selectedPromptIndex] && (
+              <PromptDetails
+                prompt={filteredPrompts[selectedPromptIndex]}
+                onUpdate={(field, value) => {
+                  const actualIndex = prompts.findIndex(
+                    (p) => p.id === filteredPrompts[selectedPromptIndex].id,
+                  );
+                  updatePrompt(actualIndex, field, value);
+                }}
+                onRun={() => {
+                  const actualIndex = prompts.findIndex(
+                    (p) => p.id === filteredPrompts[selectedPromptIndex].id,
+                  );
+                  runPrompt(actualIndex, text, globalModel);
+                }}
+              />
+            )}
 
           {error && (
             <div className="p-6 rounded bg-destructive/10 border border-destructive text-destructive-foreground">
@@ -183,8 +202,10 @@ function App() {
           prompts={filteredPrompts}
           selectedTask={selectedTask}
           onSavePrompt={(index) => {
-            const actualIndex = prompts.findIndex(p => p.id === filteredPrompts[index].id)
-            savePrompt(actualIndex, text)
+            const actualIndex = prompts.findIndex(
+              (p) => p.id === filteredPrompts[index].id,
+            );
+            savePrompt(actualIndex, text);
           }}
           onSaveAll={() => saveAllPrompts(text)}
           onRunAll={() => runAllPrompts(text, globalModel)}
@@ -195,7 +216,7 @@ function App() {
         />
       </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
