@@ -3,6 +3,7 @@ import PromptsSidebar from "./components/PromptsSidebar";
 import OutputsSidebar from "./components/OutputsSidebar";
 import PromptDetails from "./components/PromptDetails";
 import OutputViewerModal from "./components/OutputViewerModal";
+import BenchmarkModal from "./components/BenchmarkModal";
 import { usePrompts } from "./hooks/usePrompts";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -32,6 +33,7 @@ function App() {
   const [globalModel, setGlobalModel] = useState("gpt-4o-mini");
   const [selectedFileName, setSelectedFileName] = useState("");
   const [outputViewerOpen, setOutputViewerOpen] = useState(false);
+  const [benchmarkModalOpen, setBenchmarkModalOpen] = useState(false);
   const {
     prompts,
     filteredPrompts,
@@ -213,6 +215,7 @@ function App() {
           onRunAll={() => runAllPrompts(text, globalModel)}
           onRunBest={() => runBestPrompts(text, globalModel)}
           onViewOutputs={() => setOutputViewerOpen(true)}
+          onRunBenchmark={() => setBenchmarkModalOpen(true)}
           bestPrompts={bestPrompts}
           loading={loading}
           tasks={tasks}
@@ -222,6 +225,12 @@ function App() {
       <OutputViewerModal
         open={outputViewerOpen}
         onOpenChange={setOutputViewerOpen}
+      />
+
+      <BenchmarkModal
+        open={benchmarkModalOpen}
+        onOpenChange={setBenchmarkModalOpen}
+        prompts={prompts}
       />
     </div>
   );

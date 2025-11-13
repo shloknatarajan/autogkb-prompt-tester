@@ -10,6 +10,7 @@ interface OutputsSidebarProps {
   onRunAll: () => void
   onRunBest: () => void
   onViewOutputs: () => void
+  onRunBenchmark: () => void
   bestPrompts: BestPrompts
   loading: boolean
   tasks: string[]
@@ -23,6 +24,7 @@ export default function OutputsSidebar({
   onRunAll,
   onRunBest,
   onViewOutputs,
+  onRunBenchmark,
   bestPrompts,
   loading,
   tasks
@@ -84,9 +86,16 @@ export default function OutputsSidebar({
       <Button
         onClick={onViewOutputs}
         variant="outline"
-        className="w-full"
+        className="w-full mb-2"
       >
         View Outputs
+      </Button>
+      <Button
+        onClick={onRunBenchmark}
+        variant="outline"
+        className="w-full"
+      >
+        Run Benchmark
       </Button>
     </div>
   )
