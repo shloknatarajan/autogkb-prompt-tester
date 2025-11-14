@@ -3,6 +3,7 @@ import PromptsSidebar from "./components/PromptsSidebar";
 import OutputsSidebar from "./components/OutputsSidebar";
 import PromptDetails from "./components/PromptDetails";
 import OutputViewerModal from "./components/OutputViewerModal";
+import BenchmarksView from "./components/BenchmarksView";
 import { usePrompts } from "./hooks/usePrompts";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
@@ -15,6 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const MODELS = [
   "gpt-4o",
@@ -80,12 +82,19 @@ function App() {
 
   return (
     <div className="mx-auto p-8 max-w-full">
-      <h1 className="text-center text-3xl font-bold mb-8">
+      <h1 className="text-center text-3xl font-bold mb-6">
         AutoGKB Prompt Tester
       </h1>
 
-      <div className="flex gap-8 h-[calc(100vh-150px)]">
-        <PromptsSidebar
+      <Tabs defaultValue="prompts" className="w-full">
+        <TabsList className="grid w-full max-w-md mx-auto mb-6" style={{ gridTemplateColumns: '1fr 1fr' }}>
+          <TabsTrigger value="prompts">Prompt Testing</TabsTrigger>
+          <TabsTrigger value="benchmarks">Benchmarks</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="prompts" className="mt-0">
+          <div className="flex gap-8 h-[calc(100vh-200px)]">
+            <PromptsSidebar
           prompts={filteredPrompts}
           tasks={tasks}
           selectedTask={selectedTask}
@@ -217,7 +226,15 @@ function App() {
           loading={loading}
           tasks={tasks}
         />
-      </div>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="benchmarks" className="mt-0">
+          <div className="h-[calc(100vh-200px)]">
+            <BenchmarksView />
+          </div>
+        </TabsContent>
+      </Tabs>
 
       <OutputViewerModal
         open={outputViewerOpen}
