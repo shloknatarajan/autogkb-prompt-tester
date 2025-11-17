@@ -1,13 +1,25 @@
 from typing import List
 import json
-from src.utils import get_pmcid_annotation
-from src.benchmark.pheno_benchmark import evaluate_phenotype_annotations
-from src.benchmark.fa_benchmark import evaluate_functional_analysis
-from src.benchmark.drug_benchmark import evaluate_drug_annotations
+
+# from src.utils import get_pmcid_annotation
+from benchmarks.pheno_benchmark import evaluate_phenotype_annotations
+from benchmarks.fa_benchmark import evaluate_functional_analysis
+from benchmarks.drug_benchmark import evaluate_drug_annotations
+
+
+def get_pmcid_annotation(
+    pmcid: str, annotations_by_pmcid: Path = Path("data/annotations_by_pmcid.json")
+) -> dict:
+    with open(annotations_by_pmcid, "r") as f:
+        annotations_by_pmcid = json.load(f)
+    return annotations_by_pmcid.get(pmcid, {})
 
 
 class AnnotationBenchmark:
-    def __init__(self):
+    def __init__(
+        self, annotations_by_pmcid_file: str = "data/annotations_by_pmcid.json"
+    ):
+        self.annotations_by_pmcid_file = annotations_by_pmcid_file
         pass
 
     def get_var_drug_ann_score(self, var_drug_ann: List[dict]):

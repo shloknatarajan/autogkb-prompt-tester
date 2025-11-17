@@ -68,6 +68,9 @@ def align_fa_annotations_by_variant(
         raw_norm = normalize_variant(raw).lower()
         rsids = set(m.group(0).lower() for m in rs_re.finditer(raw))
         pred_index.append((rsids, raw_norm, rec))
+        # print(
+        #     f"Indexed prediction variant: raw='{raw}' norm='{raw_norm}' rsids={rsids}"
+        # )
 
     aligned_gt: List[Dict[str, Any]] = []
     aligned_pred: List[Dict[str, Any]] = []
@@ -77,6 +80,10 @@ def align_fa_annotations_by_variant(
         gt_raw = (gt_rec.get("Variant/Haplotypes") or "").strip()
         gt_norm = normalize_variant(gt_raw).lower()
         gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
+
+        # print(
+        #     f"Processing ground truth variant: raw='{gt_raw}' norm='{gt_norm}' rsids={gt_rs}"
+        # )
 
         match = None
         if gt_rs:

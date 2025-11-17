@@ -29,11 +29,13 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
         raise ValueError(
             "Expected a list with exactly two dicts: [ground_truth, prediction]."
         )
-    gt, pred = samples[0], samples[1]
-    if not isinstance(gt, dict) or not isinstance(pred, dict):
-        raise ValueError(
-            "Both items must be dicts: [ground_truth_dict, prediction_dict]."
-        )
+    gt_list_raw = samples[0]
+    pred_list_raw = samples[1]
+    # gt, pred = samples[0], samples[1]
+    # if not isinstance(gt, dict) or not isinstance(pred, dict):
+    #     raise ValueError(
+    #         "Both items must be dicts: [ground_truth_dict, prediction_dict]."
+    #     )
 
     # Variant expansion and alignment (mirroring FA)
     def parse_variant_list(variants_text: Optional[str]) -> List[str]:
@@ -110,8 +112,8 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
         return aligned_gt, aligned_pred, display_keys
 
     # Prepare lists and align
-    gt_list_raw: List[Dict[str, Any]] = [gt]
-    pred_list_raw: List[Dict[str, Any]] = [pred]
+    # gt_list_raw: List[Dict[str, Any]] = [gt]
+    # pred_list_raw: List[Dict[str, Any]] = [pred]
     gt_list, pred_list, _ = align_by_variant(gt_list_raw, pred_list_raw)
     if not gt_list:
         # nothing aligned; return empty result structure
@@ -120,7 +122,11 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
             "field_scores": {},
             "overall_score": 0.0,
             "detailed_results": [],
+            "status": "No aligned drug annotations found between ground truth and prediction.",
         }
+    # print(f"Aligned {len(gt_list)} drug annotations for benchmarking.")
+    # print("Aligned variants gt:", [g.get("Variant/Haplotypes") for g in gt_list])
+    # print("Aligned variants pred:", [p.get("Variant/Haplotypes") for p in pred_list])
 
     model = _get_model()
 
