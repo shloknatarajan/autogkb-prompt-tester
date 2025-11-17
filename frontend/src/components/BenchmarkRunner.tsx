@@ -1,17 +1,17 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { Input } from '@/components/ui/input';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { AlertCircle, PlayCircle, CheckCircle, FileText } from 'lucide-react';
-import { Separator } from '@/components/ui/separator';
+} from "@/components/ui/select";
+import { AlertCircle, PlayCircle, CheckCircle, FileText } from "lucide-react";
+import { Separator } from "@/components/ui/separator";
 
 interface OutputFile {
   filename: string;
@@ -35,14 +35,14 @@ export default function BenchmarkRunner({
   loading,
   error,
 }: BenchmarkRunnerProps) {
-  const [text, setText] = useState<string>('');
-  const [pmcid, setPmcid] = useState<string>('');
-  const [selectedOutputFile, setSelectedOutputFile] = useState<string>('');
+  const [text, setText] = useState<string>("");
+  const [pmcid, setPmcid] = useState<string>("");
+  const [selectedOutputFile, setSelectedOutputFile] = useState<string>("");
   const [lastResult, setLastResult] = useState<any>(null);
 
   const handleRunBenchmark = async () => {
     if (!text.trim() || !pmcid.trim()) {
-      alert('Please enter both text and PMCID');
+      alert("Please enter both text and PMCID");
       return;
     }
 
@@ -56,7 +56,7 @@ export default function BenchmarkRunner({
 
   const handleBenchmarkFromFile = async () => {
     if (!selectedOutputFile) {
-      alert('Please select an output file');
+      alert("Please select an output file");
       return;
     }
 
@@ -107,7 +107,7 @@ export default function BenchmarkRunner({
                   <SelectItem key={file.filename} value={file.filename}>
                     <div className="flex flex-col">
                       <span className="font-medium">
-                        {file.filename.replace('.json', '')}
+                        {file.filename.replace(".json", "")}
                       </span>
                       <span className="text-xs text-muted-foreground">
                         {new Date(file.modified).toLocaleString()}
@@ -124,7 +124,7 @@ export default function BenchmarkRunner({
             disabled={loading || !selectedOutputFile}
             className="w-full bg-blue-600 hover:bg-blue-700"
           >
-            {loading ? 'Benchmarking...' : 'Benchmark from File'}
+            {loading ? "Benchmarking..." : "Benchmark from File"}
           </Button>
         </div>
 
@@ -170,7 +170,7 @@ export default function BenchmarkRunner({
             disabled={loading || !text.trim() || !pmcid.trim()}
             className="w-full bg-purple-600 hover:bg-purple-700"
           >
-            {loading ? 'Running Benchmark...' : 'Run New Benchmark'}
+            {loading ? "Running Benchmark..." : "Run New Benchmark"}
           </Button>
         </div>
 
@@ -185,7 +185,7 @@ export default function BenchmarkRunner({
           <div className="flex items-start gap-2 p-3 bg-green-50 border border-green-200 rounded text-green-800 text-sm">
             <CheckCircle className="w-4 h-4 mt-0.5 flex-shrink-0" />
             <div>
-              Benchmark completed! Average score:{' '}
+              Benchmark completed! Average score:{" "}
               <strong>
                 {(lastResult.metadata.average_score * 100).toFixed(1)}%
               </strong>

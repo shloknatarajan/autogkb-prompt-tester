@@ -1,10 +1,13 @@
 import { useState } from 'react';
 import { useBenchmarks } from '../hooks/useBenchmarks';
+import { usePipeline } from '../hooks/usePipeline';
 import BenchmarkRunner from './BenchmarkRunner';
 import BenchmarkResultsTable from './BenchmarkResultsTable';
 import BenchmarkHistoryList from './BenchmarkHistoryList';
 import BenchmarkDetailModal from './BenchmarkDetailModal';
+import PipelineRunner from './PipelineRunner';
 import { BenchmarkTaskResult } from '../types';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 export default function BenchmarksView() {
   const {
@@ -17,6 +20,15 @@ export default function BenchmarksView() {
     runBenchmark,
     benchmarkFromOutput,
   } = useBenchmarks();
+
+  const {
+    jobs: pipelineJobs,
+    currentJob: currentPipelineJob,
+    loading: pipelineLoading,
+    error: pipelineError,
+    startPipeline,
+    selectJob: selectPipelineJob,
+  } = usePipeline();
 
   const [detailModalOpen, setDetailModalOpen] = useState(false);
   const [detailTask, setDetailTask] = useState<string>('');
@@ -53,28 +65,48 @@ export default function BenchmarksView() {
 
       {/* Main content area */}
       <div className="flex-1 overflow-y-auto space-y-4">
-        {/* Benchmark Runner */}
-        <BenchmarkRunner
-          onRunBenchmark={runBenchmark}
-          onBenchmarkFromOutput={benchmarkFromOutput}
-          outputFiles={outputFiles}
-          loading={loading}
-          error={error}
-        />
+        <Tabs defaultValue="single" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="single">Single Benchmark</TabsTrigger>
+            <TabsTrigger value="pipeline">Full Pipeline</TabsTrigger>
+          </TabsList>
 
-        {/* Results Table */}
-        {selectedResult && (
-          <BenchmarkResultsTable
-            result={selectedResult}
-            onViewDetails={handleViewDetails}
-          />
-        )}
+          <TabsContent value="single" className="space-y-4">
+            {/* Benchmark Runner */}
+            <BenchmarkRunner
+              onRunBenchmark={runBenchmark}
+              onBenchmarkFromOutput={benchmarkFromOutput}
+              outputFiles={outputFiles}
+              loading={loading}
+              error={error}
+            />
 
-        {!selectedResult && benchmarkResults.length === 0 && (
-          <div className="text-center text-muted-foreground p-12 italic">
-            Run your first benchmark to see results here
-          </div>
-        )}
+            {/* Results Table */}
+            {selectedResult && (
+              <BenchmarkResultsTable
+                result={selectedResult}
+                onViewDetails={handleViewDetails}
+              />
+            )}
+
+            {!selectedResult && benchmarkResults.length === 0 && (
+              <div className="text-center text-muted-foreground p-12 italic">
+                Run your first benchmark to see results here
+              </div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="pipeline">
+            <PipelineRunner
+              currentJob={currentPipelineJob}
+              jobs={pipelineJobs}
+              loading={pipelineLoading}
+              error={pipelineError}
+              onStartPipeline={startPipeline}
+              onSelectJob={selectPipelineJob}
+            />
+          </TabsContent>
+        </Tabs>
       </div>
 
       {/* Detail Modal */}

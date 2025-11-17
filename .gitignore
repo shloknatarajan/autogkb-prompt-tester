@@ -7,6 +7,7 @@
 __pycache__/
 
 benchmark_output.json
+benchmark_results/
 outputs/
 logs/
 data/
