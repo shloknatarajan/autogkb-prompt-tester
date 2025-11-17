@@ -841,6 +841,275 @@ async def run_benchmarks(request: RunBenchmarksRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+class BenchmarkFromOutputRequest(BaseModel):
+    """Request to benchmark an existing output file."""
+    filename: str
+
+
+@app.post("/benchmark-from-output")
+async def benchmark_from_output(request: BenchmarkFromOutputRequest):
+    """
+    Benchmark an existing output file against ground truth.
+
+    This endpoint:
+    1. Loads the output file from /outputs/
+    2. Extracts PMCID and predictions from the file
+    3. Compares predictions to ground truth
+    4. Saves results to /benchmark_results/
+    """
+    try:
+        # Load the output file
+        filename = os.path.basename(request.filename)  # Sanitize
+        filepath = os.path.join(OUTPUT_DIR, filename)
+
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail=f"Output file not found: {filename}")
+
+        with open(filepath, "r") as f:
+            output_data = json.load(f)
+
+        # Extract PMCID from the output file
+        pmcid = output_data.get("pmcid")
+        if not pmcid:
+            raise HTTPException(status_code=400, detail="Output file does not contain PMCID")
+
+        print(f"\n=== Benchmarking from Output File ===")
+        print(f"File: {filename}")
+        print(f"PMCID: {pmcid}")
+        print(f"Timestamp: {output_data.get('timestamp', 'unknown')}")
+
+        # Extract predictions
+        predictions = {
+            "var-pheno": {"var_pheno_ann": output_data.get("var_pheno_ann", [])},
+            "var-drug": {"var_drug_ann": output_data.get("var_drug_ann", [])},
+            "var-fa": {"var_fa_ann": output_data.get("var_fa_ann", [])}
+        }
+
+        # Debug logging
+        print(f"\n=== Predictions from File ===")
+        print(f"  var-pheno: {len(predictions['var-pheno']['var_pheno_ann'])} annotations")
+        print(f"  var-drug: {len(predictions['var-drug']['var_drug_ann'])} annotations")
+        print(f"  var-fa: {len(predictions['var-fa']['var_fa_ann'])} annotations")
+        print(f"=== End Predictions ===\n")
+
+        # Load ground truth
+        if not os.path.exists(GROUND_TRUTH_FILE):
+            raise HTTPException(
+                status_code=404,
+                detail=f"Ground truth file not found at {GROUND_TRUTH_FILE}"
+            )
+
+        with open(GROUND_TRUTH_FILE, "r") as f:
+            ground_truth_data = json.load(f)
+
+        # Get ground truth for this PMCID
+        if pmcid not in ground_truth_data:
+            raise HTTPException(
+                status_code=404,
+                detail=f"No ground truth found for PMCID: {pmcid}"
+            )
+
+        ground_truth = ground_truth_data[pmcid]
+
+        # Run benchmarks for each task (same logic as /run-benchmarks)
+        benchmark_results = {}
+
+        # Phenotype annotations
+        if "var-pheno" in predictions:
+            pred_pheno = predictions["var-pheno"]
+            pred_list = pred_pheno.get("var_pheno_ann", [])
+
+            if "var_pheno_ann" not in ground_truth:
+                benchmark_results["var-pheno"] = {
+                    "error": "No ground truth available for this PMCID",
+                    "overall_score": 0.0,
+                    "total_samples": 0
+                }
+                print(f"✗ Phenotype benchmark skipped: no ground truth")
+            else:
+                gt_pheno = ground_truth["var_pheno_ann"]
+
+                if not pred_list:
+                    benchmark_results["var-pheno"] = {
+                        "error": "Empty predictions list",
+                        "overall_score": 0.0,
+                        "total_samples": 0
+                    }
+                    print(f"✗ Phenotype benchmark skipped: empty predictions")
+                elif not gt_pheno:
+                    benchmark_results["var-pheno"] = {
+                        "error": "Empty ground truth list",
+                        "overall_score": 0.0,
+                        "total_samples": 0
+                    }
+                    print(f"✗ Phenotype benchmark skipped: empty ground truth")
+                else:
+                    try:
+                        score = evaluate_phenotype_annotations([gt_pheno, pred_list])
+                        benchmark_results["var-pheno"] = {
+                            "overall_score": score / 100.0,
+                            "raw_score": score,
+                            "total_samples": len(pred_list)
+                        }
+                        print(f"✓ Phenotype benchmark score: {score}/100")
+                    except Exception as e:
+                        print(f"✗ Phenotype benchmark failed: {e}")
+                        benchmark_results["var-pheno"] = {
+                            "error": f"Evaluation failed: {str(e)}",
+                            "overall_score": 0.0,
+                            "total_samples": 0
+                        }
+
+        # Drug annotations
+        if "var-drug" in predictions:
+            pred_drug = predictions["var-drug"]
+            pred_list = pred_drug.get("var_drug_ann", [])
+
+            if "var_drug_ann" not in ground_truth:
+                benchmark_results["var-drug"] = {
+                    "error": "No ground truth available for this PMCID",
+                    "overall_score": 0.0,
+                    "total_samples": 0
+                }
+                print(f"✗ Drug benchmark skipped: no ground truth")
+            else:
+                gt_drug = ground_truth["var_drug_ann"]
+
+                if not pred_list:
+                    benchmark_results["var-drug"] = {
+                        "error": "Empty predictions list",
+                        "overall_score": 0.0,
+                        "total_samples": 0
+                    }
+                    print(f"✗ Drug benchmark skipped: empty predictions")
+                elif not gt_drug:
+                    benchmark_results["var-drug"] = {
+                        "error": "Empty ground truth list",
+                        "overall_score": 0.0,
+                        "total_samples": 0
+                    }
+                    print(f"✗ Drug benchmark skipped: empty ground truth")
+                else:
+                    try:
+                        gt_dict = {"var_drug_ann": gt_drug}
+                        pred_dict = {"var_drug_ann": pred_list}
+                        result = evaluate_drug_annotations([gt_dict, pred_dict])
+                        benchmark_results["var-drug"] = {
+                            "overall_score": result.get("overall_score", 0.0),
+                            "field_scores": result.get("field_scores", {}),
+                            "total_samples": result.get("total_samples", len(pred_list))
+                        }
+                        print(f"✓ Drug benchmark score: {result.get('overall_score', 0)}")
+                    except Exception as e:
+                        print(f"✗ Drug benchmark failed: {e}")
+                        benchmark_results["var-drug"] = {
+                            "error": f"Evaluation failed: {str(e)}",
+                            "overall_score": 0.0,
+                            "total_samples": 0
+                        }
+
+        # Functional analysis annotations
+        if "var-fa" in predictions:
+            pred_fa = predictions["var-fa"]
+            pred_list = pred_fa.get("var_fa_ann", [])
+
+            if "var_fa_ann" not in ground_truth:
+                benchmark_results["var-fa"] = {
+                    "error": "No ground truth available for this PMCID",
+                    "overall_score": 0.0,
+                    "total_samples": 0
+                }
+                print(f"✗ FA benchmark skipped: no ground truth")
+            else:
+                gt_fa = ground_truth["var_fa_ann"]
+
+                if not pred_list:
+                    benchmark_results["var-fa"] = {
+                        "error": "Empty predictions list",
+                        "overall_score": 0.0,
+                        "total_samples": 0
+                    }
+                    print(f"✗ FA benchmark skipped: empty predictions")
+                elif not gt_fa:
+                    benchmark_results["var-fa"] = {
+                        "error": "Empty ground truth list",
+                        "overall_score": 0.0,
+                        "total_samples": 0
+                    }
+                    print(f"✗ FA benchmark skipped: empty ground truth")
+                else:
+                    try:
+                        gt_dict = {"var_fa_ann": gt_fa}
+                        pred_dict = {"var_fa_ann": pred_list}
+                        result = evaluate_functional_analysis([gt_dict, pred_dict])
+                        benchmark_results["var-fa"] = {
+                            "overall_score": result.get("overall_score", 0.0),
+                            "field_scores": result.get("field_scores", {}),
+                            "total_samples": result.get("total_samples", len(pred_list))
+                        }
+                        print(f"✓ FA benchmark score: {result.get('overall_score', 0)}")
+                    except Exception as e:
+                        print(f"✗ FA benchmark failed: {e}")
+                        benchmark_results["var-fa"] = {
+                            "error": f"Evaluation failed: {str(e)}",
+                            "overall_score": 0.0,
+                            "total_samples": 0
+                        }
+
+        # Calculate average score (excluding tasks with errors)
+        valid_scores = [
+            r["overall_score"] for r in benchmark_results.values()
+            if "overall_score" in r and "error" not in r
+        ]
+        average_score = sum(valid_scores) / len(valid_scores) if valid_scores else 0.0
+
+        print(f"\n=== Benchmark Summary ===")
+        print(f"Total tasks: {len(benchmark_results)}")
+        print(f"Successful: {len(valid_scores)}")
+        print(f"Failed/Skipped: {len(benchmark_results) - len(valid_scores)}")
+        print(f"Average score: {average_score:.2%}")
+        print(f"=========================\n")
+
+        # Create benchmark result document
+        timestamp = datetime.now().isoformat()
+        benchmark_result = {
+            "timestamp": timestamp,
+            "pmcid": pmcid,
+            "source_file": filename,
+            "source_timestamp": output_data.get("timestamp"),
+            "prompts_used": output_data.get("prompts_used", {}),
+            "results": benchmark_results,
+            "metadata": {
+                "ground_truth_file": GROUND_TRUTH_FILE,
+                "total_tasks": len(benchmark_results),
+                "average_score": average_score,
+                "tasks_with_errors": sum(1 for r in benchmark_results.values() if "error" in r)
+            }
+        }
+
+        # Save to benchmark_results directory
+        os.makedirs(BENCHMARK_RESULTS_DIR, exist_ok=True)
+        result_filename = f"{BENCHMARK_RESULTS_DIR}/benchmark_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+
+        with open(result_filename, "w") as f:
+            json.dump(benchmark_result, f, indent=2)
+
+        print(f"✓ Benchmark results saved to {result_filename}")
+
+        return {
+            "status": "success",
+            "message": f"Benchmarked output file {filename}",
+            "filename": result_filename,
+            "results": benchmark_result
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Benchmark from output error: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.get("/benchmark-results")
 async def list_benchmark_results():
     """List all benchmark result files."""
