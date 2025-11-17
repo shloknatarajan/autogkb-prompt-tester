@@ -17,6 +17,8 @@ import {
   Loader2,
   Clock,
   Cpu,
+  StopCircle,
+  XCircle,
 } from 'lucide-react';
 import { PipelineJob, PipelineJobSummary } from '../hooks/usePipeline';
 
@@ -25,8 +27,9 @@ interface PipelineRunnerProps {
   jobs: PipelineJobSummary[];
   loading: boolean;
   error: string;
-  onStartPipeline: (dataDir: string, model: string) => Promise<string>;
+  onStartPipeline: (dataDir: string, model: string, concurrency: number) => Promise<string>;
   onSelectJob: (jobId: string) => Promise<void>;
+  onCancelJob?: (jobId: string) => Promise<void>;
 }
 
 export default function PipelineRunner({
@@ -36,9 +39,12 @@ export default function PipelineRunner({
   error,
   onStartPipeline,
   onSelectJob,
+  onCancelJob,
 }: PipelineRunnerProps) {
   const [dataDir, setDataDir] = useState<string>('data/markdown');
   const [model, setModel] = useState<string>('gpt-4o-mini');
+  const [concurrency, setConcurrency] = useState<number>(3);
+  const [cancelling, setCancelling] = useState<boolean>(false);
 
   const handleStartPipeline = async () => {
     if (!dataDir.trim()) {
@@ -47,7 +53,7 @@ export default function PipelineRunner({
     }
 
     try {
-      await onStartPipeline(dataDir, model);
+      await onStartPipeline(dataDir, model, concurrency);
     } catch (err) {
       // Error handled by hook
     }
@@ -66,6 +72,19 @@ export default function PipelineRunner({
     return labels[stage] || stage;
   };
 
+  const handleCancelPipeline = async () => {
+    if (!currentJob || !onCancelJob) return;
+
+    try {
+      setCancelling(true);
+      await onCancelJob(currentJob.id);
+    } catch (err) {
+      console.error('Failed to cancel pipeline:', err);
+    } finally {
+      setCancelling(false);
+    }
+  };
+
   const getStatusIcon = (status: string) => {
     switch (status) {
       case 'pending':
@@ -76,6 +95,8 @@ export default function PipelineRunner({
         return <CheckCircle className="w-4 h-4 text-green-500" />;
       case 'failed':
         return <AlertCircle className="w-4 h-4 text-red-500" />;
+      case 'cancelled':
+        return <XCircle className="w-4 h-4 text-orange-500" />;
       default:
         return <Cpu className="w-4 h-4" />;
     }
@@ -95,7 +116,7 @@ export default function PipelineRunner({
         </CardHeader>
         <CardContent className="space-y-4">
           {/* Configuration */}
-          <div className="grid grid-cols-2 gap-4">
+          <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-sm font-medium mb-2">
                 Data Directory
@@ -124,30 +145,64 @@ export default function PipelineRunner({
                 </SelectContent>
               </Select>
             </div>
+            <div>
+              <label className="block text-sm font-medium mb-2">Concurrency</label>
+              <Input
+                type="number"
+                min={1}
+                max={10}
+                value={concurrency}
+                onChange={(e) => setConcurrency(parseInt(e.target.value) || 1)}
+                disabled={loading || currentJob?.status === 'running'}
+              />
+            </div>
           </div>
 
-          <Button
-            onClick={handleStartPipeline}
-            disabled={loading || currentJob?.status === 'running'}
-            className="w-full bg-indigo-600 hover:bg-indigo-700"
-          >
-            {loading ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Starting Pipeline...
-              </>
-            ) : currentJob?.status === 'running' ? (
-              <>
-                <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                Pipeline Running...
-              </>
-            ) : (
-              <>
-                <PlayCircle className="w-4 h-4 mr-2" />
-                Start Full Pipeline
-              </>
+          <div className="flex gap-2">
+            <Button
+              onClick={handleStartPipeline}
+              disabled={loading || currentJob?.status === 'running'}
+              className="flex-1 bg-indigo-600 hover:bg-indigo-700"
+            >
+              {loading ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Starting Pipeline...
+                </>
+              ) : currentJob?.status === 'running' ? (
+                <>
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                  Pipeline Running...
+                </>
+              ) : (
+                <>
+                  <PlayCircle className="w-4 h-4 mr-2" />
+                  Start Full Pipeline
+                </>
+              )}
+            </Button>
+
+            {currentJob?.status === 'running' && onCancelJob && (
+              <Button
+                onClick={handleCancelPipeline}
+                disabled={cancelling}
+                variant="destructive"
+                className="bg-red-600 hover:bg-red-700"
+              >
+                {cancelling ? (
+                  <>
+                    <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                    Cancelling...
+                  </>
+                ) : (
+                  <>
+                    <StopCircle className="w-4 h-4 mr-2" />
+                    Cancel
+                  </>
+                )}
+              </Button>
             )}
-          </Button>
+          </div>
 
           {error && (
             <div className="flex items-start gap-2 p-3 bg-red-50 border border-red-200 rounded text-red-800 text-sm">
@@ -255,6 +310,18 @@ export default function PipelineRunner({
                   Pipeline Failed
                 </h4>
                 <div className="text-sm text-red-700">{currentJob.error}</div>
+              </div>
+            )}
+
+            {/* Cancelled */}
+            {currentJob.status === 'cancelled' && (
+              <div className="bg-orange-50 border border-orange-200 rounded p-4">
+                <h4 className="font-semibold text-orange-800 mb-2">
+                  Pipeline Cancelled
+                </h4>
+                <div className="text-sm text-orange-700">
+                  Pipeline was cancelled by user. Processed {currentJob.pmcids_processed} of {currentJob.pmcids_total} PMCIDs.
+                </div>
               </div>
             )}
           </CardContent>

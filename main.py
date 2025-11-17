@@ -12,7 +12,10 @@ from pathlib import Path
 from typing import Literal, Optional
 from benchmarks.pheno_benchmark import evaluate_phenotype_annotations
 from benchmarks.drug_benchmark import evaluate_drug_annotations
-from benchmarks.fa_benchmark import evaluate_functional_analysis
+from benchmarks.fa_benchmark import (
+    evaluate_functional_analysis,
+    evaluate_fa_from_articles,
+)
 
 app = FastAPI()
 
@@ -37,7 +40,7 @@ MARKDOWN_DIR = "data/markdown"
 class PipelineJob:
     def __init__(self, job_id: str, config: dict):
         self.id = job_id
-        self.status: Literal["pending", "running", "completed", "failed"] = "pending"
+        self.status: Literal["pending", "running", "completed", "failed", "cancelled"] = "pending"
         self.current_stage: str = "initializing"
         self.progress: float = 0.0
         self.pmcids_processed: int = 0
@@ -49,11 +52,17 @@ class PipelineJob:
         self.config = config
         self.created_at = datetime.now().isoformat()
         self.updated_at = datetime.now().isoformat()
+        self.cancelled: bool = False
 
     def add_message(self, message: str):
         timestamp = datetime.now().strftime("%H:%M:%S")
         self.messages.append(f"[{timestamp}] {message}")
         self.updated_at = datetime.now().isoformat()
+
+    def cancel(self):
+        self.cancelled = True
+        self.status = "cancelled"
+        self.add_message("Pipeline cancelled by user")
 
     def to_dict(self) -> dict:
         return {
@@ -79,6 +88,7 @@ pipeline_jobs: dict[str, PipelineJob] = {}
 class PipelineStartRequest(BaseModel):
     data_dir: str = MARKDOWN_DIR
     model: str = "gpt-4o-mini"
+    concurrency: int = 3
 
 
 class PromptRequest(BaseModel):
@@ -964,20 +974,11 @@ async def benchmark_from_output(request: BenchmarkFromOutputRequest):
         print(f"PMCID: {pmcid}")
         print(f"Timestamp: {output_data.get('timestamp', 'unknown')}")
 
-        # Extract predictions
-        predictions = {
-            "var-pheno": {"var_pheno_ann": output_data.get("var_pheno_ann", [])},
-            "var-drug": {"var_drug_ann": output_data.get("var_drug_ann", [])},
-            "var-fa": {"var_fa_ann": output_data.get("var_fa_ann", [])},
-        }
-
         # Debug logging
         print(f"\n=== Predictions from File ===")
-        print(
-            f"  var-pheno: {len(predictions['var-pheno']['var_pheno_ann'])} annotations"
-        )
-        print(f"  var-drug: {len(predictions['var-drug']['var_drug_ann'])} annotations")
-        print(f"  var-fa: {len(predictions['var-fa']['var_fa_ann'])} annotations")
+        print(f"  var-pheno: {len(output_data.get('var_pheno_ann', []))} annotations")
+        print(f"  var-drug: {len(output_data.get('var_drug_ann', []))} annotations")
+        print(f"  var-fa: {len(output_data.get('var_fa_ann', []))} annotations")
         print(f"=== End Predictions ===\n")
 
         # Load ground truth
@@ -998,156 +999,95 @@ async def benchmark_from_output(request: BenchmarkFromOutputRequest):
 
         ground_truth = ground_truth_data[pmcid]
 
-        # Run benchmarks for each task (same logic as /run-benchmarks)
+        # Run benchmarks for each task (matching run_benchmark.py logic)
         benchmark_results = {}
 
         # Phenotype annotations
-        if "var-pheno" in predictions:
-            pred_pheno = predictions["var-pheno"]
-            pred_list = pred_pheno.get("var_pheno_ann", [])
+        if "var_pheno_ann" in ground_truth and len(ground_truth["var_pheno_ann"]) > 0:
+            gt_pheno = ground_truth["var_pheno_ann"]
+            pred_pheno = output_data.get("var_pheno_ann", [])
 
-            if "var_pheno_ann" not in ground_truth:
+            if not pred_pheno:
                 benchmark_results["var-pheno"] = {
-                    "error": "No ground truth available for this PMCID",
+                    "error": "Empty predictions list",
                     "overall_score": 0.0,
                     "total_samples": 0,
                 }
-                print(f"✗ Phenotype benchmark skipped: no ground truth")
+                print(f"✗ Phenotype benchmark skipped: empty predictions")
             else:
-                gt_pheno = ground_truth["var_pheno_ann"]
-
-                if not pred_list:
+                try:
+                    score = evaluate_phenotype_annotations([gt_pheno, pred_pheno])
                     benchmark_results["var-pheno"] = {
-                        "error": "Empty predictions list",
+                        "overall_score": score / 100.0,
+                        "raw_score": score,
+                        "total_samples": len(pred_pheno),
+                    }
+                    print(f"✓ Phenotype benchmark score: {score}/100")
+                except Exception as e:
+                    print(f"✗ Phenotype benchmark failed: {e}")
+                    benchmark_results["var-pheno"] = {
+                        "error": f"Evaluation failed: {str(e)}",
                         "overall_score": 0.0,
                         "total_samples": 0,
                     }
-                    print(f"✗ Phenotype benchmark skipped: empty predictions")
-                elif not gt_pheno:
-                    benchmark_results["var-pheno"] = {
-                        "error": "Empty ground truth list",
-                        "overall_score": 0.0,
-                        "total_samples": 0,
-                    }
-                    print(f"✗ Phenotype benchmark skipped: empty ground truth")
-                else:
-                    try:
-                        score = evaluate_phenotype_annotations([gt_pheno, pred_list])
-                        benchmark_results["var-pheno"] = {
-                            "overall_score": score / 100.0,
-                            "raw_score": score,
-                            "total_samples": len(pred_list),
-                        }
-                        print(f"✓ Phenotype benchmark score: {score}/100")
-                    except Exception as e:
-                        print(f"✗ Phenotype benchmark failed: {e}")
-                        benchmark_results["var-pheno"] = {
-                            "error": f"Evaluation failed: {str(e)}",
-                            "overall_score": 0.0,
-                            "total_samples": 0,
-                        }
 
         # Drug annotations
-        if "var-drug" in predictions:
-            pred_drug = predictions["var-drug"]
-            pred_list = pred_drug.get("var_drug_ann", [])
+        if "var_drug_ann" in ground_truth and len(ground_truth["var_drug_ann"]) > 0:
+            gt_drug = ground_truth["var_drug_ann"]
+            pred_drug = output_data.get("var_drug_ann", [])
 
-            if "var_drug_ann" not in ground_truth:
+            if not pred_drug:
                 benchmark_results["var-drug"] = {
-                    "error": "No ground truth available for this PMCID",
+                    "error": "Empty predictions list",
                     "overall_score": 0.0,
                     "total_samples": 0,
                 }
-                print(f"✗ Drug benchmark skipped: no ground truth")
+                print(f"✗ Drug benchmark skipped: empty predictions")
             else:
-                gt_drug = ground_truth["var_drug_ann"]
-
-                if not pred_list:
+                try:
+                    result = evaluate_drug_annotations([gt_drug, pred_drug])
                     benchmark_results["var-drug"] = {
-                        "error": "Empty predictions list",
+                        "overall_score": result.get("overall_score", 0.0),
+                        "field_scores": result.get("field_scores", {}),
+                        "total_samples": result.get("total_samples", len(pred_drug)),
+                    }
+                    print(f"✓ Drug benchmark score: {result.get('overall_score', 0)}")
+                except Exception as e:
+                    print(f"✗ Drug benchmark failed: {e}")
+                    benchmark_results["var-drug"] = {
+                        "error": f"Evaluation failed: {str(e)}",
                         "overall_score": 0.0,
                         "total_samples": 0,
                     }
-                    print(f"✗ Drug benchmark skipped: empty predictions")
-                elif not gt_drug:
-                    benchmark_results["var-drug"] = {
-                        "error": "Empty ground truth list",
-                        "overall_score": 0.0,
-                        "total_samples": 0,
-                    }
-                    print(f"✗ Drug benchmark skipped: empty ground truth")
-                else:
-                    try:
-                        gt_dict = {"var_drug_ann": gt_drug}
-                        pred_dict = {"var_drug_ann": pred_list}
-                        result = evaluate_drug_annotations([gt_dict, pred_dict])
-                        benchmark_results["var-drug"] = {
-                            "overall_score": result.get("overall_score", 0.0),
-                            "field_scores": result.get("field_scores", {}),
-                            "total_samples": result.get(
-                                "total_samples", len(pred_list)
-                            ),
-                        }
-                        print(
-                            f"✓ Drug benchmark score: {result.get('overall_score', 0)}"
-                        )
-                    except Exception as e:
-                        print(f"✗ Drug benchmark failed: {e}")
-                        benchmark_results["var-drug"] = {
-                            "error": f"Evaluation failed: {str(e)}",
-                            "overall_score": 0.0,
-                            "total_samples": 0,
-                        }
 
         # Functional analysis annotations
-        if "var-fa" in predictions:
-            pred_fa = predictions["var-fa"]
-            pred_list = pred_fa.get("var_fa_ann", [])
+        if "var_fa_ann" in ground_truth and len(ground_truth["var_fa_ann"]) > 0:
+            gt_fa = ground_truth["var_fa_ann"]
+            pred_fa = output_data.get("var_fa_ann", [])
 
-            if "var_fa_ann" not in ground_truth:
+            if not pred_fa:
                 benchmark_results["var-fa"] = {
-                    "error": "No ground truth available for this PMCID",
+                    "error": "Empty predictions list",
                     "overall_score": 0.0,
                     "total_samples": 0,
                 }
-                print(f"✗ FA benchmark skipped: no ground truth")
+                print(f"✗ FA benchmark skipped: empty predictions")
             else:
-                gt_fa = ground_truth["var_fa_ann"]
-
-                if not pred_list:
+                try:
+                    result = evaluate_fa_from_articles(ground_truth, output_data)
                     benchmark_results["var-fa"] = {
-                        "error": "Empty predictions list",
+                        "overall_score": result.get("overall_score", 0.0),
+                        "field_scores": result.get("field_scores", {}),
+                        "total_samples": result.get("total_samples", len(pred_fa)),
+                    }
+                    print(f"✓ FA benchmark score: {result.get('overall_score', 0)}")
+                except Exception as e:
+                    print(f"✗ FA benchmark failed: {e}")
+                    benchmark_results["var-fa"] = {
+                        "error": f"Evaluation failed: {str(e)}",
                         "overall_score": 0.0,
                         "total_samples": 0,
                     }
-                    print(f"✗ FA benchmark skipped: empty predictions")
-                elif not gt_fa:
-                    benchmark_results["var-fa"] = {
-                        "error": "Empty ground truth list",
-                        "overall_score": 0.0,
-                        "total_samples": 0,
-                    }
-                    print(f"✗ FA benchmark skipped: empty ground truth")
-                else:
-                    try:
-                        gt_dict = {"var_fa_ann": gt_fa}
-                        pred_dict = {"var_fa_ann": pred_list}
-                        result = evaluate_functional_analysis([gt_dict, pred_dict])
-                        benchmark_results["var-fa"] = {
-                            "overall_score": result.get("overall_score", 0.0),
-                            "field_scores": result.get("field_scores", {}),
-                            "total_samples": result.get(
-                                "total_samples", len(pred_list)
-                            ),
-                        }
-                        print(f"✓ FA benchmark score: {result.get('overall_score', 0)}")
-                    except Exception as e:
-                        print(f"✗ FA benchmark failed: {e}")
-                        benchmark_results["var-fa"] = {
-                            "error": f"Evaluation failed: {str(e)}",
-                            "overall_score": 0.0,
-                            "total_samples": 0,
-                        }
 
         # Calculate average score (excluding tasks with errors)
         valid_scores = [
@@ -1215,6 +1155,9 @@ async def list_benchmark_results():
 
         files = []
         for filename in os.listdir(BENCHMARK_RESULTS_DIR):
+            # Skip pipeline benchmark files - they have a different format
+            if filename.startswith("pipeline_benchmark_"):
+                continue
             if filename.endswith(".json"):
                 filepath = os.path.join(BENCHMARK_RESULTS_DIR, filename)
 
@@ -1243,14 +1186,18 @@ async def list_benchmark_results():
                     files.append(
                         {
                             "filename": filename,
-                            "modified": datetime.fromtimestamp(
+                            "timestamp": datetime.fromtimestamp(
                                 stat.st_mtime
                             ).isoformat(),
+                            "pmcid": None,
+                            "average_score": 0,
+                            "total_tasks": 0,
+                            "prompts_used": {},
                         }
                     )
 
         # Sort by timestamp, newest first
-        files.sort(key=lambda x: x.get("timestamp", ""), reverse=True)
+        files.sort(key=lambda x: x.get("timestamp") or "", reverse=True)
         return {"files": files}
 
     except Exception as e:
@@ -1281,6 +1228,78 @@ async def get_benchmark_result(filename: str):
 
 
 # Pipeline endpoints
+async def process_single_pmcid(
+    pmcid: str,
+    data_dir: str,
+    output_dir: str,
+    prompt_details_map: dict,
+    semaphore: asyncio.Semaphore,
+) -> tuple[str, dict]:
+    """
+    Process a single PMCID with all prompts.
+    Returns (pmcid, results_dict)
+    """
+    async with semaphore:
+        # Load markdown file
+        md_path = os.path.join(data_dir, f"{pmcid}.md")
+        with open(md_path, "r") as f:
+            text = f.read()
+
+        # Run all prompts in parallel for this PMCID
+        async def run_prompt(task: str, prompt_data: dict) -> tuple[str, dict]:
+            try:
+                model_str = prompt_data.get("model", "gpt-4o-mini")
+                try:
+                    model = Model(model_str)
+                except ValueError:
+                    model = Model.OPENAI_GPT_4O_MINI
+
+                output = await generate_response(
+                    prompt=prompt_data["prompt"],
+                    text=text,
+                    model=model,
+                    response_format=prompt_data.get("response_format"),
+                )
+
+                try:
+                    parsed_output = json.loads(output)
+                    return (task, parsed_output)
+                except json.JSONDecodeError:
+                    return (task, {"error": "JSON parse failed"})
+
+            except Exception as e:
+                return (task, {"error": str(e)})
+
+        # Run all tasks in parallel
+        prompt_tasks = [
+            run_prompt(task, prompt_data)
+            for task, prompt_data in prompt_details_map.items()
+        ]
+        task_results = await asyncio.gather(*prompt_tasks)
+
+        # Combine results
+        pmcid_results = {"pmcid": pmcid}
+        prompts_used = {}
+
+        for task, result in task_results:
+            if isinstance(result, dict) and "error" in result:
+                pmcid_results[task] = result
+            else:
+                pmcid_results.update(result)
+            prompts_used[task] = prompt_details_map[task].get("name", "unknown")
+
+        # Add metadata
+        pmcid_results["timestamp"] = datetime.now().isoformat()
+        pmcid_results["prompts_used"] = prompts_used
+
+        # Save individual output
+        output_file = os.path.join(output_dir, f"{pmcid}.json")
+        with open(output_file, "w") as f:
+            json.dump(pmcid_results, f, indent=2)
+
+        return (pmcid, pmcid_results)
+
+
 async def run_pipeline_task(job: PipelineJob):
     """Background task to run the full benchmark pipeline."""
     try:
@@ -1334,62 +1353,40 @@ async def run_pipeline_task(job: PipelineJob):
         os.makedirs(output_dir, exist_ok=True)
         job.add_message(f"Output directory: {output_dir}")
 
-        # Stage 1: Process each PMCID
+        # Stage 1: Process PMCIDs in parallel with concurrency control
         job.current_stage = "processing_pmcids"
+        concurrency = job.config.get("concurrency", 3)
+        semaphore = asyncio.Semaphore(concurrency)
+        job.add_message(f"Processing with concurrency: {concurrency}")
+
+        # Create tasks for all PMCIDs
+        pmcid_tasks = [
+            process_single_pmcid(pmcid, data_dir, output_dir, prompt_details_map, semaphore)
+            for pmcid in pmcids
+        ]
+
+        # Process with progress tracking
         all_outputs = {}
+        completed = 0
 
-        for i, pmcid in enumerate(pmcids):
+        for coro in asyncio.as_completed(pmcid_tasks):
+            # Check for cancellation
+            if job.cancelled:
+                job.add_message("Pipeline cancelled during PMCID processing")
+                return
+
+            pmcid, results = await coro
+            all_outputs[pmcid] = results
+            completed += 1
+            job.pmcids_processed = completed
             job.current_pmcid = pmcid
-            job.pmcids_processed = i
-            job.progress = (i / len(pmcids)) * 0.8  # 80% of progress for processing
-            job.add_message(f"Processing {pmcid} ({i+1}/{len(pmcids)})")
+            job.progress = (completed / len(pmcids)) * 0.8
+            job.add_message(f"Completed {pmcid} ({completed}/{len(pmcids)})")
 
-            # Load markdown file
-            md_path = os.path.join(data_dir, f"{pmcid}.md")
-            with open(md_path, "r") as f:
-                text = f.read()
-
-            # Run prompts for this PMCID
-            pmcid_results = {"pmcid": pmcid}
-
-            for task, prompt_data in prompt_details_map.items():
-                try:
-                    model_str = prompt_data.get("model", "gpt-4o-mini")
-                    try:
-                        model = Model(model_str)
-                    except ValueError:
-                        model = Model.OPENAI_GPT_4O_MINI
-
-                    output = await generate_response(
-                        prompt=prompt_data["prompt"],
-                        text=text,
-                        model=model,
-                        response_format=prompt_data.get("response_format"),
-                    )
-
-                    try:
-                        parsed_output = json.loads(output)
-                        pmcid_results.update(parsed_output)
-                    except json.JSONDecodeError:
-                        pmcid_results[task] = {"error": "JSON parse failed"}
-
-                except Exception as e:
-                    pmcid_results[task] = {"error": str(e)}
-
-            # Add metadata
-            pmcid_results["timestamp"] = datetime.now().isoformat()
-            pmcid_results["prompts_used"] = {
-                task: prompt_data.get("name", "unknown")
-                for task, prompt_data in prompt_details_map.items()
-            }
-
-            # Save individual output
-            output_file = os.path.join(output_dir, f"{pmcid}.json")
-            with open(output_file, "w") as f:
-                json.dump(pmcid_results, f, indent=2)
-
-            all_outputs[pmcid] = pmcid_results
-            job.pmcids_processed = i + 1
+        # Check for cancellation before combining
+        if job.cancelled:
+            job.add_message("Pipeline cancelled")
+            return
 
         job.add_message(f"Completed processing {len(pmcids)} PMCIDs")
 
@@ -1399,14 +1396,9 @@ async def run_pipeline_task(job: PipelineJob):
         job.add_message("Combining outputs...")
 
         combined_file = os.path.join(output_dir, f"combined_{run_timestamp}.json")
-        combined_data = {
-            "timestamp": datetime.now().isoformat(),
-            "total_pmcids": len(all_outputs),
-            "pmcids": all_outputs,
-        }
-
+        # Match the format from combine_outputs.py - flat dict keyed by PMCID
         with open(combined_file, "w") as f:
-            json.dump(combined_data, f, indent=2)
+            json.dump(all_outputs, f, indent=2)
 
         job.add_message(f"Saved combined output to {combined_file}")
 
@@ -1422,59 +1414,63 @@ async def run_pipeline_task(job: PipelineJob):
         with open(GROUND_TRUTH_FILE, "r") as f:
             ground_truth_data = json.load(f)
 
-        # Benchmark each PMCID
+        # Benchmark each PMCID (matching run_benchmark.py logic)
         all_benchmark_results = {}
         for pmcid, output_data in all_outputs.items():
             if pmcid not in ground_truth_data:
                 job.add_message(f"Warning: No ground truth for {pmcid}, skipping")
+                all_benchmark_results[pmcid] = None
                 continue
 
             ground_truth = ground_truth_data[pmcid]
             pmcid_benchmark = {}
 
-            # Phenotype benchmark
-            pred_pheno = output_data.get("var_pheno_ann", [])
-            gt_pheno = ground_truth.get("var_pheno_ann", [])
-            if pred_pheno and gt_pheno:
+            # Phenotype benchmark - matches run_benchmark.py line 52-57
+            if "var_pheno_ann" in ground_truth and len(ground_truth["var_pheno_ann"]) > 0:
+                gt_pheno = ground_truth["var_pheno_ann"]
+                pred_pheno = output_data.get("var_pheno_ann", [])
                 try:
                     score = evaluate_phenotype_annotations([gt_pheno, pred_pheno])
-                    pmcid_benchmark["var-pheno"] = score / 100.0
-                except:
-                    pmcid_benchmark["var-pheno"] = 0.0
+                    pmcid_benchmark["var_pheno_ann"] = score
+                except Exception as e:
+                    job.add_message(f"Phenotype benchmark failed for {pmcid}: {e}")
 
-            # Drug benchmark
-            pred_drug = output_data.get("var_drug_ann", [])
-            gt_drug = ground_truth.get("var_drug_ann", [])
-            if pred_drug and gt_drug:
+            # Drug benchmark - matches run_benchmark.py line 59-64
+            if "var_drug_ann" in ground_truth and len(ground_truth["var_drug_ann"]) > 0:
+                gt_drug = ground_truth["var_drug_ann"]
+                pred_drug = output_data.get("var_drug_ann", [])
                 try:
-                    result = evaluate_drug_annotations(
-                        [{"var_drug_ann": gt_drug}, {"var_drug_ann": pred_drug}]
-                    )
-                    pmcid_benchmark["var-drug"] = result.get("overall_score", 0.0)
-                except:
-                    pmcid_benchmark["var-drug"] = 0.0
+                    score = evaluate_drug_annotations([gt_drug, pred_drug])
+                    pmcid_benchmark["var_drug_ann"] = score
+                except Exception as e:
+                    job.add_message(f"Drug benchmark failed for {pmcid}: {e}")
 
-            # FA benchmark
-            pred_fa = output_data.get("var_fa_ann", [])
-            gt_fa = ground_truth.get("var_fa_ann", [])
-            if pred_fa and gt_fa:
+            # FA benchmark - matches run_benchmark.py line 66-73
+            if "var_fa_ann" in ground_truth and len(ground_truth["var_fa_ann"]) > 0:
+                gt_fa = ground_truth["var_fa_ann"]
+                pred_fa = output_data.get("var_fa_ann", [])
                 try:
-                    result = evaluate_functional_analysis(
-                        [{"var_fa_ann": gt_fa}, {"var_fa_ann": pred_fa}]
-                    )
-                    pmcid_benchmark["var-fa"] = result.get("overall_score", 0.0)
-                except:
-                    pmcid_benchmark["var-fa"] = 0.0
+                    score = evaluate_fa_from_articles(ground_truth, output_data)
+                    pmcid_benchmark["var_fa_ann"] = score
+                except Exception as e:
+                    job.add_message(f"FA benchmark failed for {pmcid}: {e}")
 
             all_benchmark_results[pmcid] = pmcid_benchmark
 
-        # Calculate overall scores
+        # Calculate overall scores from the detailed results
         task_scores = {}
         for pmcid, scores in all_benchmark_results.items():
-            for task, score in scores.items():
+            if scores is None:
+                continue
+            for task, result in scores.items():
                 if task not in task_scores:
                     task_scores[task] = []
-                task_scores[task].append(score)
+                # Extract overall_score from result dict (for drug/fa) or use raw score (for pheno)
+                if isinstance(result, dict):
+                    task_scores[task].append(result.get("overall_score", 0.0))
+                else:
+                    # Phenotype returns raw score (0-100), convert to 0-1
+                    task_scores[task].append(result / 100.0)
 
         average_scores = {
             task: sum(scores) / len(scores) for task, scores in task_scores.items()
@@ -1545,7 +1541,11 @@ async def start_pipeline(request: PipelineStartRequest):
     try:
         # Create new job
         job_id = str(uuid.uuid4())
-        config = {"data_dir": request.data_dir, "model": request.model}
+        config = {
+            "data_dir": request.data_dir,
+            "model": request.model,
+            "concurrency": request.concurrency,
+        }
 
         job = PipelineJob(job_id, config)
         pipeline_jobs[job_id] = job
@@ -1570,6 +1570,24 @@ async def get_pipeline_status(job_id: str):
 
     job = pipeline_jobs[job_id]
     return job.to_dict()
+
+
+@app.post("/pipeline/cancel/{job_id}")
+async def cancel_pipeline_job(job_id: str):
+    """Cancel a running pipeline job."""
+    if job_id not in pipeline_jobs:
+        raise HTTPException(status_code=404, detail=f"Job not found: {job_id}")
+
+    job = pipeline_jobs[job_id]
+
+    if job.status not in ["pending", "running"]:
+        raise HTTPException(
+            status_code=400,
+            detail=f"Cannot cancel job with status: {job.status}"
+        )
+
+    job.cancel()
+    return {"message": f"Job {job_id} cancelled", "status": job.status}
 
 
 @app.get("/pipeline/events/{job_id}")
@@ -1636,3 +1654,68 @@ async def list_pipeline_jobs():
     # Sort by creation time, newest first
     jobs.sort(key=lambda x: x["created_at"], reverse=True)
     return {"jobs": jobs}
+
+
+@app.get("/pipeline/results")
+async def list_pipeline_results():
+    """List all pipeline benchmark result files."""
+    try:
+        if not os.path.exists(BENCHMARK_RESULTS_DIR):
+            return {"files": []}
+
+        files = []
+        for filename in os.listdir(BENCHMARK_RESULTS_DIR):
+            if filename.startswith("pipeline_benchmark_") and filename.endswith(".json"):
+                filepath = os.path.join(BENCHMARK_RESULTS_DIR, filename)
+
+                try:
+                    with open(filepath, "r") as f:
+                        data = json.load(f)
+
+                    files.append(
+                        {
+                            "filename": filename,
+                            "timestamp": data.get("timestamp", ""),
+                            "total_pmcids": data.get("summary", {}).get("total_pmcids", 0),
+                            "overall_score": data.get("summary", {}).get("overall", 0),
+                            "config": data.get("config", {}),
+                        }
+                    )
+                except Exception:
+                    stat = os.stat(filepath)
+                    files.append(
+                        {
+                            "filename": filename,
+                            "timestamp": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                            "total_pmcids": 0,
+                            "overall_score": 0,
+                            "config": {},
+                        }
+                    )
+
+        files.sort(key=lambda x: x.get("timestamp") or "", reverse=True)
+        return {"files": files}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/pipeline/results/{filename}")
+async def get_pipeline_result(filename: str):
+    """Get the contents of a specific pipeline benchmark result file."""
+    try:
+        filename = os.path.basename(filename)
+        filepath = os.path.join(BENCHMARK_RESULTS_DIR, filename)
+
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="File not found")
+
+        with open(filepath, "r") as f:
+            content = json.load(f)
+
+        return content
+
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid JSON file")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))

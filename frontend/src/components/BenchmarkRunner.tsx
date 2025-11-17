@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -11,7 +9,6 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { AlertCircle, PlayCircle, CheckCircle, FileText } from "lucide-react";
-import { Separator } from "@/components/ui/separator";
 
 interface OutputFile {
   filename: string;
@@ -21,7 +18,6 @@ interface OutputFile {
 }
 
 interface BenchmarkRunnerProps {
-  onRunBenchmark: (text: string, pmcid: string) => Promise<any>;
   onBenchmarkFromOutput: (filename: string) => Promise<any>;
   outputFiles: OutputFile[];
   loading: boolean;
@@ -29,30 +25,13 @@ interface BenchmarkRunnerProps {
 }
 
 export default function BenchmarkRunner({
-  onRunBenchmark,
   onBenchmarkFromOutput,
   outputFiles,
   loading,
   error,
 }: BenchmarkRunnerProps) {
-  const [text, setText] = useState<string>("");
-  const [pmcid, setPmcid] = useState<string>("");
   const [selectedOutputFile, setSelectedOutputFile] = useState<string>("");
   const [lastResult, setLastResult] = useState<any>(null);
-
-  const handleRunBenchmark = async () => {
-    if (!text.trim() || !pmcid.trim()) {
-      alert("Please enter both text and PMCID");
-      return;
-    }
-
-    try {
-      const result = await onRunBenchmark(text, pmcid);
-      setLastResult(result);
-    } catch (err) {
-      setLastResult(null);
-    }
-  };
 
   const handleBenchmarkFromFile = async () => {
     if (!selectedOutputFile) {
@@ -79,7 +58,7 @@ export default function BenchmarkRunner({
           Benchmark prompts against ground truth data
         </p>
       </CardHeader>
-      <CardContent className="space-y-6">
+      <CardContent className="space-y-4">
         {/* Benchmark from existing output file */}
         <div className="space-y-4">
           <div className="flex items-center gap-2">
@@ -125,52 +104,6 @@ export default function BenchmarkRunner({
             className="w-full bg-blue-600 hover:bg-blue-700"
           >
             {loading ? "Benchmarking..." : "Benchmark from File"}
-          </Button>
-        </div>
-
-        <div className="flex items-center gap-4">
-          <Separator className="flex-1" />
-          <span className="text-sm text-muted-foreground">OR</span>
-          <Separator className="flex-1" />
-        </div>
-
-        {/* Run new benchmark with text input */}
-        <div className="space-y-4">
-          <div className="flex items-center gap-2">
-            <PlayCircle className="w-4 h-4" />
-            <h4 className="font-medium">Run New Benchmark</h4>
-          </div>
-          <p className="text-sm text-muted-foreground">
-            Run best prompts on new text and benchmark the results
-          </p>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">PMCID</label>
-            <Input
-              value={pmcid}
-              onChange={(e) => setPmcid(e.target.value)}
-              placeholder="e.g., PMC10786722"
-              disabled={loading}
-            />
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-2">Input Text</label>
-            <Textarea
-              value={text}
-              onChange={(e) => setText(e.target.value)}
-              placeholder="Enter the article text to benchmark..."
-              className="min-h-[150px] font-mono text-sm"
-              disabled={loading}
-            />
-          </div>
-
-          <Button
-            onClick={handleRunBenchmark}
-            disabled={loading || !text.trim() || !pmcid.trim()}
-            className="w-full bg-purple-600 hover:bg-purple-700"
-          >
-            {loading ? "Running Benchmark..." : "Run New Benchmark"}
           </Button>
         </div>
 

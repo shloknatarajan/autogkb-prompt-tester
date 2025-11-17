@@ -4,7 +4,7 @@ const API_BASE = 'http://localhost:8000';
 
 export interface PipelineJob {
   id: string;
-  status: 'pending' | 'running' | 'completed' | 'failed';
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
   current_stage: string;
   progress: number;
   pmcids_processed: number;
@@ -26,7 +26,7 @@ export interface PipelineJob {
 
 export interface PipelineJobSummary {
   id: string;
-  status: 'pending' | 'running' | 'completed' | 'failed';
+  status: 'pending' | 'running' | 'completed' | 'failed' | 'cancelled';
   current_stage: string;
   progress: number;
   pmcids_processed: number;
@@ -35,16 +35,54 @@ export interface PipelineJobSummary {
   updated_at: string;
 }
 
+export interface PipelineResultSummary {
+  filename: string;
+  timestamp: string;
+  total_pmcids: number;
+  overall_score: number;
+  config: {
+    data_dir: string;
+    model: string;
+    concurrency: number;
+  };
+}
+
+export interface PipelineBenchmarkResult {
+  timestamp: string;
+  config: {
+    data_dir: string;
+    model: string;
+    concurrency: number;
+  };
+  output_directory: string;
+  combined_file: string;
+  summary: {
+    total_pmcids: number;
+    benchmarked_pmcids: number;
+    scores: { [task: string]: number };
+    overall: number;
+    timestamp: string;
+  };
+  pmcid_results: {
+    [pmcid: string]: {
+      [task: string]: number | object | null;
+    } | null;
+  };
+}
+
 export function usePipeline() {
   const [jobs, setJobs] = useState<PipelineJobSummary[]>([]);
   const [currentJob, setCurrentJob] = useState<PipelineJob | null>(null);
+  const [pipelineResults, setPipelineResults] = useState<PipelineResultSummary[]>([]);
+  const [selectedPipelineResult, setSelectedPipelineResult] = useState<PipelineBenchmarkResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
 
-  // Load all jobs on mount
+  // Load all jobs and results on mount
   useEffect(() => {
     loadJobs();
+    loadPipelineResults();
   }, []);
 
   // Cleanup event source on unmount
@@ -72,6 +110,7 @@ export function usePipeline() {
   const startPipeline = async (
     dataDir: string = 'data/markdown',
     model: string = 'gpt-4o-mini',
+    concurrency: number = 3,
   ) => {
     try {
       setLoading(true);
@@ -85,6 +124,7 @@ export function usePipeline() {
         body: JSON.stringify({
           data_dir: dataDir,
           model: model,
+          concurrency: concurrency,
         }),
       });
 
@@ -143,7 +183,7 @@ export function usePipeline() {
         );
 
         // Close connection if job is done
-        if (jobData.status === 'completed' || jobData.status === 'failed') {
+        if (jobData.status === 'completed' || jobData.status === 'failed' || jobData.status === 'cancelled') {
           es.close();
           setEventSource(null);
           // Reload jobs to get final state
@@ -195,9 +235,77 @@ export function usePipeline() {
     setCurrentJob(null);
   };
 
+  const loadPipelineResults = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/pipeline/results`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setPipelineResults(data.files);
+    } catch (err) {
+      console.error('Failed to load pipeline results:', err);
+    }
+  };
+
+  const loadPipelineResultDetail = async (filename: string) => {
+    try {
+      const response = await fetch(`${API_BASE}/pipeline/results/${filename}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setSelectedPipelineResult(data);
+      return data;
+    } catch (err) {
+      console.error('Failed to load pipeline result detail:', err);
+      throw err;
+    }
+  };
+
+  const cancelJob = async (jobId: string) => {
+    try {
+      const response = await fetch(`${API_BASE}/pipeline/cancel/${jobId}`, {
+        method: 'POST',
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || response.statusText);
+      }
+
+      const data = await response.json();
+
+      // Update current job status
+      if (currentJob && currentJob.id === jobId) {
+        setCurrentJob((prev) => (prev ? { ...prev, status: 'cancelled' } : null));
+      }
+
+      // Update jobs list
+      setJobs((prev) =>
+        prev.map((job) =>
+          job.id === jobId ? { ...job, status: 'cancelled' } : job,
+        ),
+      );
+
+      // Close event source
+      if (eventSource) {
+        eventSource.close();
+        setEventSource(null);
+      }
+
+      return data;
+    } catch (err) {
+      console.error('Failed to cancel job:', err);
+      throw err;
+    }
+  };
+
   return {
     jobs,
     currentJob,
+    pipelineResults,
+    selectedPipelineResult,
     loading,
     error,
     startPipeline,
@@ -206,5 +314,8 @@ export function usePipeline() {
     selectJob,
     clearCurrentJob,
     subscribeToJob,
+    loadPipelineResults,
+    loadPipelineResultDetail,
+    cancelJob,
   };
 }

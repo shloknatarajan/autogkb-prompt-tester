@@ -6,8 +6,12 @@ import BenchmarkResultsTable from './BenchmarkResultsTable';
 import BenchmarkHistoryList from './BenchmarkHistoryList';
 import BenchmarkDetailModal from './BenchmarkDetailModal';
 import PipelineRunner from './PipelineRunner';
+import PipelineBenchmarkResults from './PipelineBenchmarkResults';
 import { BenchmarkTaskResult } from '../types';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { FileText, RefreshCw } from 'lucide-react';
+import { Button } from '@/components/ui/button';
 
 export default function BenchmarksView() {
   const {
@@ -17,17 +21,21 @@ export default function BenchmarksView() {
     loading,
     error,
     loadBenchmarkDetail,
-    runBenchmark,
     benchmarkFromOutput,
   } = useBenchmarks();
 
   const {
     jobs: pipelineJobs,
     currentJob: currentPipelineJob,
+    pipelineResults,
+    selectedPipelineResult,
     loading: pipelineLoading,
     error: pipelineError,
     startPipeline,
     selectJob: selectPipelineJob,
+    loadPipelineResults,
+    loadPipelineResultDetail,
+    cancelJob: cancelPipelineJob,
   } = usePipeline();
 
   const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -36,6 +44,9 @@ export default function BenchmarksView() {
     null,
   );
   const [selectedFilename, setSelectedFilename] = useState<string | undefined>(
+    undefined,
+  );
+  const [selectedPipelineFilename, setSelectedPipelineFilename] = useState<string | undefined>(
     undefined,
   );
 
@@ -50,6 +61,11 @@ export default function BenchmarksView() {
   const handleSelectResult = async (filename: string) => {
     setSelectedFilename(filename);
     await loadBenchmarkDetail(filename);
+  };
+
+  const handleSelectPipelineResult = async (filename: string) => {
+    setSelectedPipelineFilename(filename);
+    await loadPipelineResultDetail(filename);
   };
 
   return (
@@ -74,7 +90,6 @@ export default function BenchmarksView() {
           <TabsContent value="single" className="space-y-4">
             {/* Benchmark Runner */}
             <BenchmarkRunner
-              onRunBenchmark={runBenchmark}
               onBenchmarkFromOutput={benchmarkFromOutput}
               outputFiles={outputFiles}
               loading={loading}
@@ -96,7 +111,7 @@ export default function BenchmarksView() {
             )}
           </TabsContent>
 
-          <TabsContent value="pipeline">
+          <TabsContent value="pipeline" className="space-y-4">
             <PipelineRunner
               currentJob={currentPipelineJob}
               jobs={pipelineJobs}
@@ -104,7 +119,68 @@ export default function BenchmarksView() {
               error={pipelineError}
               onStartPipeline={startPipeline}
               onSelectJob={selectPipelineJob}
+              onCancelJob={cancelPipelineJob}
             />
+
+            {/* Pipeline Results History */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center justify-between">
+                  <h3 className="text-lg font-semibold flex items-center gap-2">
+                    <FileText className="w-5 h-5" />
+                    Pipeline Benchmark Results
+                  </h3>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={loadPipelineResults}
+                  >
+                    <RefreshCw className="w-4 h-4 mr-2" />
+                    Refresh
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent>
+                {pipelineResults.length === 0 ? (
+                  <div className="text-center text-muted-foreground py-8">
+                    No pipeline benchmark results yet. Run a pipeline to generate results.
+                  </div>
+                ) : (
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {pipelineResults.map((result) => (
+                      <div
+                        key={result.filename}
+                        className={`p-3 border rounded cursor-pointer hover:bg-muted/50 transition-colors ${
+                          selectedPipelineFilename === result.filename
+                            ? 'bg-muted border-primary'
+                            : ''
+                        }`}
+                        onClick={() => handleSelectPipelineResult(result.filename)}
+                      >
+                        <div className="flex justify-between items-center">
+                          <div>
+                            <div className="font-medium text-sm">
+                              {new Date(result.timestamp).toLocaleString()}
+                            </div>
+                            <div className="text-xs text-muted-foreground">
+                              {result.total_pmcids} PMCIDs • {result.config.model}
+                            </div>
+                          </div>
+                          <div className="text-lg font-bold text-primary">
+                            {(result.overall_score * 100).toFixed(1)}%
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Selected Pipeline Result Details */}
+            {selectedPipelineResult && (
+              <PipelineBenchmarkResults result={selectedPipelineResult} />
+            )}
           </TabsContent>
         </Tabs>
       </div>
