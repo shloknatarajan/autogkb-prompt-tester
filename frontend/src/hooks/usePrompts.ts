@@ -434,14 +434,11 @@ export function usePrompts() {
       }
       setPrompts(updatedPrompts);
 
-      let benchmarkResult = Math.random() * (0.8 - 0.4) + 0.4; // Simulated benchmark score between 0.4 and 0.8
-
       // Show citation stats in success message if citations were generated
       if (data.citations_generated > 0) {
         alert(
           `Success! Output saved to ${data.output_file}\n\n` +
-            `Generated citations for ${data.citations_generated} annotation(s).\n\n` +
-            `Benchmark score: ${benchmarkResult.toFixed(4)}`,
+            `Generated citations for ${data.citations_generated} annotation(s).\n\n`,
         );
       } else {
         alert(`Success! Output saved to ${data.output_file}`);

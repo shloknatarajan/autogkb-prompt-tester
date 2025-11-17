@@ -16,6 +16,7 @@ import os
 import argparse
 from datetime import datetime
 from pathlib import Path
+from term_normalization.term_lookup import normalize_annotation
 
 
 def log(message: str):
@@ -77,6 +78,46 @@ def step1_batch_process(
         cmd.append("--skip-existing")
 
     return run_command(cmd, "Batch processing") == 0
+
+
+def step1_5_normalize_terms(output_dir: str) -> bool:
+    """Step 1.5: Normalize terms in all output files."""
+    log("=" * 60)
+    log("STEP 1.5: Normalizing Terms")
+    log("=" * 60)
+
+    # Find all JSON output files
+    output_files = list(Path(output_dir).glob("*.json"))
+
+    if not output_files:
+        log("No output files found to normalize")
+        return True
+
+    log(f"Found {len(output_files)} files to normalize")
+
+    successful = 0
+    failed = 0
+
+    for output_file in output_files:
+        try:
+            # Normalize in place (overwrite the original file)
+            temp_file = output_file.with_suffix(".json.tmp")
+            normalize_annotation(output_file, temp_file)
+
+            # Replace original with normalized version
+            temp_file.replace(output_file)
+            successful += 1
+            log(f"✓ Normalized {output_file.name}")
+        except Exception as e:
+            failed += 1
+            log(f"✗ Failed to normalize {output_file.name}: {e}")
+
+    log(f"Normalization complete: {successful} successful, {failed} failed")
+
+    if failed > 0:
+        log(f"WARNING: {failed} files failed to normalize")
+
+    return failed == 0
 
 
 def step2_combine_outputs(output_dir: str, combined_file: str) -> bool:
@@ -290,6 +331,12 @@ def main():
             sys.exit(1)
     else:
         log("Skipping batch processing (using existing outputs)")
+
+    # Step 1.5: Normalize Terms
+    success = step1_5_normalize_terms(args.output_dir)
+
+    if not success:
+        log("WARNING: Term normalization had failures, but continuing pipeline")
 
     # Step 2: Combine Outputs
     success = step2_combine_outputs(args.output_dir, args.combined_file)
