@@ -10,10 +10,12 @@ export default function BenchmarksView() {
   const {
     benchmarkResults,
     selectedResult,
+    outputFiles,
     loading,
     error,
     loadBenchmarkDetail,
     runBenchmark,
+    benchmarkFromOutput,
   } = useBenchmarks();
 
   const [detailModalOpen, setDetailModalOpen] = useState(false);
@@ -54,6 +56,8 @@ export default function BenchmarksView() {
         {/* Benchmark Runner */}
         <BenchmarkRunner
           onRunBenchmark={runBenchmark}
+          onBenchmarkFromOutput={benchmarkFromOutput}
+          outputFiles={outputFiles}
           loading={loading}
           error={error}
         />

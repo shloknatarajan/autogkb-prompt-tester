@@ -3,6 +3,13 @@ import { BenchmarkResult, BenchmarkResultListItem } from '../types';
 
 const API_BASE = 'http://localhost:8000';
 
+interface OutputFile {
+  filename: string;
+  created: string;
+  modified: string;
+  size: number;
+}
+
 export function useBenchmarks() {
   const [benchmarkResults, setBenchmarkResults] = useState<
     BenchmarkResultListItem[]
@@ -10,12 +17,14 @@ export function useBenchmarks() {
   const [selectedResult, setSelectedResult] = useState<BenchmarkResult | null>(
     null,
   );
+  const [outputFiles, setOutputFiles] = useState<OutputFile[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
 
-  // Load benchmark results list on mount
+  // Load benchmark results list and output files on mount
   useEffect(() => {
     loadBenchmarkResults();
+    loadOutputFiles();
   }, []);
 
   const loadBenchmarkResults = async () => {
@@ -90,14 +99,68 @@ export function useBenchmarks() {
     }
   };
 
+  const loadOutputFiles = async () => {
+    try {
+      const response = await fetch(`${API_BASE}/outputs`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setOutputFiles(data.files);
+    } catch (err) {
+      console.error('Failed to load output files:', err);
+      // Non-critical error, don't set error state
+    }
+  };
+
+  const benchmarkFromOutput = async (filename: string) => {
+    try {
+      setLoading(true);
+      setError('');
+
+      const response = await fetch(`${API_BASE}/benchmark-from-output`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          filename,
+        }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || response.statusText);
+      }
+
+      const data = await response.json();
+
+      // Reload the benchmark results list
+      await loadBenchmarkResults();
+
+      // Set the new result as selected
+      setSelectedResult(data.results);
+
+      return data.results;
+    } catch (err) {
+      const errorMessage = (err as Error).message;
+      setError(errorMessage);
+      throw err;
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return {
     benchmarkResults,
     selectedResult,
+    outputFiles,
     loading,
     error,
     loadBenchmarkResults,
     loadBenchmarkDetail,
     runBenchmark,
+    benchmarkFromOutput,
     setSelectedResult,
   };
 }
