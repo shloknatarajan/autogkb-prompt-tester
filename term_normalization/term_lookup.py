@@ -83,17 +83,53 @@ def normalize_annotation(input_annotation: Path, output_annotation: Path):
                     results = term_lookup.search(
                         variant_term, term_type=TermType.VARIANT
                     )
-                    if results:
-                        saved_mappings[variant_term] = results[0].to_dict()
-                        annotation["Variant/Haplotypes_normalized"] = results[0].id
+                    if results and len(results) > 0:
+                        result = results[0]
+                        if result.id:
+                            saved_mappings[variant_term] = result.to_dict()
+                            annotation["Variant/Haplotypes_normalized"] = {
+                                "normalized": result.normalized_term or variant_term,
+                                "variant_id": result.id,
+                                "confidence": result.score or 1.0,
+                            }
+                        else:
+                            annotation["Variant/Haplotypes_normalized"] = {
+                                "normalized": variant_term,
+                                "variant_id": None,
+                                "confidence": 0.0,
+                            }
+                    else:
+                        annotation["Variant/Haplotypes_normalized"] = {
+                            "normalized": variant_term,
+                            "variant_id": None,
+                            "confidence": 0.0,
+                        }
 
                 # Normalize Drug(s) if present
                 if "Drug(s)" in annotation and annotation["Drug(s)"]:
                     drug_term = annotation["Drug(s)"]
                     results = term_lookup.search(drug_term, term_type=TermType.DRUG)
-                    if results:
-                        saved_mappings[drug_term] = results[0].to_dict()
-                        annotation["Drug(s)_normalized"] = results[0].id
+                    if results and len(results) > 0:
+                        result = results[0]
+                        if result.id:
+                            saved_mappings[drug_term] = result.to_dict()
+                            annotation["Drug(s)_normalized"] = {
+                                "normalized": result.normalized_term or drug_term,
+                                "drug_id": result.id,
+                                "confidence": result.score or 1.0,
+                            }
+                        else:
+                            annotation["Drug(s)_normalized"] = {
+                                "normalized": drug_term,
+                                "drug_id": None,
+                                "confidence": 0.0,
+                            }
+                    else:
+                        annotation["Drug(s)_normalized"] = {
+                            "normalized": drug_term,
+                            "drug_id": None,
+                            "confidence": 0.0,
+                        }
 
     # Add saved mappings to annotations
     annotations["term_mappings"] = saved_mappings

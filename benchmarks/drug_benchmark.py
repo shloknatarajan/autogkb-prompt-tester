@@ -75,12 +75,21 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
         gt_expanded = expand_annotations_by_variant(ground_truth_list or [])
         pred_expanded = expand_annotations_by_variant(predictions_list or [])
 
-        pred_index: List[Tuple[set, str, Dict[str, Any]]] = []
+        # Build prediction index with normalized IDs and fallback fields
+        pred_index: List[Tuple[str | None, set, str, Dict[str, Any]]] = []
         for rec in pred_expanded:
             raw = (rec.get("Variant/Haplotypes") or "").strip()
             raw_norm = normalize_variant(raw).lower()
             rsids = set(m.group(0).lower() for m in rs_re.finditer(raw))
-            pred_index.append((rsids, raw_norm, rec))
+
+            # Extract normalized variant ID if available
+            variant_id = None
+            if "Variant/Haplotypes_normalized" in rec:
+                norm_data = rec["Variant/Haplotypes_normalized"]
+                if isinstance(norm_data, dict):
+                    variant_id = norm_data.get("variant_id")
+
+            pred_index.append((variant_id, rsids, raw_norm, rec))
 
         aligned_gt: List[Dict[str, Any]] = []
         aligned_pred: List[Dict[str, Any]] = []
@@ -91,14 +100,32 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
             gt_norm = normalize_variant(gt_raw).lower()
             gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
 
+            # Extract normalized variant ID if available
+            gt_variant_id = None
+            if "Variant/Haplotypes_normalized" in gt_rec:
+                norm_data = gt_rec["Variant/Haplotypes_normalized"]
+                if isinstance(norm_data, dict):
+                    gt_variant_id = norm_data.get("variant_id")
+
             match = None
-            if gt_rs:
-                for rsids, raw_norm, pred_rec in pred_index:
+
+            # Strategy 1: Match on normalized PharmGKB Variant ID (highest priority)
+            if gt_variant_id:
+                for variant_id, rsids, raw_norm, pred_rec in pred_index:
+                    if variant_id and variant_id == gt_variant_id:
+                        match = pred_rec
+                        break
+
+            # Strategy 2: rsID intersection match (existing logic)
+            if match is None and gt_rs:
+                for variant_id, rsids, raw_norm, pred_rec in pred_index:
                     if rsids & gt_rs:
                         match = pred_rec
                         break
+
+            # Strategy 3: Normalized substring match (existing fallback)
             if match is None and gt_norm:
-                for rsids, raw_norm, pred_rec in pred_index:
+                for variant_id, rsids, raw_norm, pred_rec in pred_index:
                     if gt_norm in raw_norm:
                         match = pred_rec
                         break
@@ -240,7 +267,27 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
     def drugs_coverage(gt: Dict[str, Any], pred: Dict[str, Any]) -> float:
         """Operator-aware coverage for Drug(s).
         Uses `Multiple drugs And/or` to decide coverage rule. Defaults to 'or' if missing.
+        Now prioritizes normalized PharmGKB drug IDs for matching.
         """
+        # First try normalized drug ID matching if available
+        gt_drug_id = None
+        pred_drug_id = None
+
+        if "Drug(s)_normalized" in gt:
+            norm_data = gt["Drug(s)_normalized"]
+            if isinstance(norm_data, dict):
+                gt_drug_id = norm_data.get("drug_id")
+
+        if "Drug(s)_normalized" in pred:
+            norm_data = pred["Drug(s)_normalized"]
+            if isinstance(norm_data, dict):
+                pred_drug_id = norm_data.get("drug_id")
+
+        # If both have normalized IDs, use exact ID matching
+        if gt_drug_id and pred_drug_id:
+            return 1.0 if gt_drug_id == pred_drug_id else 0.0
+
+        # Fallback to existing token-based matching
         gt_drugs_raw = gt.get("Drug(s)")
         pred_drugs_raw = pred.get("Drug(s)")
         gt_tokens = parse_drug_list(gt_drugs_raw)

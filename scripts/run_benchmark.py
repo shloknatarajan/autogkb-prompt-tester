@@ -9,7 +9,7 @@ from benchmarks.fa_benchmark import (
 
 from benchmarks.drug_benchmark import evaluate_drug_annotations
 
-BENCHMARK_FILE = "persistent_data/benchmark_annotations.json"
+BENCHMARK_FILE = "persistent_data/benchmark_annotations_normalized.json"
 
 
 def load_benchmark_annotations():

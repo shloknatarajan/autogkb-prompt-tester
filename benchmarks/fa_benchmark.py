@@ -54,7 +54,8 @@ def align_fa_annotations_by_variant(
     """
     Align FA annotations by variant string with robust matching:
     1) Expand multi-variant records to one per variant
-    2) Prefer rsID intersection; fallback to normalized substring containment
+    2) Prioritize PharmGKB normalized variant ID matching
+    3) Fallback: rsID intersection; then normalized substring containment
     Returns aligned (gt_list, pred_list, display_keys)
     """
     rs_re = re.compile(r"rs\d+", re.IGNORECASE)
@@ -62,15 +63,21 @@ def align_fa_annotations_by_variant(
     gt_expanded = expand_annotations_by_variant(ground_truth_fa or [])
     pred_expanded = expand_annotations_by_variant(predictions_fa or [])
 
-    pred_index: List[Tuple[set, str, Dict[str, Any]]] = []
+    # Build prediction index with normalized IDs and fallback fields
+    pred_index: List[Tuple[str | None, set, str, Dict[str, Any]]] = []
     for rec in pred_expanded:
         raw = (rec.get("Variant/Haplotypes") or "").strip()
         raw_norm = normalize_variant(raw).lower()
         rsids = set(m.group(0).lower() for m in rs_re.finditer(raw))
-        pred_index.append((rsids, raw_norm, rec))
-        # print(
-        #     f"Indexed prediction variant: raw='{raw}' norm='{raw_norm}' rsids={rsids}"
-        # )
+
+        # Extract normalized variant ID if available
+        variant_id = None
+        if "Variant/Haplotypes_normalized" in rec:
+            norm_data = rec["Variant/Haplotypes_normalized"]
+            if isinstance(norm_data, dict):
+                variant_id = norm_data.get("variant_id")
+
+        pred_index.append((variant_id, rsids, raw_norm, rec))
 
     aligned_gt: List[Dict[str, Any]] = []
     aligned_pred: List[Dict[str, Any]] = []
@@ -81,18 +88,32 @@ def align_fa_annotations_by_variant(
         gt_norm = normalize_variant(gt_raw).lower()
         gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
 
-        # print(
-        #     f"Processing ground truth variant: raw='{gt_raw}' norm='{gt_norm}' rsids={gt_rs}"
-        # )
+        # Extract normalized variant ID if available
+        gt_variant_id = None
+        if "Variant/Haplotypes_normalized" in gt_rec:
+            norm_data = gt_rec["Variant/Haplotypes_normalized"]
+            if isinstance(norm_data, dict):
+                gt_variant_id = norm_data.get("variant_id")
 
         match = None
-        if gt_rs:
-            for rsids, raw_norm, pred_rec in pred_index:
+
+        # Strategy 1: Match on normalized PharmGKB Variant ID (highest priority)
+        if gt_variant_id:
+            for variant_id, rsids, raw_norm, pred_rec in pred_index:
+                if variant_id and variant_id == gt_variant_id:
+                    match = pred_rec
+                    break
+
+        # Strategy 2: rsID intersection match (existing logic)
+        if match is None and gt_rs:
+            for variant_id, rsids, raw_norm, pred_rec in pred_index:
                 if rsids & gt_rs:
                     match = pred_rec
                     break
+
+        # Strategy 3: Normalized substring match (existing fallback)
         if match is None and gt_norm:
-            for rsids, raw_norm, pred_rec in pred_index:
+            for variant_id, rsids, raw_norm, pred_rec in pred_index:
                 if gt_norm in raw_norm:
                     match = pred_rec
                     break

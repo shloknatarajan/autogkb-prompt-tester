@@ -16,6 +16,7 @@ from benchmarks.fa_benchmark import (
     evaluate_functional_analysis,
     evaluate_fa_from_articles,
 )
+from term_normalization.term_lookup import normalize_annotation
 
 app = FastAPI()
 
@@ -33,6 +34,7 @@ BENCHMARK_OUTPUT_FILE = "benchmark_output.json"
 OUTPUT_DIR = "outputs"
 BENCHMARK_RESULTS_DIR = "benchmark_results"
 GROUND_TRUTH_FILE = "persistent_data/benchmark_annotations.json"
+GROUND_TRUTH_NORMALIZED_FILE = "persistent_data/benchmark_annotations_normalized.json"
 MARKDOWN_DIR = "data/markdown"
 
 
@@ -591,15 +593,25 @@ async def benchmark_from_output(request: BenchmarkFromOutputRequest):
         print(f"  var-fa: {len(output_data.get('var_fa_ann', []))} annotations")
         print(f"=== End Predictions ===\n")
 
-        # Load ground truth
-        if not os.path.exists(GROUND_TRUTH_FILE):
+        # Load ground truth (prefer normalized version if available)
+        ground_truth_file = (
+            GROUND_TRUTH_NORMALIZED_FILE
+            if os.path.exists(GROUND_TRUTH_NORMALIZED_FILE)
+            else GROUND_TRUTH_FILE
+        )
+
+        if not os.path.exists(ground_truth_file):
             raise HTTPException(
                 status_code=404,
-                detail=f"Ground truth file not found at {GROUND_TRUTH_FILE}",
+                detail=f"Ground truth file not found at {ground_truth_file}",
             )
 
-        with open(GROUND_TRUTH_FILE, "r") as f:
+        with open(ground_truth_file, "r") as f:
             ground_truth_data = json.load(f)
+
+        # If using normalized file, skip the _metadata key
+        if "_metadata" in ground_truth_data:
+            del ground_truth_data["_metadata"]
 
         # Get ground truth for this PMCID
         if pmcid not in ground_truth_data:
@@ -1002,6 +1014,37 @@ async def run_pipeline_task(job: PipelineJob):
 
         job.add_message(f"Completed processing {len(pmcids)} PMCIDs")
 
+        # Stage 1.5: Normalize terms
+        job.current_stage = "normalizing_terms"
+        job.progress = 0.83
+        job.add_message("Normalizing terms in outputs...")
+
+        normalized_count = 0
+        failed_count = 0
+
+        for pmcid in pmcids:
+            try:
+                output_file = Path(output_dir) / f"{pmcid}.json"
+                if output_file.exists():
+                    # Normalize in place (overwrite the original file)
+                    temp_file = output_file.with_suffix(".json.tmp")
+                    normalize_annotation(output_file, temp_file)
+                    temp_file.replace(output_file)
+
+                    # Reload the normalized data into all_outputs
+                    with open(output_file, "r") as f:
+                        all_outputs[pmcid] = json.load(f)
+
+                    normalized_count += 1
+                    job.add_message(f"Normalized terms for {pmcid}")
+            except Exception as e:
+                failed_count += 1
+                job.add_message(f"Warning: Failed to normalize {pmcid}: {str(e)}")
+
+        job.add_message(
+            f"Term normalization complete: {normalized_count} successful, {failed_count} failed"
+        )
+
         # Stage 2: Combine outputs
         job.current_stage = "combining_outputs"
         job.progress = 0.85
@@ -1019,12 +1062,24 @@ async def run_pipeline_task(job: PipelineJob):
         job.progress = 0.90
         job.add_message("Running benchmarks...")
 
-        # Load ground truth
-        if not os.path.exists(GROUND_TRUTH_FILE):
-            raise Exception(f"Ground truth file not found: {GROUND_TRUTH_FILE}")
+        # Load ground truth (prefer normalized version if available)
+        ground_truth_file = (
+            GROUND_TRUTH_NORMALIZED_FILE
+            if os.path.exists(GROUND_TRUTH_NORMALIZED_FILE)
+            else GROUND_TRUTH_FILE
+        )
 
-        with open(GROUND_TRUTH_FILE, "r") as f:
+        if not os.path.exists(ground_truth_file):
+            raise Exception(f"Ground truth file not found: {ground_truth_file}")
+
+        job.add_message(f"Using ground truth: {os.path.basename(ground_truth_file)}")
+
+        with open(ground_truth_file, "r") as f:
             ground_truth_data = json.load(f)
+
+        # If using normalized file, skip the _metadata key
+        if "_metadata" in ground_truth_data:
+            del ground_truth_data["_metadata"]
 
         # Benchmark each PMCID (matching run_benchmark.py logic)
         all_benchmark_results = {}
