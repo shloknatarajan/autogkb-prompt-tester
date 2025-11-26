@@ -775,6 +775,31 @@ async def process_single_pmcid(
                 pmcid_results.update(result)
             prompts_used[task] = prompt_details_map[task].get("name", "unknown")
 
+        # Generate citations for annotations
+        from utils.citation_generator import CITATION_PROMPT_TEMPLATE
+
+        citation_tasks = []
+        for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann"]:
+            if ann_type in pmcid_results and isinstance(pmcid_results[ann_type], list):
+                for i, annotation in enumerate(pmcid_results[ann_type]):
+                    citation_tasks.append(
+                        generate_single_citation(
+                            ann_type,
+                            i,
+                            annotation,
+                            text,
+                            CITATION_PROMPT_TEMPLATE,
+                            Model.OPENAI_GPT_4O_MINI,
+                        )
+                    )
+
+        if citation_tasks:
+            citation_results = await asyncio.gather(*citation_tasks)
+            for ann_type, index, citations, error in citation_results:
+                pmcid_results[ann_type][index]["Citations"] = citations
+                if error:
+                    pmcid_results[ann_type][index]["Citation_Error"] = error
+
         # Add metadata
         pmcid_results["timestamp"] = datetime.now().isoformat()
         pmcid_results["prompts_used"] = prompts_used
