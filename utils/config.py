@@ -14,7 +14,7 @@ BEST_PROMPTS_FILE = "best_prompts.json"
 # Directories
 OUTPUT_DIR = "outputs"
 BENCHMARK_RESULTS_DIR = "benchmark_results"
-MARKDOWN_DIR = "persistent_data/benchmark_articles"
+MARKDOWN_DIR = "persistent_data/benchmark_articles_md"
 PERSISTENT_DATA_DIR = "persistent_data"
 LOGS_DIR = "logs"
 

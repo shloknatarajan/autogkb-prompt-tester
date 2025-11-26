@@ -226,8 +226,8 @@ def main():
 
     parser.add_argument(
         "--data-dir",
-        default="data/markdown",
-        help="Directory containing markdown files to process (default: data/markdown)",
+        default="persistent_data/benchmark_articles_md",
+        help="Directory containing markdown files to process (default: persistent_data/benchmark_articles_md)",
     )
 
     parser.add_argument(

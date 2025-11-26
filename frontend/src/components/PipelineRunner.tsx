@@ -1,15 +1,15 @@
-import { useState } from 'react';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Progress } from '@/components/ui/progress';
+import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from "@/components/ui/select";
 import {
   AlertCircle,
   PlayCircle,
@@ -19,15 +19,19 @@ import {
   Cpu,
   StopCircle,
   XCircle,
-} from 'lucide-react';
-import { PipelineJob, PipelineJobSummary } from '../hooks/usePipeline';
+} from "lucide-react";
+import { PipelineJob, PipelineJobSummary } from "../hooks/usePipeline";
 
 interface PipelineRunnerProps {
   currentJob: PipelineJob | null;
   jobs: PipelineJobSummary[];
   loading: boolean;
   error: string;
-  onStartPipeline: (dataDir: string, model: string, concurrency: number) => Promise<string>;
+  onStartPipeline: (
+    dataDir: string,
+    model: string,
+    concurrency: number,
+  ) => Promise<string>;
   onSelectJob: (jobId: string) => Promise<void>;
   onCancelJob?: (jobId: string) => Promise<void>;
 }
@@ -41,14 +45,16 @@ export default function PipelineRunner({
   onSelectJob,
   onCancelJob,
 }: PipelineRunnerProps) {
-  const [dataDir, setDataDir] = useState<string>('data/markdown');
-  const [model, setModel] = useState<string>('gpt-4o-mini');
+  const [dataDir, setDataDir] = useState<string>(
+    "persistent_data/benchmark_articles_md",
+  );
+  const [model, setModel] = useState<string>("gpt-4o-mini");
   const [concurrency, setConcurrency] = useState<number>(3);
   const [cancelling, setCancelling] = useState<boolean>(false);
 
   const handleStartPipeline = async () => {
     if (!dataDir.trim()) {
-      alert('Please enter a data directory');
+      alert("Please enter a data directory");
       return;
     }
 
@@ -61,13 +67,13 @@ export default function PipelineRunner({
 
   const getStageLabel = (stage: string): string => {
     const labels: { [key: string]: string } = {
-      initializing: 'Initializing',
-      loading_configuration: 'Loading Configuration',
-      processing_pmcids: 'Processing PMCIDs',
-      combining_outputs: 'Combining Outputs',
-      running_benchmarks: 'Running Benchmarks',
-      saving_results: 'Saving Results',
-      completed: 'Completed',
+      initializing: "Initializing",
+      loading_configuration: "Loading Configuration",
+      processing_pmcids: "Processing PMCIDs",
+      combining_outputs: "Combining Outputs",
+      running_benchmarks: "Running Benchmarks",
+      saving_results: "Saving Results",
+      completed: "Completed",
     };
     return labels[stage] || stage;
   };
@@ -79,7 +85,7 @@ export default function PipelineRunner({
       setCancelling(true);
       await onCancelJob(currentJob.id);
     } catch (err) {
-      console.error('Failed to cancel pipeline:', err);
+      console.error("Failed to cancel pipeline:", err);
     } finally {
       setCancelling(false);
     }
@@ -87,15 +93,15 @@ export default function PipelineRunner({
 
   const getStatusIcon = (status: string) => {
     switch (status) {
-      case 'pending':
+      case "pending":
         return <Clock className="w-4 h-4 text-yellow-500" />;
-      case 'running':
+      case "running":
         return <Loader2 className="w-4 h-4 text-blue-500 animate-spin" />;
-      case 'completed':
+      case "completed":
         return <CheckCircle className="w-4 h-4 text-green-500" />;
-      case 'failed':
+      case "failed":
         return <AlertCircle className="w-4 h-4 text-red-500" />;
-      case 'cancelled':
+      case "cancelled":
         return <XCircle className="w-4 h-4 text-orange-500" />;
       default:
         return <Cpu className="w-4 h-4" />;
@@ -124,8 +130,8 @@ export default function PipelineRunner({
               <Input
                 value={dataDir}
                 onChange={(e) => setDataDir(e.target.value)}
-                placeholder="data/markdown"
-                disabled={loading || currentJob?.status === 'running'}
+                placeholder="persistent_data/benchmark_articles_md"
+                disabled={loading || currentJob?.status === "running"}
               />
             </div>
             <div>
@@ -133,7 +139,7 @@ export default function PipelineRunner({
               <Select
                 value={model}
                 onValueChange={setModel}
-                disabled={loading || currentJob?.status === 'running'}
+                disabled={loading || currentJob?.status === "running"}
               >
                 <SelectTrigger>
                   <SelectValue placeholder="Select model" />
@@ -146,14 +152,16 @@ export default function PipelineRunner({
               </Select>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-2">Concurrency</label>
+              <label className="block text-sm font-medium mb-2">
+                Concurrency
+              </label>
               <Input
                 type="number"
                 min={1}
                 max={10}
                 value={concurrency}
                 onChange={(e) => setConcurrency(parseInt(e.target.value) || 1)}
-                disabled={loading || currentJob?.status === 'running'}
+                disabled={loading || currentJob?.status === "running"}
               />
             </div>
           </div>
@@ -161,7 +169,7 @@ export default function PipelineRunner({
           <div className="flex gap-2">
             <Button
               onClick={handleStartPipeline}
-              disabled={loading || currentJob?.status === 'running'}
+              disabled={loading || currentJob?.status === "running"}
               className="flex-1 bg-indigo-600 hover:bg-indigo-700"
             >
               {loading ? (
@@ -169,7 +177,7 @@ export default function PipelineRunner({
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Starting Pipeline...
                 </>
-              ) : currentJob?.status === 'running' ? (
+              ) : currentJob?.status === "running" ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
                   Pipeline Running...
@@ -182,7 +190,7 @@ export default function PipelineRunner({
               )}
             </Button>
 
-            {currentJob?.status === 'running' && onCancelJob && (
+            {currentJob?.status === "running" && onCancelJob && (
               <Button
                 onClick={handleCancelPipeline}
                 disabled={cancelling}
@@ -248,7 +256,7 @@ export default function PipelineRunner({
               </div>
               <div className="bg-muted p-3 rounded">
                 <div className="text-2xl font-bold">
-                  {currentJob.current_pmcid || '-'}
+                  {currentJob.current_pmcid || "-"}
                 </div>
                 <div className="text-xs text-muted-foreground">Current</div>
               </div>
@@ -265,26 +273,26 @@ export default function PipelineRunner({
             </div>
 
             {/* Results (if completed) */}
-            {currentJob.status === 'completed' && currentJob.result && (
+            {currentJob.status === "completed" && currentJob.result && (
               <div className="bg-green-50 border border-green-200 rounded p-4">
                 <h4 className="font-semibold text-green-800 mb-2">
                   Pipeline Completed Successfully!
                 </h4>
                 <div className="space-y-1 text-sm text-green-700">
                   <div>
-                    <strong>Overall Score:</strong>{' '}
+                    <strong>Overall Score:</strong>{" "}
                     {(currentJob.result.overall_score * 100).toFixed(1)}%
                   </div>
                   <div>
-                    <strong>Total PMCIDs:</strong>{' '}
+                    <strong>Total PMCIDs:</strong>{" "}
                     {currentJob.result.total_pmcids}
                   </div>
                   <div>
-                    <strong>Output Directory:</strong>{' '}
+                    <strong>Output Directory:</strong>{" "}
                     {currentJob.result.output_directory}
                   </div>
                   <div>
-                    <strong>Results File:</strong>{' '}
+                    <strong>Results File:</strong>{" "}
                     {currentJob.result.results_file}
                   </div>
                   <div className="mt-2">
@@ -304,7 +312,7 @@ export default function PipelineRunner({
             )}
 
             {/* Error (if failed) */}
-            {currentJob.status === 'failed' && currentJob.error && (
+            {currentJob.status === "failed" && currentJob.error && (
               <div className="bg-red-50 border border-red-200 rounded p-4">
                 <h4 className="font-semibold text-red-800 mb-2">
                   Pipeline Failed
@@ -314,13 +322,15 @@ export default function PipelineRunner({
             )}
 
             {/* Cancelled */}
-            {currentJob.status === 'cancelled' && (
+            {currentJob.status === "cancelled" && (
               <div className="bg-orange-50 border border-orange-200 rounded p-4">
                 <h4 className="font-semibold text-orange-800 mb-2">
                   Pipeline Cancelled
                 </h4>
                 <div className="text-sm text-orange-700">
-                  Pipeline was cancelled by user. Processed {currentJob.pmcids_processed} of {currentJob.pmcids_total} PMCIDs.
+                  Pipeline was cancelled by user. Processed{" "}
+                  {currentJob.pmcids_processed} of {currentJob.pmcids_total}{" "}
+                  PMCIDs.
                 </div>
               </div>
             )}
@@ -340,7 +350,7 @@ export default function PipelineRunner({
                 <div
                   key={job.id}
                   className={`flex items-center justify-between p-3 border rounded cursor-pointer hover:bg-muted/50 ${
-                    currentJob?.id === job.id ? 'bg-muted border-primary' : ''
+                    currentJob?.id === job.id ? "bg-muted border-primary" : ""
                   }`}
                   onClick={() => onSelectJob(job.id)}
                 >
@@ -351,7 +361,7 @@ export default function PipelineRunner({
                         {new Date(job.created_at).toLocaleString()}
                       </div>
                       <div className="text-xs text-muted-foreground">
-                        {job.pmcids_processed}/{job.pmcids_total} PMCIDs •{' '}
+                        {job.pmcids_processed}/{job.pmcids_total} PMCIDs •{" "}
                         {getStageLabel(job.current_stage)}
                       </div>
                     </div>

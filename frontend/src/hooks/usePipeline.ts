@@ -73,8 +73,11 @@ export interface PipelineBenchmarkResult {
 export function usePipeline() {
   const [jobs, setJobs] = useState<PipelineJobSummary[]>([]);
   const [currentJob, setCurrentJob] = useState<PipelineJob | null>(null);
-  const [pipelineResults, setPipelineResults] = useState<PipelineResultSummary[]>([]);
-  const [selectedPipelineResult, setSelectedPipelineResult] = useState<PipelineBenchmarkResult | null>(null);
+  const [pipelineResults, setPipelineResults] = useState<
+    PipelineResultSummary[]
+  >([]);
+  const [selectedPipelineResult, setSelectedPipelineResult] =
+    useState<PipelineBenchmarkResult | null>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string>('');
   const [eventSource, setEventSource] = useState<EventSource | null>(null);
@@ -108,7 +111,7 @@ export function usePipeline() {
   };
 
   const startPipeline = async (
-    dataDir: string = 'data/markdown',
+    dataDir: string = 'persistent_data/benchmark_articles_md',
     model: string = 'gpt-4o-mini',
     concurrency: number = 3,
   ) => {
@@ -152,56 +155,63 @@ export function usePipeline() {
     }
   };
 
-  const subscribeToJob = useCallback((jobId: string) => {
-    // Close existing event source if any
-    if (eventSource) {
-      eventSource.close();
-    }
-
-    const es = new EventSource(`${API_BASE}/pipeline/events/${jobId}`);
-
-    es.onmessage = (event) => {
-      try {
-        const jobData = JSON.parse(event.data) as PipelineJob;
-        setCurrentJob(jobData);
-
-        // Update jobs list with new status
-        setJobs((prev) =>
-          prev.map((job) =>
-            job.id === jobId
-              ? {
-                  ...job,
-                  status: jobData.status,
-                  current_stage: jobData.current_stage,
-                  progress: jobData.progress,
-                  pmcids_processed: jobData.pmcids_processed,
-                  pmcids_total: jobData.pmcids_total,
-                  updated_at: jobData.updated_at,
-                }
-              : job,
-          ),
-        );
-
-        // Close connection if job is done
-        if (jobData.status === 'completed' || jobData.status === 'failed' || jobData.status === 'cancelled') {
-          es.close();
-          setEventSource(null);
-          // Reload jobs to get final state
-          loadJobs();
-        }
-      } catch (err) {
-        console.error('Failed to parse SSE data:', err);
+  const subscribeToJob = useCallback(
+    (jobId: string) => {
+      // Close existing event source if any
+      if (eventSource) {
+        eventSource.close();
       }
-    };
 
-    es.onerror = () => {
-      console.error('SSE connection error');
-      es.close();
-      setEventSource(null);
-    };
+      const es = new EventSource(`${API_BASE}/pipeline/events/${jobId}`);
 
-    setEventSource(es);
-  }, [eventSource]);
+      es.onmessage = (event) => {
+        try {
+          const jobData = JSON.parse(event.data) as PipelineJob;
+          setCurrentJob(jobData);
+
+          // Update jobs list with new status
+          setJobs((prev) =>
+            prev.map((job) =>
+              job.id === jobId
+                ? {
+                    ...job,
+                    status: jobData.status,
+                    current_stage: jobData.current_stage,
+                    progress: jobData.progress,
+                    pmcids_processed: jobData.pmcids_processed,
+                    pmcids_total: jobData.pmcids_total,
+                    updated_at: jobData.updated_at,
+                  }
+                : job,
+            ),
+          );
+
+          // Close connection if job is done
+          if (
+            jobData.status === 'completed' ||
+            jobData.status === 'failed' ||
+            jobData.status === 'cancelled'
+          ) {
+            es.close();
+            setEventSource(null);
+            // Reload jobs to get final state
+            loadJobs();
+          }
+        } catch (err) {
+          console.error('Failed to parse SSE data:', err);
+        }
+      };
+
+      es.onerror = () => {
+        console.error('SSE connection error');
+        es.close();
+        setEventSource(null);
+      };
+
+      setEventSource(es);
+    },
+    [eventSource],
+  );
 
   const getJobStatus = async (jobId: string) => {
     try {
@@ -222,7 +232,10 @@ export function usePipeline() {
     await getJobStatus(jobId);
 
     // If job is still running, subscribe to updates
-    if (currentJob && (currentJob.status === 'pending' || currentJob.status === 'running')) {
+    if (
+      currentJob &&
+      (currentJob.status === 'pending' || currentJob.status === 'running')
+    ) {
       subscribeToJob(jobId);
     }
   };
@@ -278,7 +291,9 @@ export function usePipeline() {
 
       // Update current job status
       if (currentJob && currentJob.id === jobId) {
-        setCurrentJob((prev) => (prev ? { ...prev, status: 'cancelled' } : null));
+        setCurrentJob((prev) =>
+          prev ? { ...prev, status: 'cancelled' } : null,
+        );
       }
 
       // Update jobs list

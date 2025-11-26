@@ -462,8 +462,8 @@ def main():
     parser.add_argument(
         "--data-dir",
         type=str,
-        default="./data/markdown",
-        help="Directory containing input .md files (default: ./data/markdown)",
+        default="./persistent_data/benchmark_articles_md",
+        help="Directory containing input .md files (default: ./persistent_data/benchmark_articles_md)",
     )
 
     parser.add_argument(
