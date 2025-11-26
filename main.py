@@ -10,13 +10,22 @@ import uuid
 from datetime import datetime
 from pathlib import Path
 from typing import Literal, Optional
-from benchmarks.pheno_benchmark import evaluate_phenotype_annotations
-from benchmarks.drug_benchmark import evaluate_drug_annotations
-from benchmarks.fa_benchmark import (
-    evaluate_functional_analysis,
-    evaluate_fa_from_articles,
+
+# Import utility modules
+from utils.config import (
+    PROMPTS_FILE,
+    BEST_PROMPTS_FILE,
+    OUTPUT_DIR,
+    BENCHMARK_RESULTS_DIR,
+    GROUND_TRUTH_FILE,
+    GROUND_TRUTH_NORMALIZED_FILE,
+    MARKDOWN_DIR,
 )
-from term_normalization.term_lookup import normalize_annotation
+from utils.benchmark_runner import BenchmarkRunner
+from utils.prompt_manager import PromptManager
+from utils.citation_generator import generate_citations
+from utils.output_manager import save_output, combine_outputs
+from utils.normalization import normalize_outputs_in_directory
 
 app = FastAPI()
 
@@ -27,15 +36,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# File paths
-PROMPTS_FILE = "stored_prompts.json"
-BENCHMARK_OUTPUT_FILE = "benchmark_output.json"
-OUTPUT_DIR = "outputs"
-BENCHMARK_RESULTS_DIR = "benchmark_results"
-GROUND_TRUTH_FILE = "persistent_data/benchmark_annotations.json"
-GROUND_TRUTH_NORMALIZED_FILE = "persistent_data/benchmark_annotations_normalized.json"
-MARKDOWN_DIR = "data/markdown"
 
 
 # Pipeline job management
@@ -185,7 +185,7 @@ async def save_prompt(request: SavePromptRequest):
             "prompt": request.prompt,
             "model": request.model,
             "response_format": request.response_format,
-            "output": parsed_output,
+            # "output": parsed_output,  # Removed to reduce file size
             "timestamp": datetime.now().isoformat(),
         }
 
@@ -257,7 +257,7 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
                 "prompt": prompt_data.get("prompt", ""),
                 "model": prompt_data.get("model", "gpt-4o-mini"),
                 "response_format": response_format,
-                "output": parsed_output,
+                # "output": parsed_output,  # Removed to reduce file size
                 "timestamp": datetime.now().isoformat(),
             }
             saved_prompts.append(saved_prompt)
@@ -278,40 +278,8 @@ async def generate_citations_for_annotation(
     annotation: dict, full_text: str, citation_prompt_template: str, model: Model
 ) -> list[str]:
     """Generate citations for a single annotation by finding supporting quotes in the text."""
-    try:
-        # Format prompt with annotation details
-        formatted_prompt = citation_prompt_template.format(
-            variant=annotation.get("Variant/Haplotypes", ""),
-            gene=annotation.get("Gene", ""),
-            drug=annotation.get("Drug(s)", annotation.get("Drug(s", "")),  # Handle typo
-            sentence=annotation.get("Sentence", ""),
-            notes=annotation.get("Notes", ""),
-            full_text=full_text,
-        )
-
-        # Call LLM with JSON output format
-        response = await generate_response(
-            prompt=formatted_prompt,
-            text="",
-            model=model,
-            response_format={
-                "type": "object",
-                "properties": {
-                    "citations": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                    }
-                },
-                "required": ["citations"],
-            },
-        )
-
-        # Parse and return citations
-        citations_data = json.loads(response)
-        return citations_data.get("citations", [])
-    except Exception as e:
-        print(f"Error generating citations: {e}")
-        return []
+    # Use the shared utility function
+    return await generate_citations(annotation, full_text, model, citation_prompt_template)
 
 
 async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
@@ -593,136 +561,33 @@ async def benchmark_from_output(request: BenchmarkFromOutputRequest):
         print(f"  var-fa: {len(output_data.get('var_fa_ann', []))} annotations")
         print(f"=== End Predictions ===\n")
 
-        # Load ground truth (prefer normalized version if available)
-        ground_truth_file = (
-            GROUND_TRUTH_NORMALIZED_FILE
-            if os.path.exists(GROUND_TRUTH_NORMALIZED_FILE)
-            else GROUND_TRUTH_FILE
-        )
+        # Use BenchmarkRunner utility
+        try:
+            runner = BenchmarkRunner()
+        except FileNotFoundError as e:
+            raise HTTPException(status_code=404, detail=str(e))
 
-        if not os.path.exists(ground_truth_file):
-            raise HTTPException(
-                status_code=404,
-                detail=f"Ground truth file not found at {ground_truth_file}",
-            )
-
-        with open(ground_truth_file, "r") as f:
-            ground_truth_data = json.load(f)
-
-        # If using normalized file, skip the _metadata key
-        if "_metadata" in ground_truth_data:
-            del ground_truth_data["_metadata"]
-
-        # Get ground truth for this PMCID
-        if pmcid not in ground_truth_data:
+        # Check if ground truth exists for this PMCID
+        if not runner.has_ground_truth(pmcid):
             raise HTTPException(
                 status_code=404, detail=f"No ground truth found for PMCID: {pmcid}"
             )
 
-        ground_truth = ground_truth_data[pmcid]
+        # Run benchmark
+        benchmark_results = runner.benchmark_pmcid(pmcid, output_data, verbose=True)
 
-        # Run benchmarks for each task (matching run_benchmark.py logic)
-        benchmark_results = {}
+        # Calculate average score
+        task_scores = runner.calculate_task_averages({pmcid: benchmark_results})
+        average_score = runner.calculate_overall_score(task_scores)
 
-        # Phenotype annotations
-        if "var_pheno_ann" in ground_truth and len(ground_truth["var_pheno_ann"]) > 0:
-            gt_pheno = ground_truth["var_pheno_ann"]
-            pred_pheno = output_data.get("var_pheno_ann", [])
-
-            if not pred_pheno:
-                benchmark_results["var-pheno"] = {
-                    "error": "Empty predictions list",
-                    "overall_score": 0.0,
-                    "total_samples": 0,
-                }
-                print(f"✗ Phenotype benchmark skipped: empty predictions")
-            else:
-                try:
-                    score = evaluate_phenotype_annotations([gt_pheno, pred_pheno])
-                    benchmark_results["var-pheno"] = {
-                        "overall_score": score / 100.0,
-                        "raw_score": score,
-                        "total_samples": len(pred_pheno),
-                    }
-                    print(f"✓ Phenotype benchmark score: {score}/100")
-                except Exception as e:
-                    print(f"✗ Phenotype benchmark failed: {e}")
-                    benchmark_results["var-pheno"] = {
-                        "error": f"Evaluation failed: {str(e)}",
-                        "overall_score": 0.0,
-                        "total_samples": 0,
-                    }
-
-        # Drug annotations
-        if "var_drug_ann" in ground_truth and len(ground_truth["var_drug_ann"]) > 0:
-            gt_drug = ground_truth["var_drug_ann"]
-            pred_drug = output_data.get("var_drug_ann", [])
-
-            if not pred_drug:
-                benchmark_results["var-drug"] = {
-                    "error": "Empty predictions list",
-                    "overall_score": 0.0,
-                    "total_samples": 0,
-                }
-                print(f"✗ Drug benchmark skipped: empty predictions")
-            else:
-                try:
-                    result = evaluate_drug_annotations([gt_drug, pred_drug])
-                    benchmark_results["var-drug"] = {
-                        "overall_score": result.get("overall_score", 0.0),
-                        "field_scores": result.get("field_scores", {}),
-                        "total_samples": result.get("total_samples", len(pred_drug)),
-                    }
-                    print(f"✓ Drug benchmark score: {result.get('overall_score', 0)}")
-                except Exception as e:
-                    print(f"✗ Drug benchmark failed: {e}")
-                    benchmark_results["var-drug"] = {
-                        "error": f"Evaluation failed: {str(e)}",
-                        "overall_score": 0.0,
-                        "total_samples": 0,
-                    }
-
-        # Functional analysis annotations
-        if "var_fa_ann" in ground_truth and len(ground_truth["var_fa_ann"]) > 0:
-            gt_fa = ground_truth["var_fa_ann"]
-            pred_fa = output_data.get("var_fa_ann", [])
-
-            if not pred_fa:
-                benchmark_results["var-fa"] = {
-                    "error": "Empty predictions list",
-                    "overall_score": 0.0,
-                    "total_samples": 0,
-                }
-                print(f"✗ FA benchmark skipped: empty predictions")
-            else:
-                try:
-                    result = evaluate_fa_from_articles(ground_truth, output_data)
-                    benchmark_results["var-fa"] = {
-                        "overall_score": result.get("overall_score", 0.0),
-                        "field_scores": result.get("field_scores", {}),
-                        "total_samples": result.get("total_samples", len(pred_fa)),
-                    }
-                    print(f"✓ FA benchmark score: {result.get('overall_score', 0)}")
-                except Exception as e:
-                    print(f"✗ FA benchmark failed: {e}")
-                    benchmark_results["var-fa"] = {
-                        "error": f"Evaluation failed: {str(e)}",
-                        "overall_score": 0.0,
-                        "total_samples": 0,
-                    }
-
-        # Calculate average score (excluding tasks with errors)
-        valid_scores = [
-            r["overall_score"]
-            for r in benchmark_results.values()
-            if "overall_score" in r and "error" not in r
-        ]
-        average_score = sum(valid_scores) / len(valid_scores) if valid_scores else 0.0
+        # Calculate successful tasks
+        successful = sum(1 for r in benchmark_results.values() if "error" not in r)
+        failed = len(benchmark_results) - successful
 
         print(f"\n=== Benchmark Summary ===")
         print(f"Total tasks: {len(benchmark_results)}")
-        print(f"Successful: {len(valid_scores)}")
-        print(f"Failed/Skipped: {len(benchmark_results) - len(valid_scores)}")
+        print(f"Successful: {successful}")
+        print(f"Failed/Skipped: {failed}")
         print(f"Average score: {average_score:.2%}")
         print(f"=========================\n")
 
@@ -929,31 +794,13 @@ async def run_pipeline_task(job: PipelineJob):
         job.current_stage = "loading_configuration"
         job.add_message("Starting pipeline...")
 
-        # Load best prompts configuration
-        best_prompts_file = "best_prompts.json"
-        if not os.path.exists(best_prompts_file):
-            raise Exception("best_prompts.json not found")
-
-        with open(best_prompts_file, "r") as f:
-            best_prompts_config = json.load(f)
-
-        # Load stored prompts
-        if not os.path.exists(PROMPTS_FILE):
-            raise Exception("stored_prompts.json not found")
-
-        with open(PROMPTS_FILE, "r") as f:
-            all_prompts = json.load(f)
-
-        # Build prompt details map
-        prompt_details_map = {}
-        for task, prompt_name in best_prompts_config.items():
-            matching_prompts = [
-                p for p in all_prompts if p["task"] == task and p["name"] == prompt_name
-            ]
-            if matching_prompts:
-                prompt_details_map[task] = matching_prompts[0]
-
-        job.add_message(f"Loaded {len(prompt_details_map)} prompts")
+        # Load best prompts using PromptManager utility
+        try:
+            prompt_manager = PromptManager()
+            prompt_details_map = prompt_manager.get_best_prompts()
+            job.add_message(f"Loaded {len(prompt_details_map)} prompts")
+        except Exception as e:
+            raise Exception(f"Failed to load prompts: {e}")
 
         # Get list of PMCIDs to process
         data_dir = job.config.get("data_dir", MARKDOWN_DIR)
@@ -1014,144 +861,59 @@ async def run_pipeline_task(job: PipelineJob):
 
         job.add_message(f"Completed processing {len(pmcids)} PMCIDs")
 
-        # Stage 1.5: Normalize terms
+        # Stage 1.5: Normalize terms using utility
         job.current_stage = "normalizing_terms"
         job.progress = 0.83
         job.add_message("Normalizing terms in outputs...")
 
-        normalized_count = 0
-        failed_count = 0
+        normalized_count, failed_count = normalize_outputs_in_directory(
+            output_dir, in_place=True, verbose=False
+        )
 
+        # Reload normalized data
         for pmcid in pmcids:
-            try:
-                output_file = Path(output_dir) / f"{pmcid}.json"
-                if output_file.exists():
-                    # Normalize in place (overwrite the original file)
-                    temp_file = output_file.with_suffix(".json.tmp")
-                    normalize_annotation(output_file, temp_file)
-                    temp_file.replace(output_file)
-
-                    # Reload the normalized data into all_outputs
-                    with open(output_file, "r") as f:
-                        all_outputs[pmcid] = json.load(f)
-
-                    normalized_count += 1
-                    job.add_message(f"Normalized terms for {pmcid}")
-            except Exception as e:
-                failed_count += 1
-                job.add_message(f"Warning: Failed to normalize {pmcid}: {str(e)}")
+            output_file = Path(output_dir) / f"{pmcid}.json"
+            if output_file.exists():
+                with open(output_file, "r") as f:
+                    all_outputs[pmcid] = json.load(f)
 
         job.add_message(
             f"Term normalization complete: {normalized_count} successful, {failed_count} failed"
         )
 
-        # Stage 2: Combine outputs
+        # Stage 2: Combine outputs using utility
         job.current_stage = "combining_outputs"
         job.progress = 0.85
         job.add_message("Combining outputs...")
 
         combined_file = os.path.join(output_dir, f"combined_{run_timestamp}.json")
-        # Match the format from combine_outputs.py - flat dict keyed by PMCID
-        with open(combined_file, "w") as f:
-            json.dump(all_outputs, f, indent=2)
+        combine_outputs(output_dir, combined_file, pmcids=pmcids)
 
         job.add_message(f"Saved combined output to {combined_file}")
 
-        # Stage 3: Run benchmarks
+        # Stage 3: Run benchmarks using BenchmarkRunner utility
         job.current_stage = "running_benchmarks"
         job.progress = 0.90
         job.add_message("Running benchmarks...")
 
-        # Load ground truth (prefer normalized version if available)
-        ground_truth_file = (
-            GROUND_TRUTH_NORMALIZED_FILE
-            if os.path.exists(GROUND_TRUTH_NORMALIZED_FILE)
-            else GROUND_TRUTH_FILE
-        )
+        try:
+            runner = BenchmarkRunner()
+            job.add_message(f"Using ground truth: {os.path.basename(runner.ground_truth_source)}")
 
-        if not os.path.exists(ground_truth_file):
-            raise Exception(f"Ground truth file not found: {ground_truth_file}")
+            # Benchmark all PMCIDs
+            all_benchmark_results, average_scores, overall_score = runner.benchmark_multiple(
+                all_outputs, verbose=False
+            )
 
-        job.add_message(f"Using ground truth: {os.path.basename(ground_truth_file)}")
+            # Add messages for missing ground truth
+            for pmcid, result in all_benchmark_results.items():
+                if result is None:
+                    job.add_message(f"Warning: No ground truth for {pmcid}, skipped")
 
-        with open(ground_truth_file, "r") as f:
-            ground_truth_data = json.load(f)
+            job.add_message(f"Benchmark complete. Overall score: {overall_score:.2%}")
 
-        # If using normalized file, skip the _metadata key
-        if "_metadata" in ground_truth_data:
-            del ground_truth_data["_metadata"]
-
-        # Benchmark each PMCID (matching run_benchmark.py logic)
-        all_benchmark_results = {}
-        for pmcid, output_data in all_outputs.items():
-            if pmcid not in ground_truth_data:
-                job.add_message(f"Warning: No ground truth for {pmcid}, skipping")
-                all_benchmark_results[pmcid] = None
-                continue
-
-            ground_truth = ground_truth_data[pmcid]
-            pmcid_benchmark = {}
-
-            # Phenotype benchmark - matches run_benchmark.py line 52-57
-            if (
-                "var_pheno_ann" in ground_truth
-                and len(ground_truth["var_pheno_ann"]) > 0
-            ):
-                gt_pheno = ground_truth["var_pheno_ann"]
-                pred_pheno = output_data.get("var_pheno_ann", [])
-                try:
-                    score = evaluate_phenotype_annotations([gt_pheno, pred_pheno])
-                    pmcid_benchmark["var_pheno_ann"] = score
-                except Exception as e:
-                    job.add_message(f"Phenotype benchmark failed for {pmcid}: {e}")
-
-            # Drug benchmark - matches run_benchmark.py line 59-64
-            if "var_drug_ann" in ground_truth and len(ground_truth["var_drug_ann"]) > 0:
-                gt_drug = ground_truth["var_drug_ann"]
-                pred_drug = output_data.get("var_drug_ann", [])
-                try:
-                    score = evaluate_drug_annotations([gt_drug, pred_drug])
-                    pmcid_benchmark["var_drug_ann"] = score
-                except Exception as e:
-                    job.add_message(f"Drug benchmark failed for {pmcid}: {e}")
-
-            # FA benchmark - matches run_benchmark.py line 66-73
-            if "var_fa_ann" in ground_truth and len(ground_truth["var_fa_ann"]) > 0:
-                gt_fa = ground_truth["var_fa_ann"]
-                pred_fa = output_data.get("var_fa_ann", [])
-                try:
-                    score = evaluate_fa_from_articles(ground_truth, output_data)
-                    pmcid_benchmark["var_fa_ann"] = score
-                except Exception as e:
-                    job.add_message(f"FA benchmark failed for {pmcid}: {e}")
-
-            all_benchmark_results[pmcid] = pmcid_benchmark
-
-        # Calculate overall scores from the detailed results
-        task_scores = {}
-        for pmcid, scores in all_benchmark_results.items():
-            if scores is None:
-                continue
-            for task, result in scores.items():
-                if task not in task_scores:
-                    task_scores[task] = []
-                # Extract overall_score from result dict (for drug/fa) or use raw score (for pheno)
-                if isinstance(result, dict):
-                    task_scores[task].append(result.get("overall_score", 0.0))
-                else:
-                    # Phenotype returns raw score (0-100), convert to 0-1
-                    task_scores[task].append(result / 100.0)
-
-        average_scores = {
-            task: sum(scores) / len(scores) for task, scores in task_scores.items()
-        }
-        overall_score = (
-            sum(average_scores.values()) / len(average_scores)
-            if average_scores
-            else 0.0
-        )
-
-        job.add_message(f"Benchmark complete. Overall score: {overall_score:.2%}")
+        except Exception as e:
+            raise Exception(f"Benchmark failed: {e}")
 
         # Stage 4: Save results
         job.current_stage = "saving_results"

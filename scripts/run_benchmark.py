@@ -1,83 +1,24 @@
+"""
+Script to benchmark generated annotations against ground truth.
+
+This is a thin CLI wrapper around the BenchmarkRunner utility.
+"""
+
 import json
+import argparse
 from datetime import datetime
 
-from benchmarks.pheno_benchmark import evaluate_phenotype_annotations
-from benchmarks.fa_benchmark import (
-    evaluate_fa_from_articles,
-    evaluate_functional_analysis,
-)
-
-from benchmarks.drug_benchmark import evaluate_drug_annotations
-
-BENCHMARK_FILE = "persistent_data/benchmark_annotations_normalized.json"
+from utils.benchmark_runner import BenchmarkRunner
+from utils.output_manager import load_output_by_path
 
 
-def load_benchmark_annotations():
-    with open(BENCHMARK_FILE, "r") as f:
+def load_generated_annotations_combined(file_path) -> dict:
+    """Load combined file with multiple PMCIDs."""
+    with open(file_path, "r") as f:
         return json.load(f)
 
 
-BENCHMARK_ANNOTATIONS = load_benchmark_annotations()
-
-
-def load_generated_annotations_single(file_path) -> (dict, str):
-    generated_annotations = {}
-    with open(file_path, "r") as f:
-        generated_annotations = json.load(f)
-
-    pmcid = generated_annotations.get("pmcid", "")
-    return generated_annotations, pmcid
-
-
-def load_generated_annotations_combined(file_path) -> list[(dict, str)]:
-    generated_annotations_by_pmcid = {}
-    with open(file_path, "r") as f:
-        generated_annotations_by_pmcid = json.load(f)
-
-    results = []
-    for pmcid, annotations in generated_annotations_by_pmcid.items():
-        results.append((annotations, pmcid))
-
-    return results
-
-
-def benchmark_pmcid(pmcid, generated_annotations: dict):
-    if pmcid not in BENCHMARK_ANNOTATIONS:
-        print(f"No benchmark annotations found for PMCID: {pmcid}")
-        return None  # No benchmark available
-
-    benchmark = BENCHMARK_ANNOTATIONS[pmcid]
-    scores = {}
-
-    if "var_pheno_ann" in benchmark and len(benchmark["var_pheno_ann"]) > 0:
-        gt_pheno_anns = benchmark["var_pheno_ann"]
-        pred_pheno_anns = generated_annotations.get("var_pheno_ann", [])
-
-        score = evaluate_phenotype_annotations([gt_pheno_anns, pred_pheno_anns])
-        scores["var_pheno_ann"] = score
-
-    if "var_drug_ann" in benchmark and len(benchmark["var_drug_ann"]) > 0:
-        gt_drug_anns = benchmark["var_drug_ann"]
-        pred_drug_anns = generated_annotations.get("var_drug_ann", [])
-
-        score = evaluate_drug_annotations([gt_drug_anns, pred_drug_anns])
-        scores["var_drug_ann"] = score
-
-    if "var_fa_ann" in benchmark and len(benchmark["var_fa_ann"]) > 0:
-        gt_fa_anns = benchmark["var_fa_ann"]
-        pred_fa_anns = generated_annotations.get("var_fa_ann", [])
-
-        score = evaluate_fa_from_articles(benchmark, generated_annotations)
-        # score = evaluate_functional_analysis()
-
-        scores["var_fa_ann"] = score
-
-    return scores
-
-
-if __name__ == "__main__":
-    import argparse
-
+def main():
     parser = argparse.ArgumentParser(
         description="Benchmark generated annotations against ground truth."
     )
@@ -91,7 +32,7 @@ if __name__ == "__main__":
     parser.add_argument(
         "--combined",
         help="Indicates if the generated annotations file is a combined file with multiple PMCIDs.",
-        type=bool,
+        action="store_true",
         default=False,
     )
 
@@ -104,31 +45,93 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
+    # Initialize benchmark runner
+    try:
+        runner = BenchmarkRunner()
+        print(f"Loaded ground truth from: {runner.ground_truth_source}")
+    except FileNotFoundError as e:
+        print(f"Error: {e}")
+        return 1
+
     if args.combined:
-        data = load_generated_annotations_combined(args.generated_file)
-        results = {}
-        for generated_annotations, pmcid in data:
-            print("Processing PMCID:", pmcid)
-            scores = benchmark_pmcid(pmcid, generated_annotations)
-            if scores is not None:
-                print(f"Benchmark scores for PMCID {pmcid}: {scores}")
-            else:
-                print(f"No benchmark available for PMCID {pmcid}.")
+        # Load combined file
+        print(f"Loading combined file: {args.generated_file}")
+        combined_data = load_generated_annotations_combined(args.generated_file)
 
-            results[pmcid] = scores
-            print("-----")
-
-        # Save results to output file
-        with open(args.output_file, "w") as f:
-            json.dump(results, f, indent=4)
-
-    else:
-        generated_annotations, pmcid = load_generated_annotations_single(
-            args.generated_file
+        # Benchmark all PMCIDs
+        print(f"\nBenchmarking {len(combined_data)} PMCIDs...")
+        all_results, task_averages, overall_score = runner.benchmark_multiple(
+            combined_data, verbose=True
         )
-        scores = benchmark_pmcid(pmcid, generated_annotations)
 
-    if scores is not None:
-        print(f"Benchmark scores for PMCID {pmcid}: {scores}")
+        # Save detailed results
+        output = {
+            "timestamp": datetime.now().isoformat(),
+            "source_file": args.generated_file,
+            "summary": {
+                "total_pmcids": len(combined_data),
+                "benchmarked_pmcids": sum(1 for r in all_results.values() if r is not None),
+                "task_averages": task_averages,
+                "overall_score": overall_score,
+            },
+            "pmcid_results": all_results,
+        }
+
+        with open(args.output_file, "w") as f:
+            json.dump(output, f, indent=4)
+
+        print(f"\n=== Summary ===")
+        print(f"Total PMCIDs: {len(combined_data)}")
+        print(f"Overall Score: {overall_score:.2%}")
+        print(f"Task Averages:")
+        for task, score in task_averages.items():
+            print(f"  {task}: {score:.2%}")
+        print(f"\nResults saved to: {args.output_file}")
+
     else:
-        print(f"No benchmark available for PMCID {pmcid}.")
+        # Load single file
+        print(f"Loading file: {args.generated_file}")
+        generated_annotations = load_output_by_path(args.generated_file)
+
+        # Extract PMCID
+        pmcid = generated_annotations.get("pmcid")
+        if not pmcid:
+            print("Error: No PMCID found in output file")
+            return 1
+
+        print(f"PMCID: {pmcid}")
+
+        # Check if ground truth exists
+        if not runner.has_ground_truth(pmcid):
+            print(f"Error: No benchmark annotations found for PMCID: {pmcid}")
+            return 1
+
+        # Run benchmark
+        print(f"\nRunning benchmark...")
+        scores = runner.benchmark_pmcid(pmcid, generated_annotations, verbose=True)
+
+        # Calculate overall score
+        task_scores = runner.calculate_task_averages({pmcid: scores})
+        overall_score = runner.calculate_overall_score(task_scores)
+
+        # Save results
+        output = {
+            "timestamp": datetime.now().isoformat(),
+            "pmcid": pmcid,
+            "source_file": args.generated_file,
+            "results": scores,
+            "overall_score": overall_score,
+        }
+
+        with open(args.output_file, "w") as f:
+            json.dump(output, f, indent=4)
+
+        print(f"\n=== Summary ===")
+        print(f"Overall Score: {overall_score:.2%}")
+        print(f"Results saved to: {args.output_file}")
+
+    return 0
+
+
+if __name__ == "__main__":
+    exit(main())

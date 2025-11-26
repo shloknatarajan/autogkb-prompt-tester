@@ -5,6 +5,7 @@
 *.egg-info
 
 __pycache__/
+.DS_Store
 
 benchmark_output.json
 benchmark_results/
@@ -12,4 +13,4 @@ outputs/
 logs/
 data/
 
-.DS_Store
+CLAUDE.md

@@ -268,25 +268,53 @@ Retrieve all saved prompts.
 
 ```
 autogkb-prompt-tester/
+├── utils/                           # Shared utilities (NEW)
+│   ├── config.py                   # Centralized configuration
+│   ├── benchmark_runner.py         # Benchmark execution
+│   ├── prompt_manager.py           # Prompt loading/selection
+│   ├── citation_generator.py       # Citation generation
+│   ├── output_manager.py           # Output file handling
+│   └── normalization.py            # Term normalization
+│
 ├── frontend/
 │   ├── src/
 │   │   ├── components/
-│   │   │   ├── PromptsSidebar.jsx    # Left sidebar - prompt list
-│   │   │   ├── OutputsSidebar.jsx    # Right sidebar - outputs
-│   │   │   └── PromptDetails.jsx     # Main content - prompt config
+│   │   │   ├── PromptsSidebar.tsx   # Left sidebar - prompt list
+│   │   │   ├── OutputsSidebar.tsx   # Right sidebar - outputs
+│   │   │   └── PromptDetails.tsx    # Main content - prompt config
 │   │   ├── hooks/
-│   │   │   └── usePrompts.js         # Custom hook for prompt logic
-│   │   ├── App.jsx                   # Main app component
-│   │   ├── App.css                   # Styles
-│   │   └── main.jsx                  # Entry point
+│   │   │   └── usePrompts.ts        # Custom hook for prompt logic
+│   │   ├── App.tsx                  # Main app component
+│   │   └── main.tsx                 # Entry point
 │   ├── package.json
-│   └── vite.config.js
-├── main.py                           # FastAPI backend
-├── llm.py                            # LLM API integration
-├── stored_prompts.json              # Saved prompts (auto-generated)
-├── pixi.toml                        # Pixi configuration
-├── .env                             # Environment variables (create this)
-└── README.md                        # This file
+│   └── vite.config.ts
+│
+├── benchmarks/                      # Evaluation system
+│   ├── pheno_benchmark.py
+│   ├── drug_benchmark.py
+│   └── fa_benchmark.py
+│
+├── scripts/                         # CLI automation (thin wrappers)
+│   ├── run_benchmark.py
+│   ├── combine_outputs.py
+│   ├── normalize_terms.py
+│   ├── batch_process.py
+│   └── full-benchmark-pipeline.py
+│
+├── term_normalization/              # Term standardization
+├── data/                            # Input data
+├── persistent_data/                 # Ground truth
+├── outputs/                         # Generated annotations
+├── benchmark_results/               # Evaluation results
+│
+├── main.py                          # FastAPI backend (~1,100 lines)
+├── llm.py                           # LLM API integration
+├── stored_prompts.json             # Saved prompts (auto-generated)
+├── best_prompts.json               # Best prompt configuration
+├── pixi.toml                       # Pixi configuration
+├── .env                            # Environment variables (create this)
+├── CLAUDE.md                       # Comprehensive project documentation
+└── README.md                       # This file
 ```
 
 ## Data Storage
@@ -316,27 +344,64 @@ Prompts are stored in `stored_prompts.json` with the following structure:
 - `gpt-4`
 - `gpt-3.5-turbo`
 
+## Code Organization
+
+### Shared Utilities Architecture
+
+The project follows a **shared utilities pattern** to eliminate code duplication:
+
+**Key Benefits:**
+- Single source of truth for common operations
+- Consistent behavior between FastAPI backend and CLI scripts
+- ~800 lines of duplicated code eliminated
+- All critical bugs fixed (path handling, ground truth loading)
+
+**Utility Modules:**
+- `utils/benchmark_runner.py` - Benchmark execution with automatic ground truth fallback
+- `utils/prompt_manager.py` - Prompt loading and selection
+- `utils/citation_generator.py` - Citation generation with shared template
+- `utils/output_manager.py` - File I/O with validation
+- `utils/normalization.py` - Term normalization helpers
+- `utils/config.py` - Centralized configuration constants
+
+Both `main.py` and CLI scripts import from these utilities, ensuring identical behavior.
+
+See `CLAUDE.md` for detailed documentation of all components.
+
 ## Development
 
 ### Adding New Components
 
 1. Create component in `frontend/src/components/`
-2. Import and use in `App.jsx`
+2. Import and use in `App.tsx`
 3. Add props and callbacks as needed
 
 ### Adding New API Endpoints
 
 1. Define Pydantic model in `main.py`
 2. Create endpoint function with `@app.post()` or `@app.get()`
-3. Add corresponding function in `usePrompts.js` hook
-4. Update documentation
+3. Consider adding corresponding utility in `utils/` if logic is reusable
+4. Add corresponding function in `usePrompts.ts` hook
+5. Update documentation
+
+### Using Shared Utilities
+
+When adding new features, check if utilities already exist:
+
+```python
+# Good: Use shared utility
+from utils.benchmark_runner import BenchmarkRunner
+runner = BenchmarkRunner()
+
+# Bad: Duplicate benchmarking logic
+# Don't copy-paste code from main.py or scripts
+```
 
 ### Styling
 
-All styles are in `frontend/src/App.css`. The app uses a three-column layout:
-- Left sidebar: 250px fixed
-- Main content: Flexible width
-- Right sidebar: 350px fixed
+All styles are in `frontend/src/index.css`. The app uses Tailwind CSS with a two-tab interface:
+- Prompt Testing Tab: Three-column layout (prompts | config | outputs)
+- Benchmarks Tab: Two sub-tabs (single | pipeline)
 
 ## Troubleshooting
 

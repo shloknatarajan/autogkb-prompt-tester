@@ -1,45 +1,90 @@
-from pathlib import Path
-from term_normalization.term_lookup import normalize_annotation
+"""
+Script to normalize terms in annotation output files.
 
-input_path = Path("outputs/PMC2859392.json")
-output_path = Path("outputs/PMC2859392_normalized.json")
+This is a thin CLI wrapper around the normalization utility.
+"""
 
-normalize_annotation(input_path, output_path)
+import argparse
 
-# normalize directory
-# def normalize_directory(input_dir: Path, output_dir: Path):
-#     """
-#     Normalize all JSON files in the input directory and save them to the output directory.
-#
-#     Args:
-#         input_dir (Path): Path to the input directory
-#         output_dir (Path): Path to the output directory
-#     """
-#     output_dir.mkdir(parents=True, exist_ok=True)
-#
-#     for input_file in input_dir.glob("*.json"):
-#         output_file = output_dir / input_file.name
-#         normalize_annotation(input_file, output_file)
-#
-#
-# if __name__ == "__main__":
-#     Parser = argparse.ArgumentParser(
-#         description="Normalize all JSON annotation files in a directory."
-#     )
-#     Parser.add_argument(
-#         "--input_directory",
-#         type=str,
-#         help="Path to the input directory containing JSON files.",
-#         default="outputs",
-#     )
-#     Parser.add_argument(
-#         "--output_directory",
-#         type=str,
-#         help="Path to the output directory to save normalized JSON files.",
-#         default="outputs_normalized",
-#     )
-#     args = Parser.parse_args()
-#     input_directory = Path(args.input_directory)
-#     output_directory = Path(args.output_directory)
-#
-#     normalize_directory(input_directory, output_directory)
+from utils.normalization import normalize_outputs_in_directory, normalize_output_file
+
+
+def main():
+    parser = argparse.ArgumentParser(
+        description="Normalize terms in annotation JSON files."
+    )
+    parser.add_argument(
+        "--directory",
+        type=str,
+        help="Path to directory containing JSON files to normalize",
+        default=None,
+    )
+    parser.add_argument(
+        "--file",
+        type=str,
+        help="Path to single JSON file to normalize",
+        default=None,
+    )
+    parser.add_argument(
+        "--in-place",
+        action="store_true",
+        help="Overwrite original files instead of creating *_normalized.json",
+        default=True,
+    )
+    parser.add_argument(
+        "--output",
+        type=str,
+        help="Output file path (only for single file mode)",
+        default=None,
+    )
+
+    args = parser.parse_args()
+
+    if args.directory:
+        # Normalize entire directory
+        print(f"Normalizing directory: {args.directory}")
+        print(f"In-place: {args.in_place}")
+
+        success, failed = normalize_outputs_in_directory(
+            args.directory, in_place=args.in_place, verbose=True
+        )
+
+        print(f"\n=== Summary ===")
+        print(f"Successful: {success}")
+        print(f"Failed: {failed}")
+
+        return 0 if failed == 0 else 1
+
+    elif args.file:
+        # Normalize single file
+        print(f"Normalizing file: {args.file}")
+
+        # Determine output file
+        if args.output:
+            output_file = args.output
+        elif args.in_place:
+            output_file = args.file
+        else:
+            # Create _normalized version
+            if args.file.endswith(".json"):
+                output_file = args.file.replace(".json", "_normalized.json")
+            else:
+                output_file = f"{args.file}_normalized"
+
+        success = normalize_output_file(args.file, output_file, verbose=True)
+
+        if success:
+            print(f"Output saved to: {output_file}")
+            return 0
+        else:
+            print("Normalization failed")
+            return 1
+
+    else:
+        print("Error: Must specify either --directory or --file")
+        parser.print_help()
+        return 1
+
+
+if __name__ == "__main__":
+    exit(main())
