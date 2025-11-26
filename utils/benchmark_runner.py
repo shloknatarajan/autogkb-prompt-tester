@@ -12,6 +12,7 @@ from typing import Dict, Optional, List, Tuple
 from benchmarks.pheno_benchmark import evaluate_phenotype_annotations
 from benchmarks.drug_benchmark import evaluate_drug_annotations
 from benchmarks.fa_benchmark import evaluate_fa_from_articles
+from benchmarks.study_parameters_benchmark import evaluate_study_parameters
 
 from .config import GROUND_TRUTH_FILE, GROUND_TRUTH_NORMALIZED_FILE
 
@@ -160,7 +161,9 @@ class BenchmarkRunner:
                         "total_samples": result.get("total_samples", len(pred_drug)),
                     }
                     if verbose:
-                        print(f"✓ Drug benchmark score: {result.get('overall_score', 0):.2f}")
+                        print(
+                            f"✓ Drug benchmark score: {result.get('overall_score', 0):.2f}"
+                        )
                 except Exception as e:
                     if verbose:
                         print(f"✗ Drug benchmark failed: {e}")
@@ -193,11 +196,50 @@ class BenchmarkRunner:
                         "total_samples": result.get("total_samples", len(pred_fa)),
                     }
                     if verbose:
-                        print(f"✓ FA benchmark score: {result.get('overall_score', 0):.2f}")
+                        print(
+                            f"✓ FA benchmark score: {result.get('overall_score', 0):.2f}"
+                        )
                 except Exception as e:
                     if verbose:
                         print(f"✗ FA benchmark failed: {e}")
                     results["var-fa"] = {
+                        "error": f"Evaluation failed: {str(e)}",
+                        "overall_score": 0.0,
+                        "total_samples": 0,
+                    }
+
+        # Study parameters benchmark
+        if (
+            "study_parameters" in ground_truth
+            and len(ground_truth["study_parameters"]) > 0
+        ):
+            gt_sp = ground_truth["study_parameters"]
+            pred_sp = predictions.get("study_parameters", [])
+
+            if not pred_sp:
+                results["study-parameters"] = {
+                    "error": "Empty predictions list",
+                    "overall_score": 0.0,
+                    "total_samples": 0,
+                }
+                if verbose:
+                    print(f"✗ Study parameters benchmark skipped: empty predictions")
+            else:
+                try:
+                    result = evaluate_study_parameters([gt_sp, pred_sp])
+                    results["study-parameters"] = {
+                        "overall_score": result.get("overall_score", 0.0),
+                        "field_scores": result.get("field_scores", {}),
+                        "total_samples": result.get("total_samples", len(pred_sp)),
+                    }
+                    if verbose:
+                        print(
+                            f"✓ Study parameters benchmark score: {result.get('overall_score', 0):.2f}"
+                        )
+                except Exception as e:
+                    if verbose:
+                        print(f"✗ Study parameters benchmark failed: {e}")
+                    results["study-parameters"] = {
                         "error": f"Evaluation failed: {str(e)}",
                         "overall_score": 0.0,
                         "total_samples": 0,

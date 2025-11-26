@@ -75,7 +75,9 @@ def normalize_drug_field(drug_str: str, drug_lookup: DrugLookup) -> dict:
     return {"normalized": drug_str, "drug_id": None, "confidence": 0.0}
 
 
-def normalize_annotation(annotation: dict, variant_lookup: VariantLookup, drug_lookup: DrugLookup) -> dict:
+def normalize_annotation(
+    annotation: dict, variant_lookup: VariantLookup, drug_lookup: DrugLookup
+) -> dict:
     """
     Add normalized fields to a single annotation.
 
@@ -87,7 +89,9 @@ def normalize_annotation(annotation: dict, variant_lookup: VariantLookup, drug_l
 
     # Normalize variant field
     if "Variant/Haplotypes" in annotation:
-        variant_data = normalize_variant_field(annotation["Variant/Haplotypes"], variant_lookup)
+        variant_data = normalize_variant_field(
+            annotation["Variant/Haplotypes"], variant_lookup
+        )
         normalized_ann["Variant/Haplotypes_normalized"] = variant_data
 
     # Normalize drug field
@@ -137,7 +141,13 @@ def main():
         print(f"Processing {pmcid}...")
         normalized_pmcid = {}
 
-        for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann"]:
+        # Copy metadata fields (pmid, title, etc.)
+        for key in ["pmid", "title"]:
+            if key in pmcid_data:
+                normalized_pmcid[key] = pmcid_data[key]
+
+        # Process annotation types
+        for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann", "study_parameters"]:
             if ann_type not in pmcid_data:
                 continue
 
@@ -153,7 +163,9 @@ def main():
 
                 # Track successful normalizations
                 if "Variant/Haplotypes_normalized" in normalized_ann:
-                    if normalized_ann["Variant/Haplotypes_normalized"].get("variant_id"):
+                    if normalized_ann["Variant/Haplotypes_normalized"].get(
+                        "variant_id"
+                    ):
                         variant_normalizations += 1
 
                 if "Drug(s)_normalized" in normalized_ann:
@@ -176,22 +188,9 @@ def main():
     print(f"Drugs normalized:         {drug_normalizations}")
     print()
 
-    # Add metadata
-    normalized_output = {
-        "_metadata": {
-            "created_at": datetime.now().isoformat(),
-            "source_file": str(input_file),
-            "total_pmcids": len(ground_truth),
-            "total_annotations": total_annotations,
-            "variants_normalized": variant_normalizations,
-            "drugs_normalized": drug_normalizations,
-        },
-        **normalized_data
-    }
-
     # Save normalized data
     with open(output_file, "w") as f:
-        json.dump(normalized_output, f, indent=2)
+        json.dump(normalized_data, f, indent=2)
 
     print(f"✓ Saved normalized data to {output_file}")
     print()

@@ -279,7 +279,9 @@ async def generate_citations_for_annotation(
 ) -> list[str]:
     """Generate citations for a single annotation by finding supporting quotes in the text."""
     # Use the shared utility function
-    return await generate_citations(annotation, full_text, model, citation_prompt_template)
+    return await generate_citations(
+        annotation, full_text, model, citation_prompt_template
+    )
 
 
 async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
@@ -923,12 +925,16 @@ async def run_pipeline_task(job: PipelineJob):
 
         try:
             runner = BenchmarkRunner()
-            job.add_message(f"Using ground truth: {os.path.basename(runner.ground_truth_source)}")
+            job.add_message(
+                f"Using ground truth: {os.path.basename(runner.ground_truth_source)}"
+            )
 
             # Benchmark all PMCIDs
-            all_benchmark_results, average_scores, overall_score = runner.benchmark_multiple(
-                all_outputs, verbose=False
-            )
+            (
+                all_benchmark_results,
+                average_scores,
+                overall_score,
+            ) = runner.benchmark_multiple(all_outputs, verbose=False)
 
             # Add messages for missing ground truth
             for pmcid, result in all_benchmark_results.items():

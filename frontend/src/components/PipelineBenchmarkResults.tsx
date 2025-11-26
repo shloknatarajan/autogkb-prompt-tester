@@ -69,6 +69,31 @@ export default function PipelineBenchmarkResults({
     result: DetailedResult;
   } | null>(null);
 
+  // Extract task names from summary scores
+  const taskNames = Object.keys(result.summary.scores);
+
+  // Format task names for display
+  const formatTaskName = (task: string): string => {
+    const names: { [key: string]: string } = {
+      'var-pheno': 'Phenotype',
+      'var-drug': 'Drug',
+      'var-fa': 'FA',
+      'study-parameters': 'Study Params',
+    };
+    return names[task] || task;
+  };
+
+  // Convert task name to annotation key used in pmcid_results
+  const taskToAnnotationKey = (task: string): string => {
+    const mapping: { [key: string]: string } = {
+      'var-pheno': 'var_pheno_ann',
+      'var-drug': 'var_drug_ann',
+      'var-fa': 'var_fa_ann',
+      'study-parameters': 'study_parameters',
+    };
+    return mapping[task] || task;
+  };
+
   const getScoreColor = (score: number): string => {
     if (score >= 0.8) return 'text-green-600 bg-green-50';
     if (score >= 0.5) return 'text-yellow-600 bg-yellow-50';
@@ -189,9 +214,9 @@ export default function PipelineBenchmarkResults({
             <TableHeader>
               <TableRow>
                 <TableHead className="w-[150px]">PMCID</TableHead>
-                <TableHead>Phenotype</TableHead>
-                <TableHead>Drug</TableHead>
-                <TableHead>FA</TableHead>
+                {taskNames.map((task) => (
+                  <TableHead key={task}>{formatTaskName(task)}</TableHead>
+                ))}
                 <TableHead className="w-[100px]">Actions</TableHead>
               </TableRow>
             </TableHeader>
@@ -200,61 +225,41 @@ export default function PipelineBenchmarkResults({
                 <>
                   <TableRow key={pmcid}>
                     <TableCell className="font-mono text-sm">{pmcid}</TableCell>
-                    <TableCell>
-                      {scores?.var_pheno_ann !== undefined ? (
-                        <span
-                          className={`px-2 py-1 rounded ${getScoreColor(getNumericScore(scores.var_pheno_ann))}`}
-                        >
-                          {formatScore(scores.var_pheno_ann)}
-                        </span>
-                      ) : (
-                        <span className="text-muted-foreground">-</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {scores?.var_drug_ann !== undefined ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className={`px-2 py-1 h-auto ${getScoreColor(getNumericScore(scores.var_drug_ann))}`}
-                          onClick={() => {
-                            if (typeof scores.var_drug_ann === 'object') {
-                              handleViewDetails(
-                                pmcid,
-                                'var_drug_ann',
-                                scores.var_drug_ann as DetailedResult,
-                              );
-                            }
-                          }}
-                        >
-                          {formatScore(scores.var_drug_ann)}
-                        </Button>
-                      ) : (
-                        <span className="text-muted-foreground">-</span>
-                      )}
-                    </TableCell>
-                    <TableCell>
-                      {scores?.var_fa_ann !== undefined ? (
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          className={`px-2 py-1 h-auto ${getScoreColor(getNumericScore(scores.var_fa_ann))}`}
-                          onClick={() => {
-                            if (typeof scores.var_fa_ann === 'object') {
-                              handleViewDetails(
-                                pmcid,
-                                'var_fa_ann',
-                                scores.var_fa_ann as DetailedResult,
-                              );
-                            }
-                          }}
-                        >
-                          {formatScore(scores.var_fa_ann)}
-                        </Button>
-                      ) : (
-                        <span className="text-muted-foreground">-</span>
-                      )}
-                    </TableCell>
+                    {taskNames.map((task) => {
+                      const annotationKey = taskToAnnotationKey(task);
+                      const score = scores?.[annotationKey];
+
+                      return (
+                        <TableCell key={task}>
+                          {score !== undefined ? (
+                            typeof score === 'object' ? (
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className={`px-2 py-1 h-auto ${getScoreColor(getNumericScore(score))}`}
+                                onClick={() => {
+                                  handleViewDetails(
+                                    pmcid,
+                                    annotationKey,
+                                    score as DetailedResult,
+                                  );
+                                }}
+                              >
+                                {formatScore(score)}
+                              </Button>
+                            ) : (
+                              <span
+                                className={`px-2 py-1 rounded ${getScoreColor(getNumericScore(score))}`}
+                              >
+                                {formatScore(score)}
+                              </span>
+                            )
+                          ) : (
+                            <span className="text-muted-foreground">-</span>
+                          )}
+                        </TableCell>
+                      );
+                    })}
                     <TableCell>
                       <Button
                         variant="ghost"
@@ -275,7 +280,7 @@ export default function PipelineBenchmarkResults({
                   </TableRow>
                   {expandedPmcid === pmcid && (
                     <TableRow>
-                      <TableCell colSpan={5} className="bg-muted/50">
+                      <TableCell colSpan={taskNames.length + 2} className="bg-muted/50">
                         <div className="p-4 space-y-2">
                           <div className="font-medium">Task Details:</div>
                           {Object.entries(scores!).map(([task, result]) => (
