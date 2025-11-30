@@ -894,7 +894,7 @@ async def run_pipeline_task(job: PipelineJob):
         job.add_message("Normalizing terms in outputs...")
 
         normalized_count, failed_count = normalize_outputs_in_directory(
-            output_dir, in_place=True, verbose=False
+            output_dir, in_place=True, verbose=True
         )
 
         # Reload normalized data

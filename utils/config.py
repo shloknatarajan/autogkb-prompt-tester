@@ -26,6 +26,6 @@ GROUND_TRUTH_NORMALIZED_FILE = os.path.join(
 BENCHMARK_PMCIDS_FILE = os.path.join(PERSISTENT_DATA_DIR, "benchmark_pmcids.txt")
 
 # Normalization data
-TERM_LOOKUP_DIR = "persistent_data/term_lookup_info"
+TERM_LOOKUP_DIR = "data/term_lookup_info"
 VARIANTS_TSV = os.path.join(TERM_LOOKUP_DIR, "variants.tsv")
 DRUGS_TSV = os.path.join(TERM_LOOKUP_DIR, "drugs.tsv")

@@ -122,14 +122,17 @@ class BenchmarkRunner:
                     print(f"✗ Phenotype benchmark skipped: empty predictions")
             else:
                 try:
-                    score = evaluate_phenotype_annotations([gt_pheno, pred_pheno])
+                    result = evaluate_phenotype_annotations([gt_pheno, pred_pheno])
                     results["var-pheno"] = {
-                        "overall_score": score / 100.0,  # Normalize to 0-1
-                        "raw_score": score,  # Keep original 0-100 score
-                        "total_samples": len(pred_pheno),
+                        "overall_score": result.get("overall_score", 0.0),  # Already 0-1
+                        "field_scores": result.get("field_scores", {}),
+                        "total_samples": result.get("total_samples", len(pred_pheno)),
+                        "detailed_results": result.get("detailed_results", []),
                     }
                     if verbose:
-                        print(f"✓ Phenotype benchmark score: {score}/100")
+                        print(
+                            f"✓ Phenotype benchmark score: {result.get('overall_score', 0):.2f}"
+                        )
                 except Exception as e:
                     if verbose:
                         print(f"✗ Phenotype benchmark failed: {e}")
