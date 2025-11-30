@@ -162,6 +162,7 @@ class BenchmarkRunner:
                         "overall_score": result.get("overall_score", 0.0),
                         "field_scores": result.get("field_scores", {}),
                         "total_samples": result.get("total_samples", len(pred_drug)),
+                        "detailed_results": result.get("detailed_results", []),
                     }
                     if verbose:
                         print(

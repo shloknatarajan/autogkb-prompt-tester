@@ -2,53 +2,67 @@
 # SPDX-License-Identifier: Apache-2.0
 from typing import Dict, List, Any, Optional, Tuple
 from difflib import SequenceMatcher
-import numpy as np
 import re
-from sentence_transformers import SentenceTransformer
+from benchmarks.shared_utils import (
+    exact_match,
+    semantic_similarity,
+    category_equal,
+    variant_substring_match,
+    compute_weighted_score,
+    parse_variant_list,
+    normalize_variant,
+)
 
 
-_model: Optional[SentenceTransformer] = None
+def validate_drug_dependencies(annotation: Dict[str, Any]) -> List[str]:
+    """Validate field dependencies for drug annotations."""
+    issues: List[str] = []
+
+    # Direction of effect requires Is/Is Not associated = "Associated with"
+    direction = annotation.get("Direction of effect")
+    association = annotation.get("Is/Is Not associated")
+    if direction and association != "Associated with":
+        issues.append("Direction of effect requires 'Associated with' status")
+
+    # Comparison Allele(s) requires Variant/Haplotypes
+    comparison_alleles = annotation.get("Comparison Allele(s) or Genotype(s)")
+    variants = annotation.get("Variant/Haplotypes")
+    if comparison_alleles and not variants:
+        issues.append(
+            "Variant/Haplotypes required when Comparison Allele(s) is specified"
+        )
+
+    # Multiple drugs And/or should be consistent with Drug(s) presence
+    multiple_drugs_op = annotation.get("Multiple drugs And/or")
+    drugs = annotation.get("Drug(s)")
+    if multiple_drugs_op and not drugs:
+        issues.append("Drug(s) field should be present when Multiple drugs And/or is specified")
+
+    return issues
 
 
-def _get_model() -> SentenceTransformer:
-    global _model
-    if _model is None:
-        _model = SentenceTransformer("pritamdeka/S-PubMedBert-MS-MARCO")
-    return _model
-
-
-def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
+def evaluate_drug_annotations(
+    samples: List[Dict[str, Any]],
+    field_weights: Optional[Dict[str, float]] = None,
+) -> Dict[str, Any]:
     """
     Parallel benchmark for drug entries.
     Input is a list with exactly two dicts:
       - samples[0] = ground truth annotation dict
       - samples[1] = prediction annotation dict
+
+    Args:
+        samples: [ground_truth_dict, prediction_dict]
+        field_weights: Optional dict mapping field names to weights for weighted scoring.
+                      If None, all fields are weighted equally (unweighted mean).
     """
 
     if not isinstance(samples, list) or len(samples) != 2:
         raise ValueError(
-            "Expected a list with exactly two dicts: [ground_truth, prediction]."
+            "Expected a list with exactly two items: [ground_truth, prediction]."
         )
     gt_list_raw = samples[0]
     pred_list_raw = samples[1]
-    # gt, pred = samples[0], samples[1]
-    # if not isinstance(gt, dict) or not isinstance(pred, dict):
-    #     raise ValueError(
-    #         "Both items must be dicts: [ground_truth_dict, prediction_dict]."
-    #     )
-
-    # Variant expansion and alignment (mirroring FA)
-    def parse_variant_list(variants_text: Optional[str]) -> List[str]:
-        if not variants_text:
-            return []
-        tokens = re.split(r"[,;|\s]+(?:\+\s*)?", variants_text)
-        return [t.strip() for t in tokens if t and t.strip()]
-
-    def normalize_variant(variant: str) -> str:
-        v = variant.strip()
-        if v.lower().startswith("rs"):
-            return v.lower()
-        return re.sub(r"\s+", "", v)
 
     def expand_annotations_by_variant(
         annotations: List[Dict[str, Any]],
@@ -75,21 +89,12 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
         gt_expanded = expand_annotations_by_variant(ground_truth_list or [])
         pred_expanded = expand_annotations_by_variant(predictions_list or [])
 
-        # Build prediction index with normalized IDs and fallback fields
-        pred_index: List[Tuple[str | None, set, str, Dict[str, Any]]] = []
+        pred_index: List[Tuple[set, str, Dict[str, Any]]] = []
         for rec in pred_expanded:
             raw = (rec.get("Variant/Haplotypes") or "").strip()
             raw_norm = normalize_variant(raw).lower()
             rsids = set(m.group(0).lower() for m in rs_re.finditer(raw))
-
-            # Extract normalized variant ID if available
-            variant_id = None
-            if "Variant/Haplotypes_normalized" in rec:
-                norm_data = rec["Variant/Haplotypes_normalized"]
-                if isinstance(norm_data, dict):
-                    variant_id = norm_data.get("variant_id")
-
-            pred_index.append((variant_id, rsids, raw_norm, rec))
+            pred_index.append((rsids, raw_norm, rec))
 
         aligned_gt: List[Dict[str, Any]] = []
         aligned_pred: List[Dict[str, Any]] = []
@@ -100,32 +105,14 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
             gt_norm = normalize_variant(gt_raw).lower()
             gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
 
-            # Extract normalized variant ID if available
-            gt_variant_id = None
-            if "Variant/Haplotypes_normalized" in gt_rec:
-                norm_data = gt_rec["Variant/Haplotypes_normalized"]
-                if isinstance(norm_data, dict):
-                    gt_variant_id = norm_data.get("variant_id")
-
             match = None
-
-            # Strategy 1: Match on normalized PharmGKB Variant ID (highest priority)
-            if gt_variant_id:
-                for variant_id, rsids, raw_norm, pred_rec in pred_index:
-                    if variant_id and variant_id == gt_variant_id:
-                        match = pred_rec
-                        break
-
-            # Strategy 2: rsID intersection match (existing logic)
-            if match is None and gt_rs:
-                for variant_id, rsids, raw_norm, pred_rec in pred_index:
+            if gt_rs:
+                for rsids, raw_norm, pred_rec in pred_index:
                     if rsids & gt_rs:
                         match = pred_rec
                         break
-
-            # Strategy 3: Normalized substring match (existing fallback)
             if match is None and gt_norm:
-                for variant_id, rsids, raw_norm, pred_rec in pred_index:
+                for rsids, raw_norm, pred_rec in pred_index:
                     if gt_norm in raw_norm:
                         match = pred_rec
                         break
@@ -139,8 +126,6 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
         return aligned_gt, aligned_pred, display_keys
 
     # Prepare lists and align
-    # gt_list_raw: List[Dict[str, Any]] = [gt]
-    # pred_list_raw: List[Dict[str, Any]] = [pred]
     gt_list, pred_list, _ = align_by_variant(gt_list_raw, pred_list_raw)
     if not gt_list:
         # nothing aligned; return empty result structure
@@ -149,13 +134,7 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
             "field_scores": {},
             "overall_score": 0.0,
             "detailed_results": [],
-            "status": "No aligned drug annotations found between ground truth and prediction.",
         }
-    # print(f"Aligned {len(gt_list)} drug annotations for benchmarking.")
-    # print("Aligned variants gt:", [g.get("Variant/Haplotypes") for g in gt_list])
-    # print("Aligned variants pred:", [p.get("Variant/Haplotypes") for p in pred_list])
-
-    model = _get_model()
 
     def normalize_drug_name(name: str) -> str:
         # lowercase, strip, collapse whitespace, standardize separators
@@ -186,37 +165,7 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
                 unique.append(t)
         return unique
 
-    def exact_match(gt_val: Any, pred_val: Any) -> float:
-        if gt_val is None and pred_val is None:
-            return 1.0
-        if gt_val is None or pred_val is None:
-            return 0.0
-        return (
-            1.0 if str(gt_val).strip().lower() == str(pred_val).strip().lower() else 0.0
-        )
-
-    def semantic_similarity(gt_val: Any, pred_val: Any) -> float:
-        if gt_val is None and pred_val is None:
-            return 1.0
-        if gt_val is None or pred_val is None:
-            return 0.0
-        gt_str = str(gt_val).strip()
-        pred_str = str(pred_val).strip()
-        if gt_str == pred_str:
-            return 1.0
-        try:
-            embeddings = model.encode([gt_str, pred_str])
-            gt_embedding = embeddings[0]
-            pred_embedding = embeddings[1]
-            similarity = float(
-                np.dot(gt_embedding, pred_embedding)
-                / (np.linalg.norm(gt_embedding) * np.linalg.norm(pred_embedding))
-            )
-            return similarity
-        except Exception:
-            return SequenceMatcher(None, gt_str.lower(), pred_str.lower()).ratio()
-
-    def variant_substring_match(gt_val: Any, pred_val: Any) -> float:
+    def variant_substring_match_with_phenotype_groups(gt_val: Any, pred_val: Any) -> float:
         """Return 1.0 if GT substring appears in prediction (case-insensitive).
         Also accept canonical gene-phenotype group labels via category equality.
         """
@@ -242,52 +191,10 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
             return 1.0 if not pred_str else 0.0
         return 1.0 if gt_str in pred_str else 0.0
 
-    def parse_allele_tokens(text: Optional[str]) -> List[str]:
-        if not text:
-            return []
-        # split on '+' and whitespace and commas/semicolons
-        parts = re.split(r"[+/,;\s]+", str(text))
-        tokens = [p.strip().lower() for p in parts if p and p.strip()]
-        return tokens
-
-    def alleles_set_coverage(gt_val: Any, pred_val: Any) -> float:
-        """Order-insensitive coverage for allele/group fields.
-        Scores fraction of GT tokens present in Pred tokens (1.0 if both empty).
-        """
-        gt_tokens = parse_allele_tokens(gt_val)
-        pred_tokens = parse_allele_tokens(pred_val)
-        if not gt_tokens and not pred_tokens:
-            return 1.0
-        if not gt_tokens or not pred_tokens:
-            return 0.0
-        pred_set = set(pred_tokens)
-        covered = sum(1 for t in gt_tokens if t in pred_set)
-        return covered / len(gt_tokens)
-
     def drugs_coverage(gt: Dict[str, Any], pred: Dict[str, Any]) -> float:
         """Operator-aware coverage for Drug(s).
         Uses `Multiple drugs And/or` to decide coverage rule. Defaults to 'or' if missing.
-        Now prioritizes normalized PharmGKB drug IDs for matching.
         """
-        # First try normalized drug ID matching if available
-        gt_drug_id = None
-        pred_drug_id = None
-
-        if "Drug(s)_normalized" in gt:
-            norm_data = gt["Drug(s)_normalized"]
-            if isinstance(norm_data, dict):
-                gt_drug_id = norm_data.get("drug_id")
-
-        if "Drug(s)_normalized" in pred:
-            norm_data = pred["Drug(s)_normalized"]
-            if isinstance(norm_data, dict):
-                pred_drug_id = norm_data.get("drug_id")
-
-        # If both have normalized IDs, use exact ID matching
-        if gt_drug_id and pred_drug_id:
-            return 1.0 if gt_drug_id == pred_drug_id else 0.0
-
-        # Fallback to existing token-based matching
         gt_drugs_raw = gt.get("Drug(s)")
         pred_drugs_raw = pred.get("Drug(s)")
         gt_tokens = parse_drug_list(gt_drugs_raw)
@@ -328,22 +235,13 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
         return max(frac, 1.0 if any(covered) else 0.0)
 
     # Map evaluators to drug schema fields; Drug(s) handled separately below.
-    def category_equal(a: Any, b: Any) -> float:
-        a_norm = re.sub(r"\s+", " ", str(a).strip().lower()) if a is not None else None
-        b_norm = re.sub(r"\s+", " ", str(b).strip().lower()) if b is not None else None
-        if a_norm is None and b_norm is None:
-            return 1.0
-        if a_norm is None or b_norm is None:
-            return 0.0
-        return 1.0 if a_norm == b_norm else 0.0
-
     field_evaluators = {
-        "Variant/Haplotypes": variant_substring_match,
+        "Variant/Haplotypes": variant_substring_match_with_phenotype_groups,
         "Gene": semantic_similarity,
         "PMID": exact_match,
         "Phenotype Category": category_equal,
         "Significance": category_equal,
-        "Alleles": alleles_set_coverage,
+        "Alleles": semantic_similarity,  # Changed to semantic similarity
         "Specialty Population": semantic_similarity,
         "Metabolizer types": semantic_similarity,
         "isPlural": category_equal,
@@ -354,7 +252,7 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
         "Population types": semantic_similarity,
         "Population Phenotypes or diseases": semantic_similarity,
         "Multiple phenotypes or diseases And/or": category_equal,
-        "Comparison Allele(s) or Genotype(s)": alleles_set_coverage,
+        "Comparison Allele(s) or Genotype(s)": semantic_similarity,  # Changed to semantic similarity
         "Comparison Metabolizer types": semantic_similarity,
     }
 
@@ -384,12 +282,66 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
 
     results["detailed_results"] = []
     for i, (g, p) in enumerate(zip(gt_list, pred_list)):
-        sample_result: Dict[str, Any] = {"sample_id": i, "field_scores": {}}
+        sample_result: Dict[str, Any] = {"sample_id": i, "field_scores": {}, "field_values": {}}
         for field, evaluator in field_evaluators.items():
             sample_result["field_scores"][field] = evaluator(g.get(field), p.get(field))
+            # Store actual values for display
+            sample_result["field_values"][field] = {
+                "ground_truth": g.get(field),
+                "prediction": p.get(field)
+            }
         sample_result["field_scores"]["Drug(s)"] = drugs_coverage(g, p)
-        # No dependency penalties wired yet for drug entries; can be added later if needed
-        sample_result["dependency_issues"] = []
+        # Also store Drug(s) values
+        sample_result["field_values"]["Drug(s)"] = {
+            "ground_truth": g.get("Drug(s)"),
+            "prediction": p.get("Drug(s)")
+        }
+
+        # Dependency validation
+        dependency_issues = validate_drug_dependencies(p)
+        sample_result["dependency_issues"] = dependency_issues
+
+        # Track penalty information
+        penalty_info = {
+            'total_penalty': 0.0,
+            'penalized_fields': {},
+            'issues_by_field': {}
+        }
+
+        if dependency_issues:
+            penalty_per_issue = 0.05
+            total_penalty = min(len(dependency_issues) * penalty_per_issue, 0.3)
+            penalty_info['total_penalty'] = total_penalty
+            fields_to_penalize = set()
+            for issue in dependency_issues:
+                affected_fields = []
+                if "Direction" in issue or "Associated" in issue:
+                    affected_fields = ["Direction of effect", "Is/Is Not associated"]
+                elif "Variant" in issue or "Comparison" in issue:
+                    affected_fields = ["Variant/Haplotypes", "Comparison Allele(s) or Genotype(s)"]
+                elif "Drug" in issue or "Multiple drugs" in issue:
+                    affected_fields = ["Drug(s)"]
+                else:
+                    affected_fields = list(sample_result["field_scores"].keys())
+
+                for field in affected_fields:
+                    fields_to_penalize.add(field)
+                    if field not in penalty_info['issues_by_field']:
+                        penalty_info['issues_by_field'][field] = []
+                    penalty_info['issues_by_field'][field].append(issue)
+
+            for field in fields_to_penalize:
+                if field in sample_result["field_scores"]:
+                    original_score = sample_result["field_scores"][field]
+                    penalized_score = original_score * (1 - total_penalty)
+                    sample_result["field_scores"][field] = penalized_score
+                    penalty_info['penalized_fields'][field] = {
+                        'original_score': original_score,
+                        'penalized_score': penalized_score,
+                        'penalty_percentage': total_penalty * 100
+                    }
+
+        sample_result['penalty_info'] = penalty_info
         results["detailed_results"].append(sample_result)
 
     for field in list(field_evaluators.keys()) + ["Drug(s)"]:
@@ -399,8 +351,7 @@ def evaluate_drug_annotations(samples: List[Dict[str, Any]]) -> Dict[str, Any]:
             "scores": field_scores,
         }
 
-    field_means = [v["mean_score"] for v in results["field_scores"].values()]
-    results["overall_score"] = (
-        sum(field_means) / len(field_means) if field_means else 0.0
-    )
+    # Compute overall score with optional field weights
+    field_mean_scores = {k: v["mean_score"] for k, v in results["field_scores"].items()}
+    results["overall_score"] = compute_weighted_score(field_mean_scores, field_weights)
     return results
