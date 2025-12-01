@@ -889,24 +889,24 @@ async def run_pipeline_task(job: PipelineJob):
         job.add_message(f"Completed processing {len(pmcids)} PMCIDs")
 
         # Stage 1.5: Normalize terms using utility
-        job.current_stage = "normalizing_terms"
-        job.progress = 0.83
-        job.add_message("Normalizing terms in outputs...")
-
-        normalized_count, failed_count = normalize_outputs_in_directory(
-            output_dir, in_place=True, verbose=True
-        )
-
-        # Reload normalized data
-        for pmcid in pmcids:
-            output_file = Path(output_dir) / f"{pmcid}.json"
-            if output_file.exists():
-                with open(output_file, "r") as f:
-                    all_outputs[pmcid] = json.load(f)
-
-        job.add_message(
-            f"Term normalization complete: {normalized_count} successful, {failed_count} failed"
-        )
+        # job.current_stage = "normalizing_terms"
+        # job.progress = 0.83
+        # job.add_message("Normalizing terms in outputs...")
+        #
+        # normalized_count, failed_count = normalize_outputs_in_directory(
+        #     output_dir, in_place=True, verbose=True
+        # )
+        #
+        # # Reload normalized data
+        # for pmcid in pmcids:
+        #     output_file = Path(output_dir) / f"{pmcid}.json"
+        #     if output_file.exists():
+        #         with open(output_file, "r") as f:
+        #             all_outputs[pmcid] = json.load(f)
+        #
+        # job.add_message(
+        #     f"Term normalization complete: {normalized_count} successful, {failed_count} failed"
+        # )
 
         # Stage 2: Combine outputs using utility
         job.current_stage = "combining_outputs"
