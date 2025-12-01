@@ -9,6 +9,18 @@ from term_normalization.search_utils import (
 import pandas as pd
 from loguru import logger
 from pathlib import Path
+from term_normalization.cache import get_term_cache
+
+# Global cache for drug TSV data
+_DRUG_DF_CACHE: Optional[pd.DataFrame] = None
+
+
+def _get_cached_drug_df(data_path: Path) -> pd.DataFrame:
+    """Load and cache the drug TSV file to avoid repeated file I/O."""
+    global _DRUG_DF_CACHE
+    if _DRUG_DF_CACHE is None:
+        _DRUG_DF_CACHE = pd.read_csv(data_path, sep="\t")
+    return _DRUG_DF_CACHE
 
 
 class DrugSearchResult(BaseModel):
@@ -87,15 +99,14 @@ class DrugLookup(BaseModel):
 
     # Base data directory; expects TSV at `<data_dir>/term_lookup_info/drugs.tsv`
     data_dir: Path = Path("data")
-    raw_input: str = ""
 
     def _data_path(self) -> Path:
         return self.data_dir / "term_lookup_info" / "drugs.tsv"
 
     def _clinpgx_drug_name_search(
-        self, drug_name: str, threshold: float = 0.8, top_k: int = 1
+        self, drug_name: str, raw_input: str, threshold: float = 0.8, top_k: int = 1
     ) -> Optional[List[DrugSearchResult]]:
-        df = pd.read_csv(self._data_path(), sep="\t")
+        df = _get_cached_drug_df(self._data_path())
         results = general_search(
             df,
             drug_name,
@@ -107,7 +118,7 @@ class DrugLookup(BaseModel):
         if results:
             return [
                 DrugSearchResult(
-                    raw_input=self.raw_input,
+                    raw_input=raw_input,
                     id=result["PharmGKB Accession Id"],
                     normalized_term=result["Name"],
                     url=f"https://www.clinpgx.org/chemical/{result['PharmGKB Accession Id']}",
@@ -118,12 +129,12 @@ class DrugLookup(BaseModel):
         return []
 
     def _clinpgx_drug_alternatives_search(
-        self, drug_name: str, threshold: float = 0.8, top_k: int = 1
+        self, drug_name: str, raw_input: str, threshold: float = 0.8, top_k: int = 1
     ) -> Optional[List[DrugSearchResult]]:
         """
         Checks generic names and trade names for the drug
         """
-        df = pd.read_csv(self._data_path(), sep="\t")
+        df = _get_cached_drug_df(self._data_path())
         results = general_search_comma_list(
             df,
             drug_name,
@@ -145,7 +156,7 @@ class DrugLookup(BaseModel):
         if results:
             return [
                 DrugSearchResult(
-                    raw_input=self.raw_input,
+                    raw_input=raw_input,
                     id=result["PharmGKB Accession Id"],
                     normalized_term=result["Name"],
                     url=f"https://www.clinpgx.org/chemical/{result['PharmGKB Accession Id']}",
@@ -163,7 +174,7 @@ class DrugLookup(BaseModel):
         """
         # First try name search
         name_results = self._clinpgx_drug_name_search(
-            drug_name, threshold=threshold, top_k=top_k
+            drug_name, raw_input=drug_name, threshold=threshold, top_k=top_k
         )
 
         # If we have good results from name search, return them
@@ -172,7 +183,7 @@ class DrugLookup(BaseModel):
 
         # Otherwise, try alternatives search
         alternatives_results = self._clinpgx_drug_alternatives_search(
-            drug_name, threshold=threshold, top_k=top_k
+            drug_name, raw_input=drug_name, threshold=threshold, top_k=top_k
         )
 
         # Return the best results between name and alternatives
@@ -184,11 +195,11 @@ class DrugLookup(BaseModel):
 
         return []
 
-    def rxcui_to_pa_id(self, rxcui: str) -> Optional[List[DrugSearchResult]]:
+    def rxcui_to_pa_id(self, rxcui: str, raw_input: str) -> Optional[List[DrugSearchResult]]:
         """
         Convert a RXCUI to a PharmGKB Accession Id using the 'RxNorm Identifiers' column in drugs.tsv.
         """
-        df = pd.read_csv(self._data_path(), sep="\t")
+        df = _get_cached_drug_df(self._data_path())
         results = general_search(
             df,
             rxcui,
@@ -201,7 +212,7 @@ class DrugLookup(BaseModel):
         if results:
             return [
                 DrugSearchResult(
-                    raw_input=self.raw_input,
+                    raw_input=raw_input,
                     id=result["PharmGKB Accession Id"],
                     normalized_term=result["Name"],
                     url=f"https://www.clinpgx.org/chemical/{result['PharmGKB Accession Id']}",
@@ -229,18 +240,30 @@ class DrugLookup(BaseModel):
             rxcui = rxnorm_result.id
 
         # Convert RxCUI to PharmGKB PA ID
-        pharmgkb_results = self.rxcui_to_pa_id(rxcui)
+        pharmgkb_results = self.rxcui_to_pa_id(rxcui, raw_input=drug_name)
 
         return pharmgkb_results if pharmgkb_results else []
 
     def search(
         self, drug_name: str, threshold: float = 0.8, top_k: int = 1
     ) -> Optional[List[DrugSearchResult]]:
-        self.raw_input = drug_name
+        # Check cache first
+        cache = get_term_cache()
+        cached = cache.get_drug(drug_name)
+        if cached is not None:
+            return cached
+
         # Try ClinPGx first
         results = self.clinpgx_lookup(drug_name, threshold=threshold, top_k=top_k)
         if results:
+            cache.set_drug(drug_name, results)
             return results
         logger.warning("No strong results from ClinPGx, trying RxNorm")
         # If no results from ClinPGx, try RxNorm
-        return self.rxnorm_lookup(drug_name)
+        results = self.rxnorm_lookup(drug_name)
+
+        # Cache result (including empty results to avoid repeated failed lookups)
+        if results:
+            cache.set_drug(drug_name, results)
+
+        return results

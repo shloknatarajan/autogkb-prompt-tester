@@ -9,6 +9,18 @@ from term_normalization.search_utils import (
 import pandas as pd
 from loguru import logger
 from pathlib import Path
+from term_normalization.cache import get_term_cache
+
+# Global cache for variant TSV data
+_VARIANT_DF_CACHE: Optional[pd.DataFrame] = None
+
+
+def _get_cached_variant_df(data_path: Path) -> pd.DataFrame:
+    """Load and cache the variant TSV file to avoid repeated file I/O."""
+    global _VARIANT_DF_CACHE
+    if _VARIANT_DF_CACHE is None:
+        _VARIANT_DF_CACHE = pd.read_csv(data_path, sep="\t")
+    return _VARIANT_DF_CACHE
 
 
 class VariantSearchResult(BaseModel):
@@ -99,7 +111,7 @@ class VariantLookup(BaseModel):
         1. Searches through the Variant Name column for similarity
         2. Searches through comma separated Synonyms column for similarity
         """
-        df = pd.read_csv(self._data_path(), sep="\t")
+        df = _get_cached_variant_df(self._data_path())
         results = general_search(
             df, variant, "Variant Name", "Variant ID", threshold=threshold, top_k=top_k
         )
@@ -155,8 +167,21 @@ class VariantLookup(BaseModel):
     def search(
         self, variant: str, threshold: float = 0.8, top_k: int = 1
     ) -> Optional[List[VariantSearchResult]]:
+        # Check cache first
+        cache = get_term_cache()
+        cached = cache.get_variant(variant)
+        if cached is not None:
+            return cached
+
+        # Perform lookup
         # Check if it starts with "rs"
         if variant.strip().startswith("rs"):
-            return self.rsid_lookup(variant, threshold=threshold, top_k=top_k)
+            results = self.rsid_lookup(variant, threshold=threshold, top_k=top_k)
         else:
-            return self.star_lookup(variant, threshold=threshold, top_k=top_k)
+            results = self.star_lookup(variant, threshold=threshold, top_k=top_k)
+
+        # Cache result
+        if results:
+            cache.set_variant(variant, results)
+
+        return results
