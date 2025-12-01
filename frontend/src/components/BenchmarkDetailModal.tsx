@@ -5,12 +5,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
+import { Badge } from '@/components/ui/badge';
 
 interface BenchmarkDetailModalProps {
   isOpen: boolean;
   onClose: () => void;
   task: string;
   result: BenchmarkTaskResult | null;
+  alignedVariants?: string[];
 }
 
 export default function BenchmarkDetailModal({
@@ -18,6 +20,7 @@ export default function BenchmarkDetailModal({
   onClose,
   task,
   result,
+  alignedVariants,
 }: BenchmarkDetailModalProps) {
   if (!result) return null;
 
@@ -91,6 +94,22 @@ export default function BenchmarkDetailModal({
                       </div>
                     )}
                   </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Aligned Variants (FA-specific) */}
+          {alignedVariants && alignedVariants.length > 0 && (
+            <div>
+              <h4 className="text-md font-semibold mb-3">
+                Aligned Variants
+              </h4>
+              <div className="flex flex-wrap gap-1">
+                {alignedVariants.map((v, i) => (
+                  <Badge key={i} variant="outline">
+                    {v}
+                  </Badge>
                 ))}
               </div>
             </div>

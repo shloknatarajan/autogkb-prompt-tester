@@ -9,14 +9,10 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
 import { Badge } from '@/components/ui/badge';
 import { ChevronDown, ChevronUp, FileText, BarChart3 } from 'lucide-react';
+import BenchmarkDetailModal from './BenchmarkDetailModal';
+import { BenchmarkTaskResult, BenchmarkFieldScore } from '../types';
 
 interface PipelineBenchmarkResult {
   timestamp: string;
@@ -58,16 +54,38 @@ interface PipelineBenchmarkResultsProps {
   result: PipelineBenchmarkResult;
 }
 
+// Adapter function to convert DetailedResult to BenchmarkTaskResult
+const convertToBenchmarkTaskResult = (
+  result: DetailedResult
+): { taskResult: BenchmarkTaskResult; alignedVariants?: string[] } => {
+  const field_scores: { [field: string]: BenchmarkFieldScore } = {};
+
+  for (const [field, data] of Object.entries(result.field_scores)) {
+    field_scores[field] = {
+      mean: data.mean_score,  // Rename mean_score → mean
+      scores: data.scores
+    };
+  }
+
+  return {
+    taskResult: {
+      overall_score: result.overall_score,
+      total_samples: result.total_samples,
+      field_scores: field_scores,
+      error: result.status === 'error' ? result.status : undefined
+    },
+    alignedVariants: result.aligned_variants
+  };
+};
+
 export default function PipelineBenchmarkResults({
   result,
 }: PipelineBenchmarkResultsProps) {
   const [expandedPmcid, setExpandedPmcid] = useState<string | null>(null);
   const [detailModalOpen, setDetailModalOpen] = useState(false);
-  const [selectedDetail, setSelectedDetail] = useState<{
-    pmcid: string;
-    task: string;
-    result: DetailedResult;
-  } | null>(null);
+  const [selectedDetailTask, setSelectedDetailTask] = useState<string | null>(null);
+  const [selectedDetailResult, setSelectedDetailResult] = useState<BenchmarkTaskResult | null>(null);
+  const [selectedAlignedVariants, setSelectedAlignedVariants] = useState<string[] | undefined>(undefined);
 
   // Extract task names from summary scores
   const taskNames = Object.keys(result.summary.scores);
@@ -81,17 +99,6 @@ export default function PipelineBenchmarkResults({
       'study-parameters': 'Study Params',
     };
     return names[task] || task;
-  };
-
-  // Convert task name to annotation key used in pmcid_results
-  const taskToAnnotationKey = (task: string): string => {
-    const mapping: { [key: string]: string } = {
-      'var-pheno': 'var_pheno_ann',
-      'var-drug': 'var_drug_ann',
-      'var-fa': 'var_fa_ann',
-      'study-parameters': 'study_parameters',
-    };
-    return mapping[task] || task;
   };
 
   const getScoreColor = (score: number): string => {
@@ -121,9 +128,12 @@ export default function PipelineBenchmarkResults({
   const handleViewDetails = (
     pmcid: string,
     task: string,
-    result: DetailedResult,
+    detailedResult: DetailedResult,
   ) => {
-    setSelectedDetail({ pmcid, task, result });
+    const { taskResult, alignedVariants } = convertToBenchmarkTaskResult(detailedResult);
+    setSelectedDetailTask(`${pmcid} - ${task}`);
+    setSelectedDetailResult(taskResult);
+    setSelectedAlignedVariants(alignedVariants);
     setDetailModalOpen(true);
   };
 
@@ -226,12 +236,11 @@ export default function PipelineBenchmarkResults({
                   <TableRow key={pmcid}>
                     <TableCell className="font-mono text-sm">{pmcid}</TableCell>
                     {taskNames.map((task) => {
-                      const annotationKey = taskToAnnotationKey(task);
-                      const score = scores?.[annotationKey];
+                      const score = scores?.[task];
 
                       return (
                         <TableCell key={task}>
-                          {score !== undefined ? (
+                          {score !== undefined && score !== null ? (
                             typeof score === 'object' ? (
                               <Button
                                 variant="ghost"
@@ -240,7 +249,7 @@ export default function PipelineBenchmarkResults({
                                 onClick={() => {
                                   handleViewDetails(
                                     pmcid,
-                                    annotationKey,
+                                    task,
                                     score as DetailedResult,
                                   );
                                 }}
@@ -319,143 +328,14 @@ export default function PipelineBenchmarkResults({
         </CardContent>
       </Card>
 
-      {/* Detail Modal */}
-      <Dialog open={detailModalOpen} onOpenChange={setDetailModalOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto">
-          <DialogHeader>
-            <DialogTitle>
-              {selectedDetail?.pmcid} - {selectedDetail?.task}
-            </DialogTitle>
-          </DialogHeader>
-          {selectedDetail && (
-            <div className="space-y-4">
-              {/* Overall Stats */}
-              <div className="grid grid-cols-3 gap-4">
-                <div className="bg-muted p-3 rounded">
-                  <div className="text-xl font-bold">
-                    {(selectedDetail.result.overall_score * 100).toFixed(1)}%
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    Overall Score
-                  </div>
-                </div>
-                <div className="bg-muted p-3 rounded">
-                  <div className="text-xl font-bold">
-                    {selectedDetail.result.total_samples}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Samples</div>
-                </div>
-                <div className="bg-muted p-3 rounded">
-                  <div className="text-xl font-bold">
-                    {Object.keys(selectedDetail.result.field_scores).length}
-                  </div>
-                  <div className="text-xs text-muted-foreground">Fields</div>
-                </div>
-              </div>
-
-              {/* Status */}
-              {selectedDetail.result.status && (
-                <div className="text-sm">
-                  <span className="font-medium">Status: </span>
-                  {selectedDetail.result.status}
-                </div>
-              )}
-
-              {/* Field Scores */}
-              <div>
-                <h4 className="font-medium mb-2">Field Scores</h4>
-                <div className="max-h-60 overflow-y-auto">
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Field</TableHead>
-                        <TableHead>Mean Score</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      {Object.entries(selectedDetail.result.field_scores)
-                        .sort(([, a], [, b]) => b.mean_score - a.mean_score)
-                        .map(([field, data]) => (
-                          <TableRow key={field}>
-                            <TableCell className="text-sm">{field}</TableCell>
-                            <TableCell>
-                              <span
-                                className={`px-2 py-1 rounded ${getScoreColor(data.mean_score)}`}
-                              >
-                                {(data.mean_score * 100).toFixed(1)}%
-                              </span>
-                            </TableCell>
-                          </TableRow>
-                        ))}
-                    </TableBody>
-                  </Table>
-                </div>
-              </div>
-
-              {/* Aligned Variants (for FA) */}
-              {selectedDetail.result.aligned_variants &&
-                selectedDetail.result.aligned_variants.length > 0 && (
-                  <div>
-                    <h4 className="font-medium mb-2">Aligned Variants</h4>
-                    <div className="flex flex-wrap gap-1">
-                      {selectedDetail.result.aligned_variants.map((v, i) => (
-                        <Badge key={i} variant="outline">
-                          {v}
-                        </Badge>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-              {/* Per-Sample Details */}
-              {selectedDetail.result.detailed_results.length > 0 && (
-                <div>
-                  <h4 className="font-medium mb-2">Sample Details</h4>
-                  <div className="max-h-60 overflow-y-auto">
-                    {selectedDetail.result.detailed_results.map((sample) => (
-                      <div
-                        key={sample.sample_id}
-                        className="border rounded p-3 mb-2"
-                      >
-                        <div className="font-medium text-sm mb-2">
-                          Sample {sample.sample_id}
-                        </div>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-2 text-xs">
-                          {Object.entries(sample.field_scores)
-                            .sort(([, a], [, b]) => b - a)
-                            .slice(0, 12)
-                            .map(([field, score]) => (
-                              <div key={field} className="flex justify-between">
-                                <span className="truncate mr-2">{field}:</span>
-                                <span
-                                  className={
-                                    score === 1
-                                      ? 'text-green-600'
-                                      : score === 0
-                                        ? 'text-red-600'
-                                        : 'text-yellow-600'
-                                  }
-                                >
-                                  {(score * 100).toFixed(0)}%
-                                </span>
-                              </div>
-                            ))}
-                        </div>
-                        {sample.dependency_issues &&
-                          sample.dependency_issues.length > 0 && (
-                            <div className="mt-2 text-xs text-orange-600">
-                              Issues: {sample.dependency_issues.join(', ')}
-                            </div>
-                          )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Detail Modal - Reuse BenchmarkDetailModal */}
+      <BenchmarkDetailModal
+        isOpen={detailModalOpen}
+        onClose={() => setDetailModalOpen(false)}
+        task={selectedDetailTask || ''}
+        result={selectedDetailResult}
+        alignedVariants={selectedAlignedVariants}
+      />
     </div>
   );
 }
