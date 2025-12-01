@@ -307,7 +307,7 @@ class BenchmarkRunner:
         self, results: Dict[str, Dict]
     ) -> Tuple[Dict[str, float], Dict[str, int]]:
         """
-        Calculate average scores per task across all PMCIDs and track sample counts.
+        Calculate average scores per task across all PMCIDs and track ground truth counts.
 
         Args:
             results: Dictionary mapping PMCID to benchmark results
@@ -315,10 +315,10 @@ class BenchmarkRunner:
         Returns:
             Tuple of:
             - task_averages: {task: average_score}
-            - task_sample_counts: {task: total_matched_samples}
+            - task_gt_counts: {task: total_ground_truth_count}
         """
         task_scores = {}
-        task_sample_counts = {}
+        task_gt_counts = {}
 
         for pmcid, scores in results.items():
             if scores is None or "error" in scores:
@@ -327,15 +327,17 @@ class BenchmarkRunner:
             for task, result in scores.items():
                 if task not in task_scores:
                     task_scores[task] = []
-                    task_sample_counts[task] = 0
+                    task_gt_counts[task] = 0
 
                 # Extract overall_score, handle errors gracefully
                 if isinstance(result, dict) and "overall_score" in result:
                     if "error" not in result:
                         task_scores[task].append(result["overall_score"])
-                        # Track sample count (number of matched annotations)
-                        sample_count = result.get("total_samples", 0)
-                        task_sample_counts[task] += sample_count
+                        # Track TOTAL ground truth count (matched + unmatched)
+                        matched_count = result.get("total_samples", 0)
+                        unmatched_gt = result.get("unmatched_ground_truth", [])
+                        total_gt_count = matched_count + len(unmatched_gt)
+                        task_gt_counts[task] += total_gt_count
 
         # Calculate averages
         average_scores = {
@@ -343,44 +345,45 @@ class BenchmarkRunner:
             for task, scores in task_scores.items()
         }
 
-        return average_scores, task_sample_counts
+        return average_scores, task_gt_counts
 
     def calculate_overall_score(
         self,
         task_averages: Dict[str, float],
-        task_sample_counts: Dict[str, int]
+        task_gt_counts: Dict[str, int]
     ) -> float:
         """
-        Calculate sample-weighted overall score from task averages.
+        Calculate GT-weighted overall score from task averages.
 
-        Tasks are weighted by their total sample count (number of matched annotations).
-        This ensures tasks with more data contribute proportionally more to the overall score.
-        Missing tasks (with 0 samples) are automatically excluded.
+        Tasks are weighted by their total ground truth count (matched + unmatched).
+        This ensures tasks with more GT annotations contribute proportionally more,
+        and missing predictions count against the overall score.
+        Missing tasks (with 0 GT annotations) are automatically excluded.
 
         Args:
             task_averages: {task: average_score}
-            task_sample_counts: {task: total_sample_count}
+            task_gt_counts: {task: total_ground_truth_count}
 
         Returns:
             Weighted average score
         """
-        if not task_averages or not task_sample_counts:
+        if not task_averages or not task_gt_counts:
             return 0.0
 
         # Calculate weighted sum and total weight
         weighted_sum = 0.0
-        total_samples = 0
+        total_gt = 0
 
         for task, avg_score in task_averages.items():
-            sample_count = task_sample_counts.get(task, 0)
-            if sample_count > 0:  # Only include tasks with data
-                weighted_sum += avg_score * sample_count
-                total_samples += sample_count
+            gt_count = task_gt_counts.get(task, 0)
+            if gt_count > 0:  # Only include tasks with data
+                weighted_sum += avg_score * gt_count
+                total_gt += gt_count
 
-        if total_samples == 0:
+        if total_gt == 0:
             return 0.0
 
-        return weighted_sum / total_samples
+        return weighted_sum / total_gt
 
     def has_ground_truth(self, pmcid: str) -> bool:
         """Check if ground truth exists for a PMCID."""

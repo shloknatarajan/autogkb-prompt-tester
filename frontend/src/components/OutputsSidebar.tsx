@@ -1,18 +1,18 @@
-import { Prompt, BestPrompts } from '../types'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Prompt, BestPrompts } from "../types";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 
 interface OutputsSidebarProps {
-  prompts: Prompt[]
-  selectedTask: string
-  onSavePrompt: (index: number) => void
-  onSaveAll: () => void
-  onRunAll: () => void
-  onRunBest: () => void
-  onViewOutputs: () => void
-  bestPrompts: BestPrompts
-  loading: boolean
-  tasks: string[]
+  prompts: Prompt[];
+  selectedTask: string;
+  onSavePrompt: (index: number) => void;
+  onSaveAll: () => void;
+  onRunAll: () => void;
+  onRunBest: () => void;
+  onViewOutputs: () => void;
+  bestPrompts: BestPrompts;
+  loading: boolean;
+  tasks: string[];
 }
 
 export default function OutputsSidebar({
@@ -25,7 +25,7 @@ export default function OutputsSidebar({
   onViewOutputs,
   bestPrompts,
   loading,
-  tasks
+  tasks,
 }: OutputsSidebarProps) {
   return (
     <div className="w-[350px] flex flex-col border-l-2 border-border pl-4">
@@ -34,13 +34,17 @@ export default function OutputsSidebar({
       </div>
       <div className="flex-1 overflow-y-auto flex flex-col gap-4 mb-4">
         {prompts.length === 0 ? (
-          <div className="text-center text-muted-foreground p-8 italic">No prompts added yet</div>
+          <div className="text-center text-muted-foreground p-8 italic">
+            No prompts added yet
+          </div>
         ) : (
           prompts.map((prompt, index) => (
             <Card key={prompt.id}>
               <CardHeader className="pb-2">
                 <div className="flex justify-between items-center">
-                  <strong className="text-primary text-sm">{prompt.name}</strong>
+                  <strong className="text-primary text-sm">
+                    {prompt.name}
+                  </strong>
                   {prompt.loading && <span className="text-base">⏳</span>}
                   {prompt.output && !prompt.loading && (
                     <Button
@@ -59,7 +63,9 @@ export default function OutputsSidebar({
                     {prompt.output}
                   </pre>
                 ) : (
-                  <div className="text-muted-foreground italic text-sm">No output yet</div>
+                  <div className="text-muted-foreground italic text-sm">
+                    No output yet
+                  </div>
                 )}
               </CardContent>
             </Card>
@@ -71,23 +77,23 @@ export default function OutputsSidebar({
         disabled={loading || prompts.length === 0}
         className="w-full mb-2 bg-cyan-600 hover:bg-cyan-700"
       >
-        {loading ? 'Running All...' : 'Run All Prompts'}
+        {loading ? "Running All..." : "Run All Prompts For This Task"}
       </Button>
       <Button
         onClick={onRunBest}
         disabled={loading || Object.keys(bestPrompts).length !== tasks.length}
         className="w-full font-semibold bg-green-600 hover:bg-green-700 mb-2"
-        title={Object.keys(bestPrompts).length !== tasks.length ? 'Select best prompt for all tasks first' : ''}
+        title={
+          Object.keys(bestPrompts).length !== tasks.length
+            ? "Select best prompt for all tasks first"
+            : ""
+        }
       >
-        {loading ? 'Running Best...' : 'Run Best Prompts'}
+        {loading ? "Running Best..." : "Run Best Prompts"}
       </Button>
-      <Button
-        onClick={onViewOutputs}
-        variant="outline"
-        className="w-full"
-      >
+      <Button onClick={onViewOutputs} variant="outline" className="w-full">
         View Outputs
       </Button>
     </div>
-  )
+  );
 }

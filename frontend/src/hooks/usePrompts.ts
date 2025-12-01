@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Prompt, BestPrompts } from '../types';
-import { randomInt } from 'crypto';
 
 const DEFAULT_CITATION_PROMPT = `You are analyzing a genetic variant annotation. Your task is to find direct quotes from the article text that support this specific annotation.
 
@@ -149,9 +148,11 @@ export function usePrompts() {
   };
 
   const updatePrompt = (index: number, field: keyof Prompt, value: any) => {
-    const updated = [...prompts];
-    updated[index] = { ...updated[index], [field]: value };
-    setPrompts(updated);
+    setPrompts(currentPrompts => {
+      const updated = [...currentPrompts];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
   };
 
   const deletePrompt = (index: number) => {
