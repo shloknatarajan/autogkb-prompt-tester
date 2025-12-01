@@ -32,13 +32,19 @@ def expand_pheno_annotations_by_variant(
 def align_pheno_annotations_by_variant(
     ground_truth_list: List[Dict[str, Any]],
     predictions_list: List[Dict[str, Any]],
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+) -> Tuple[
+    List[Dict[str, Any]],  # aligned_gt
+    List[Dict[str, Any]],  # aligned_pred
+    List[str],             # display_keys
+    List[Dict[str, Any]],  # unmatched_gt
+    List[Dict[str, Any]],  # unmatched_pred
+]:
     """
-    Align pheno annotations by variant string with robust matching:
+    Align pheno annotations by variant with tracking of unmatched samples.
     1) Expand multi-variant records to one per variant
     2) Prefer rsID intersection; fallback to normalized substring containment
     3) If no variant match, fallback to Gene + Drug(s) matching
-    Returns aligned (gt_list, pred_list)
+    Returns aligned pairs + unmatched samples from both GT and predictions.
     """
     rs_re = re.compile(r"rs\d+", re.IGNORECASE)
 
@@ -54,6 +60,7 @@ def align_pheno_annotations_by_variant(
 
     aligned_gt: List[Dict[str, Any]] = []
     aligned_pred: List[Dict[str, Any]] = []
+    display_keys: List[str] = []
     matched_pred_indices: Set[int] = set()
 
     # First pass: try variant-based matching
@@ -82,10 +89,12 @@ def align_pheno_annotations_by_variant(
             aligned_gt.append(gt_rec)
             aligned_pred.append(match_rec)
             matched_pred_indices.add(match_idx)
+            disp = next(iter(gt_rs)) if gt_rs else gt_norm
+            display_keys.append(disp)
 
     # Second pass: for unmatched GT records, try Gene + Drug(s) matching
     for gt_idx, gt_rec in enumerate(gt_expanded):
-        if gt_idx < len(aligned_gt) and aligned_gt[gt_idx] == gt_rec:
+        if gt_rec in aligned_gt:
             continue  # Already matched
 
         gt_gene = str(gt_rec.get("Gene", "")).strip().lower()
@@ -110,9 +119,19 @@ def align_pheno_annotations_by_variant(
                 aligned_gt.append(gt_rec)
                 aligned_pred.append(pred_rec)
                 matched_pred_indices.add(idx)
+                # Use Gene+Drug as display key for non-variant matches
+                disp_key = f"{gt_gene}+{gt_drug}" if gt_drug else gt_gene
+                display_keys.append(disp_key)
                 break
 
-    return aligned_gt, aligned_pred
+    # Collect unmatched samples
+    unmatched_gt = [rec for rec in gt_expanded if rec not in aligned_gt]
+    unmatched_pred = [
+        pred_index[i][2] for i in range(len(pred_index))
+        if i not in matched_pred_indices
+    ]
+
+    return aligned_gt, aligned_pred, display_keys, unmatched_gt, unmatched_pred
 
 
 class PhenotypeAnnotationBenchmark:
@@ -275,7 +294,7 @@ class PhenotypeAnnotationBenchmark:
             }
 
         # Align by variant first (similar to FA/Drug benchmarks)
-        aligned_gt, aligned_pred = align_pheno_annotations_by_variant(gt_list, pred_list)
+        aligned_gt, aligned_pred, display_keys, unmatched_gt, unmatched_pred = align_pheno_annotations_by_variant(gt_list, pred_list)
 
         if not aligned_gt:
             return {
@@ -283,6 +302,9 @@ class PhenotypeAnnotationBenchmark:
                 "field_scores": {},
                 "overall_score": 0.0,
                 "detailed_results": [],
+                "aligned_variants": [],
+                "unmatched_ground_truth": unmatched_gt,
+                "unmatched_predictions": unmatched_pred,
                 "status": "no_overlap_after_alignment",
             }
 
@@ -368,6 +390,11 @@ class PhenotypeAnnotationBenchmark:
             k: v["mean_score"] for k, v in results["field_scores"].items()
         }
         results["overall_score"] = compute_weighted_score(field_mean_scores, weights)
+
+        # Add aligned variants and unmatched samples
+        results["aligned_variants"] = display_keys
+        results["unmatched_ground_truth"] = unmatched_gt
+        results["unmatched_predictions"] = unmatched_pred
 
         return results
 

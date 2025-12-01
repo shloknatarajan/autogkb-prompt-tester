@@ -84,7 +84,17 @@ def evaluate_drug_annotations(
     def align_by_variant(
         ground_truth_list: List[Dict[str, Any]],
         predictions_list: List[Dict[str, Any]],
-    ) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[str]]:
+    ) -> Tuple[
+        List[Dict[str, Any]],  # aligned_gt
+        List[Dict[str, Any]],  # aligned_pred
+        List[str],             # display_keys
+        List[Dict[str, Any]],  # unmatched_gt
+        List[Dict[str, Any]],  # unmatched_pred
+    ]:
+        """
+        Align annotations by variant with tracking of unmatched samples.
+        Returns aligned pairs + unmatched samples from both GT and predictions.
+        """
         rs_re = re.compile(r"rs\d+", re.IGNORECASE)
         gt_expanded = expand_annotations_by_variant(ground_truth_list or [])
         pred_expanded = expand_annotations_by_variant(predictions_list or [])
@@ -99,6 +109,7 @@ def evaluate_drug_annotations(
         aligned_gt: List[Dict[str, Any]] = []
         aligned_pred: List[Dict[str, Any]] = []
         display_keys: List[str] = []
+        matched_pred_indices: set = set()  # Track which predictions were matched
 
         for gt_rec in gt_expanded:
             gt_raw = (gt_rec.get("Variant/Haplotypes") or "").strip()
@@ -106,27 +117,38 @@ def evaluate_drug_annotations(
             gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
 
             match = None
+            match_idx = None
             if gt_rs:
-                for rsids, raw_norm, pred_rec in pred_index:
-                    if rsids & gt_rs:
+                for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+                    if idx not in matched_pred_indices and rsids & gt_rs:
                         match = pred_rec
+                        match_idx = idx
                         break
             if match is None and gt_norm:
-                for rsids, raw_norm, pred_rec in pred_index:
-                    if gt_norm in raw_norm:
+                for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+                    if idx not in matched_pred_indices and gt_norm in raw_norm:
                         match = pred_rec
+                        match_idx = idx
                         break
 
             if match is not None:
                 aligned_gt.append(gt_rec)
                 aligned_pred.append(match)
+                matched_pred_indices.add(match_idx)
                 disp = next(iter(gt_rs)) if gt_rs else gt_norm
                 display_keys.append(disp)
 
-        return aligned_gt, aligned_pred, display_keys
+        # Collect unmatched samples
+        unmatched_gt = [rec for rec in gt_expanded if rec not in aligned_gt]
+        unmatched_pred = [
+            pred_index[i][2] for i in range(len(pred_index))
+            if i not in matched_pred_indices
+        ]
+
+        return aligned_gt, aligned_pred, display_keys, unmatched_gt, unmatched_pred
 
     # Prepare lists and align
-    gt_list, pred_list, _ = align_by_variant(gt_list_raw, pred_list_raw)
+    gt_list, pred_list, display_keys, unmatched_gt, unmatched_pred = align_by_variant(gt_list_raw, pred_list_raw)
     if not gt_list:
         # nothing aligned; return empty result structure
         return {
@@ -134,6 +156,9 @@ def evaluate_drug_annotations(
             "field_scores": {},
             "overall_score": 0.0,
             "detailed_results": [],
+            "aligned_variants": [],
+            "unmatched_ground_truth": unmatched_gt,
+            "unmatched_predictions": unmatched_pred,
         }
 
     def normalize_drug_name(name: str) -> str:
@@ -354,4 +379,10 @@ def evaluate_drug_annotations(
     # Compute overall score with optional field weights
     field_mean_scores = {k: v["mean_score"] for k, v in results["field_scores"].items()}
     results["overall_score"] = compute_weighted_score(field_mean_scores, field_weights)
+
+    # Add aligned variants and unmatched samples
+    results["aligned_variants"] = display_keys
+    results["unmatched_ground_truth"] = unmatched_gt
+    results["unmatched_predictions"] = unmatched_pred
+
     return results

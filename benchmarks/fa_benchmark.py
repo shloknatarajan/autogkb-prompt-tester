@@ -45,12 +45,18 @@ def expand_annotations_by_variant(
 def align_fa_annotations_by_variant(
     ground_truth_fa: List[Dict[str, Any]],
     predictions_fa: List[Dict[str, Any]],
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]], List[str]]:
+) -> Tuple[
+    List[Dict[str, Any]],  # aligned_gt
+    List[Dict[str, Any]],  # aligned_pred
+    List[str],             # display_keys
+    List[Dict[str, Any]],  # unmatched_gt
+    List[Dict[str, Any]],  # unmatched_pred
+]:
     """
-    Align FA annotations by variant string with robust matching:
+    Align FA annotations by variant with tracking of unmatched samples.
     1) Expand multi-variant records to one per variant
     2) Prefer rsID intersection; fallback to normalized substring containment
-    Returns aligned (gt_list, pred_list, display_keys)
+    Returns aligned pairs + unmatched samples from both GT and predictions.
     """
     rs_re = re.compile(r"rs\d+", re.IGNORECASE)
 
@@ -67,6 +73,7 @@ def align_fa_annotations_by_variant(
     aligned_gt: List[Dict[str, Any]] = []
     aligned_pred: List[Dict[str, Any]] = []
     display_keys: List[str] = []
+    matched_pred_indices: set = set()  # Track which predictions were matched
 
     for gt_rec in gt_expanded:
         gt_raw = (gt_rec.get("Variant/Haplotypes") or "").strip()
@@ -74,24 +81,35 @@ def align_fa_annotations_by_variant(
         gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
 
         match = None
+        match_idx = None
         if gt_rs:
-            for rsids, raw_norm, pred_rec in pred_index:
-                if rsids & gt_rs:
+            for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+                if idx not in matched_pred_indices and rsids & gt_rs:
                     match = pred_rec
+                    match_idx = idx
                     break
         if match is None and gt_norm:
-            for rsids, raw_norm, pred_rec in pred_index:
-                if gt_norm in raw_norm:
+            for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+                if idx not in matched_pred_indices and gt_norm in raw_norm:
                     match = pred_rec
+                    match_idx = idx
                     break
 
         if match is not None:
             aligned_gt.append(gt_rec)
             aligned_pred.append(match)
+            matched_pred_indices.add(match_idx)
             disp = next(iter(gt_rs)) if gt_rs else gt_norm
             display_keys.append(disp)
 
-    return aligned_gt, aligned_pred, display_keys
+    # Collect unmatched samples
+    unmatched_gt = [rec for rec in gt_expanded if rec not in aligned_gt]
+    unmatched_pred = [
+        pred_index[i][2] for i in range(len(pred_index))
+        if i not in matched_pred_indices
+    ]
+
+    return aligned_gt, aligned_pred, display_keys, unmatched_gt, unmatched_pred
 
 
 def evaluate_fa_from_articles(
@@ -115,7 +133,7 @@ def evaluate_fa_from_articles(
             "status": "missing_var_fa_ann",
         }
 
-    aligned_gt, aligned_pred, display = align_fa_annotations_by_variant(gt_fa, pred_fa)
+    aligned_gt, aligned_pred, display, unmatched_gt, unmatched_pred = align_fa_annotations_by_variant(gt_fa, pred_fa)
     if not aligned_gt:
         return {
             "total_samples": 0,
@@ -123,11 +141,15 @@ def evaluate_fa_from_articles(
             "overall_score": 0.0,
             "detailed_results": [],
             "aligned_variants": [],
+            "unmatched_ground_truth": unmatched_gt,
+            "unmatched_predictions": unmatched_pred,
             "status": "no_overlap_after_alignment",
         }
 
     results = _evaluate_functional_analysis_pairs(aligned_gt, aligned_pred, None, None)
     results["aligned_variants"] = display
+    results["unmatched_ground_truth"] = unmatched_gt
+    results["unmatched_predictions"] = unmatched_pred
     results["status"] = "ok"
     return results
 

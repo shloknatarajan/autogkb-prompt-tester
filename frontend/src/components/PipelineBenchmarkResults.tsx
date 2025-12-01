@@ -44,10 +44,18 @@ interface DetailedResult {
   detailed_results: Array<{
     sample_id: number;
     field_scores: { [field: string]: number };
+    field_values?: {
+      [field: string]: {
+        ground_truth: any;
+        prediction: any;
+      };
+    };
     dependency_issues?: string[];
   }>;
   status?: string;
   aligned_variants?: string[];
+  unmatched_ground_truth?: Array<{ [field: string]: any }>;
+  unmatched_predictions?: Array<{ [field: string]: any }>;
 }
 
 interface PipelineBenchmarkResultsProps {
@@ -72,7 +80,10 @@ const convertToBenchmarkTaskResult = (
       overall_score: result.overall_score,
       total_samples: result.total_samples,
       field_scores: field_scores,
-      error: result.status === 'error' ? result.status : undefined
+      error: result.status === 'error' ? result.status : undefined,
+      detailed_results: result.detailed_results,
+      unmatched_ground_truth: result.unmatched_ground_truth,
+      unmatched_predictions: result.unmatched_predictions
     },
     alignedVariants: result.aligned_variants
   };

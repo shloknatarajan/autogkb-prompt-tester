@@ -18,6 +18,22 @@ export interface BenchmarkFieldScore {
   scores: number[]
 }
 
+export interface DetailedSampleResult {
+  sample_id: number
+  field_scores: { [field: string]: number }
+  field_values: {
+    [field: string]: {
+      ground_truth: any
+      prediction: any
+    }
+  }
+  dependency_issues?: string[]
+}
+
+export interface UnmatchedSample {
+  [field: string]: any
+}
+
 export interface BenchmarkTaskResult {
   overall_score: number
   raw_score?: number
@@ -26,6 +42,9 @@ export interface BenchmarkTaskResult {
   }
   total_samples: number
   error?: string
+  detailed_results?: DetailedSampleResult[]
+  unmatched_ground_truth?: UnmatchedSample[]
+  unmatched_predictions?: UnmatchedSample[]
 }
 
 export interface BenchmarkResult {

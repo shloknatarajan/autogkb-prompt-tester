@@ -53,17 +53,25 @@ def align_study_parameters_by_similarity(
     ground_truth_list: List[Dict[str, Any]],
     predictions_list: List[Dict[str, Any]],
     matching_threshold: float = 0.3,
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
+) -> Tuple[
+    List[Dict[str, Any]],  # aligned_gt
+    List[Dict[str, Any]],  # aligned_pred
+    List[str],             # display_keys
+    List[Dict[str, Any]],  # unmatched_gt
+    List[Dict[str, Any]],  # unmatched_pred
+]:
     """
-    Align study parameters by computing similarity scores between all pairs and greedily
-    selecting the best matches. This works even when Variant Annotation ID is null.
+    Align study parameters with tracking of unmatched samples.
+    Uses Variant Annotation ID matching first, then similarity-based matching.
+    Returns aligned pairs + unmatched samples from both GT and predictions.
     """
     if not ground_truth_list or not predictions_list:
-        return [], []
+        return [], [], [], ground_truth_list or [], predictions_list or []
 
     # First, try Variant Annotation ID matching for records that have it
     aligned_gt: List[Dict[str, Any]] = []
     aligned_pred: List[Dict[str, Any]] = []
+    display_keys: List[str] = []
     matched_gt_indices: set = set()
     matched_pred_indices: set = set()
 
@@ -87,6 +95,7 @@ def align_study_parameters_by_similarity(
                     aligned_pred.append(pred_rec)
                     matched_gt_indices.add(gt_idx)
                     matched_pred_indices.add(pred_idx)
+                    display_keys.append(f"ID:{variant_id}")
                     break
 
     # For remaining unmatched records, use similarity-based matching
@@ -99,29 +108,44 @@ def align_study_parameters_by_similarity(
         if idx not in matched_pred_indices
     ]
 
-    if not remaining_gt or not remaining_pred:
-        return aligned_gt, aligned_pred
+    if remaining_gt and remaining_pred:
+        # Compute all pairwise similarities
+        similarity_scores: List[Tuple[int, int, float]] = []
+        for gt_idx, gt_rec in remaining_gt:
+            for pred_idx, pred_rec in remaining_pred:
+                similarity = _compute_study_parameters_similarity(gt_rec, pred_rec)
+                if similarity >= matching_threshold:
+                    similarity_scores.append((gt_idx, pred_idx, similarity))
 
-    # Compute all pairwise similarities
-    similarity_scores: List[Tuple[int, int, float]] = []
-    for gt_idx, gt_rec in remaining_gt:
-        for pred_idx, pred_rec in remaining_pred:
-            similarity = _compute_study_parameters_similarity(gt_rec, pred_rec)
-            if similarity >= matching_threshold:
-                similarity_scores.append((gt_idx, pred_idx, similarity))
+        # Sort by similarity score (descending)
+        similarity_scores.sort(key=lambda x: x[2], reverse=True)
 
-    # Sort by similarity score (descending)
-    similarity_scores.sort(key=lambda x: x[2], reverse=True)
+        # Greedily assign matches (one-to-one)
+        for gt_idx, pred_idx, score in similarity_scores:
+            if gt_idx not in matched_gt_indices and pred_idx not in matched_pred_indices:
+                gt_rec = ground_truth_list[gt_idx]
+                pred_rec = predictions_list[pred_idx]
+                aligned_gt.append(gt_rec)
+                aligned_pred.append(pred_rec)
+                matched_gt_indices.add(gt_idx)
+                matched_pred_indices.add(pred_idx)
+                # Use study type + characteristics as display key for similarity matches
+                study_type = gt_rec.get('Study Type', 'Unknown')
+                chars = gt_rec.get('Characteristics', '')
+                disp_key = f"{study_type}" + (f":{chars[:20]}" if chars else "")
+                display_keys.append(disp_key)
 
-    # Greedily assign matches (one-to-one)
-    for gt_idx, pred_idx, score in similarity_scores:
-        if gt_idx not in matched_gt_indices and pred_idx not in matched_pred_indices:
-            aligned_gt.append(ground_truth_list[gt_idx])
-            aligned_pred.append(predictions_list[pred_idx])
-            matched_gt_indices.add(gt_idx)
-            matched_pred_indices.add(pred_idx)
+    # Collect unmatched samples
+    unmatched_gt = [
+        ground_truth_list[i] for i in range(len(ground_truth_list))
+        if i not in matched_gt_indices
+    ]
+    unmatched_pred = [
+        predictions_list[i] for i in range(len(predictions_list))
+        if i not in matched_pred_indices
+    ]
 
-    return aligned_gt, aligned_pred
+    return aligned_gt, aligned_pred, display_keys, unmatched_gt, unmatched_pred
 
 
 def align_study_parameters_by_variant_id(
@@ -153,7 +177,8 @@ def align_study_parameters_by_variant_id(
 
     # If no matches found by ID, fall back to similarity-based alignment
     if not aligned_gt:
-        return align_study_parameters_by_similarity(ground_truth_list, predictions_list)
+        aligned_gt, aligned_pred, _, _, _ = align_study_parameters_by_similarity(ground_truth_list, predictions_list)
+        return aligned_gt, aligned_pred
 
     return aligned_gt, aligned_pred
 
@@ -323,10 +348,18 @@ def evaluate_study_parameters(
         raise ValueError("Prediction must be a dict or list of dicts.")
 
     # Use similarity-based alignment since predictions often have null Variant Annotation ID
-    gt_list, pred_list = align_study_parameters_by_similarity(gt_list_raw, pred_list_raw)
+    gt_list, pred_list, display_keys, unmatched_gt, unmatched_pred = align_study_parameters_by_similarity(gt_list_raw, pred_list_raw)
 
     if not gt_list:
-        return {'total_samples': 0, 'field_scores': {}, 'overall_score': 0.0, 'detailed_results': []}
+        return {
+            'total_samples': 0,
+            'field_scores': {},
+            'overall_score': 0.0,
+            'detailed_results': [],
+            'aligned_variants': [],
+            'unmatched_ground_truth': unmatched_gt,
+            'unmatched_predictions': unmatched_pred,
+        }
 
     # Map evaluators to study parameters schema fields
     # CRITICAL FIX: Use Title Case field names to match ground truth
@@ -443,4 +476,10 @@ def evaluate_study_parameters(
         for k, v in results['field_scores'].items()
     }
     results['overall_score'] = compute_weighted_score(field_mean_scores, field_weights)
+
+    # Add aligned variants and unmatched samples
+    results['aligned_variants'] = display_keys
+    results['unmatched_ground_truth'] = unmatched_gt
+    results['unmatched_predictions'] = unmatched_pred
+
     return results
