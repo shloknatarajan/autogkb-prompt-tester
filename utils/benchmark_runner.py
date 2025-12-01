@@ -298,22 +298,27 @@ class BenchmarkRunner:
                 all_results[pmcid] = {"error": str(e)}
 
         # Calculate aggregated scores
-        task_scores = self.calculate_task_averages(all_results)
-        overall_score = self.calculate_overall_score(task_scores)
+        task_scores, sample_counts = self.calculate_task_averages(all_results)
+        overall_score = self.calculate_overall_score(task_scores, sample_counts)
 
         return all_results, task_scores, overall_score
 
-    def calculate_task_averages(self, results: Dict[str, Dict]) -> Dict[str, float]:
+    def calculate_task_averages(
+        self, results: Dict[str, Dict]
+    ) -> Tuple[Dict[str, float], Dict[str, int]]:
         """
-        Calculate average scores per task across all PMCIDs.
+        Calculate average scores per task across all PMCIDs and track sample counts.
 
         Args:
             results: Dictionary mapping PMCID to benchmark results
 
         Returns:
-            Dictionary mapping task name to average score
+            Tuple of:
+            - task_averages: {task: average_score}
+            - task_sample_counts: {task: total_matched_samples}
         """
         task_scores = {}
+        task_sample_counts = {}
 
         for pmcid, scores in results.items():
             if scores is None or "error" in scores:
@@ -322,11 +327,15 @@ class BenchmarkRunner:
             for task, result in scores.items():
                 if task not in task_scores:
                     task_scores[task] = []
+                    task_sample_counts[task] = 0
 
                 # Extract overall_score, handle errors gracefully
                 if isinstance(result, dict) and "overall_score" in result:
                     if "error" not in result:
                         task_scores[task].append(result["overall_score"])
+                        # Track sample count (number of matched annotations)
+                        sample_count = result.get("total_samples", 0)
+                        task_sample_counts[task] += sample_count
 
         # Calculate averages
         average_scores = {
@@ -334,22 +343,44 @@ class BenchmarkRunner:
             for task, scores in task_scores.items()
         }
 
-        return average_scores
+        return average_scores, task_sample_counts
 
-    def calculate_overall_score(self, task_averages: Dict[str, float]) -> float:
+    def calculate_overall_score(
+        self,
+        task_averages: Dict[str, float],
+        task_sample_counts: Dict[str, int]
+    ) -> float:
         """
-        Calculate overall score from task averages.
+        Calculate sample-weighted overall score from task averages.
+
+        Tasks are weighted by their total sample count (number of matched annotations).
+        This ensures tasks with more data contribute proportionally more to the overall score.
+        Missing tasks (with 0 samples) are automatically excluded.
 
         Args:
-            task_averages: Dictionary mapping task to average score
+            task_averages: {task: average_score}
+            task_sample_counts: {task: total_sample_count}
 
         Returns:
-            Overall average score across all tasks
+            Weighted average score
         """
-        if not task_averages:
+        if not task_averages or not task_sample_counts:
             return 0.0
 
-        return sum(task_averages.values()) / len(task_averages)
+        # Calculate weighted sum and total weight
+        weighted_sum = 0.0
+        total_samples = 0
+
+        for task, avg_score in task_averages.items():
+            sample_count = task_sample_counts.get(task, 0)
+            if sample_count > 0:  # Only include tasks with data
+                weighted_sum += avg_score * sample_count
+                total_samples += sample_count
+
+        if total_samples == 0:
+            return 0.0
+
+        return weighted_sum / total_samples
 
     def has_ground_truth(self, pmcid: str) -> bool:
         """Check if ground truth exists for a PMCID."""

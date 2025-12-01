@@ -111,8 +111,8 @@ def main():
         scores = runner.benchmark_pmcid(pmcid, generated_annotations, verbose=True)
 
         # Calculate overall score
-        task_scores = runner.calculate_task_averages({pmcid: scores})
-        overall_score = runner.calculate_overall_score(task_scores)
+        task_scores, sample_counts = runner.calculate_task_averages({pmcid: scores})
+        overall_score = runner.calculate_overall_score(task_scores, sample_counts)
 
         # Save results
         output = {

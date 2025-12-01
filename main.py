@@ -579,8 +579,8 @@ async def benchmark_from_output(request: BenchmarkFromOutputRequest):
         benchmark_results = runner.benchmark_pmcid(pmcid, output_data, verbose=True)
 
         # Calculate average score
-        task_scores = runner.calculate_task_averages({pmcid: benchmark_results})
-        average_score = runner.calculate_overall_score(task_scores)
+        task_scores, sample_counts = runner.calculate_task_averages({pmcid: benchmark_results})
+        average_score = runner.calculate_overall_score(task_scores, sample_counts)
 
         # Calculate successful tasks
         successful = sum(1 for r in benchmark_results.values() if "error" not in r)
