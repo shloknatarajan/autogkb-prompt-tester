@@ -25,7 +25,10 @@ from utils.benchmark_runner import BenchmarkRunner
 from utils.prompt_manager import PromptManager
 from utils.citation_generator import generate_citations
 from utils.output_manager import save_output, combine_outputs
-from utils.normalization import normalize_outputs_in_directory
+from utils.normalization import (
+    normalize_outputs_in_directory,
+    normalize_outputs_in_directory_async,
+)
 
 app = FastAPI()
 
@@ -186,7 +189,7 @@ async def save_prompt(request: SavePromptRequest):
             prompt=request.prompt,
             response_format=request.response_format or {},
             model=request.model,
-            temperature=request.temperature
+            temperature=request.temperature,
         )
 
         # Also save output to outputs/ folder if provided
@@ -247,12 +250,12 @@ async def update_best_prompts(request: UpdateBestPromptsRequest):
         if success:
             return {
                 "status": "success",
-                "message": "Best prompts configuration updated"
+                "message": "Best prompts configuration updated",
             }
         else:
             raise HTTPException(
                 status_code=400,
-                detail="Failed to update best prompts (one or more prompts not found)"
+                detail="Failed to update best prompts (one or more prompts not found)",
             )
     except HTTPException:
         raise
@@ -296,7 +299,7 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
                 prompt=prompt_data.get("prompt", ""),
                 response_format=response_format,
                 model=prompt_data.get("model", "gpt-4o-mini"),
-                temperature=prompt_data.get("temperature", 0.0)
+                temperature=prompt_data.get("temperature", 0.0),
             )
             saved_count += 1
 
@@ -327,14 +330,10 @@ async def delete_prompt(task: str, name: str):
         success = prompt_manager.delete_prompt(task, name)
 
         if success:
-            return {
-                "status": "success",
-                "message": f"Deleted prompt: {task}/{name}"
-            }
+            return {"status": "success", "message": f"Deleted prompt: {task}/{name}"}
         else:
             raise HTTPException(
-                status_code=404,
-                detail=f"Prompt not found: {task}/{name}"
+                status_code=404, detail=f"Prompt not found: {task}/{name}"
             )
     except HTTPException:
         raise
@@ -352,12 +351,12 @@ async def rename_prompt(task: str, old_name: str, request: RenamePromptRequest):
         if success:
             return {
                 "status": "success",
-                "message": f"Renamed prompt: {task}/{old_name} -> {task}/{request.new_name}"
+                "message": f"Renamed prompt: {task}/{old_name} -> {task}/{request.new_name}",
             }
         else:
             raise HTTPException(
                 status_code=400,
-                detail=f"Could not rename prompt (not found or destination exists)"
+                detail=f"Could not rename prompt (not found or destination exists)",
             )
     except HTTPException:
         raise
@@ -671,7 +670,9 @@ async def benchmark_from_output(request: BenchmarkFromOutputRequest):
         benchmark_results = runner.benchmark_pmcid(pmcid, output_data, verbose=True)
 
         # Calculate average score
-        task_scores, sample_counts = runner.calculate_task_averages({pmcid: benchmark_results})
+        task_scores, sample_counts = runner.calculate_task_averages(
+            {pmcid: benchmark_results}
+        )
         average_score = runner.calculate_overall_score(task_scores, sample_counts)
 
         # Calculate successful tasks
@@ -971,7 +972,7 @@ async def run_pipeline_task(job: PipelineJob):
             completed += 1
             job.pmcids_processed = completed
             job.current_pmcid = pmcid
-            job.progress = (completed / len(pmcids)) * 0.8
+            job.progress = (completed / len(pmcids)) * 0.5
             job.add_message(f"Completed {pmcid} ({completed}/{len(pmcids)})")
 
         # Check for cancellation before combining
@@ -981,25 +982,43 @@ async def run_pipeline_task(job: PipelineJob):
 
         job.add_message(f"Completed processing {len(pmcids)} PMCIDs")
 
-        # Stage 1.5: Normalize terms using utility
-        # job.current_stage = "normalizing_terms"
-        # job.progress = 0.83
-        # job.add_message("Normalizing terms in outputs...")
-        #
-        # normalized_count, failed_count = normalize_outputs_in_directory(
-        #     output_dir, in_place=True, verbose=True
-        # )
-        #
-        # # Reload normalized data
-        # for pmcid in pmcids:
-        #     output_file = Path(output_dir) / f"{pmcid}.json"
-        #     if output_file.exists():
-        #         with open(output_file, "r") as f:
-        #             all_outputs[pmcid] = json.load(f)
-        #
-        # job.add_message(
-        #     f"Term normalization complete: {normalized_count} successful, {failed_count} failed"
-        # )
+        # Check for cancellation before normalization
+        if job.cancelled:
+            job.add_message("Pipeline cancelled before normalization")
+            return
+
+        # Stage 1.5: Normalize terms using async utility with progress
+        job.current_stage = "normalizing_terms"
+        job.progress = 0.5
+        job.add_message("Starting term normalization...")
+
+        def on_file_normalized(filename: str, completed: int, total: int):
+            job.add_message(f"Normalized {filename} ({completed}/{total})")
+            # Progress from 80% to 85% during normalization
+            job.progress = 0.50 + (completed / total) * 0.35
+
+        normalized_count, failed_count = await normalize_outputs_in_directory_async(
+            output_dir,
+            in_place=True,
+            concurrency=10,
+            progress_callback=on_file_normalized,
+        )
+
+        # Reload normalized data
+        for pmcid in pmcids:
+            output_file = Path(output_dir) / f"{pmcid}.json"
+            if output_file.exists():
+                with open(output_file, "r") as f:
+                    all_outputs[pmcid] = json.load(f)
+
+        job.add_message(
+            f"Term normalization complete: {normalized_count} successful, {failed_count} failed"
+        )
+
+        # Check for cancellation before combining
+        if job.cancelled:
+            job.add_message("Pipeline cancelled before combining outputs")
+            return
 
         # Stage 2: Combine outputs using utility
         job.current_stage = "combining_outputs"
@@ -1013,7 +1032,7 @@ async def run_pipeline_task(job: PipelineJob):
 
         # Stage 3: Run benchmarks using BenchmarkRunner utility
         job.current_stage = "running_benchmarks"
-        job.progress = 0.90
+        job.progress = 0.9
         job.add_message("Running benchmarks...")
 
         try:

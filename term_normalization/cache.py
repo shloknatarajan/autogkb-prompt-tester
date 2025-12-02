@@ -5,6 +5,7 @@ This module provides thread-safe caching for normalized terms to avoid
 redundant API calls and lookups across multiple files.
 """
 
+import threading
 from typing import Dict, Optional, List, TYPE_CHECKING
 from dataclasses import dataclass
 
@@ -115,3 +116,17 @@ _TERM_CACHE = TermCache()
 def get_term_cache() -> TermCache:
     """Get the global term cache instance."""
     return _TERM_CACHE
+
+
+# Global PharmGKB API rate limiter (max 2 concurrent calls)
+_PHARMGKB_SEMAPHORE = threading.Semaphore(2)
+
+
+def get_pharmgkb_semaphore() -> threading.Semaphore:
+    """
+    Get the global PharmGKB API rate limiting semaphore.
+
+    PharmGKB has rate limits, so we restrict to max 2 concurrent API calls.
+    This semaphore should be acquired before making PharmGKB API requests.
+    """
+    return _PHARMGKB_SEMAPHORE

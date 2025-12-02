@@ -5,10 +5,11 @@ This module provides functions to normalize terms in output files using
 the term_normalization package, consolidating logic from multiple scripts.
 """
 
+import asyncio
 import json
 import os
 from pathlib import Path
-from typing import Dict, List, Tuple
+from typing import Callable, Dict, List, Optional, Tuple
 
 from term_normalization.term_lookup import normalize_annotation
 
@@ -242,3 +243,94 @@ def get_normalization_stats(output_file: str) -> Dict:
         stats["error"] = str(e)
 
     return stats
+
+
+def _normalize_single_file(input_file: Path, in_place: bool) -> Tuple[str, bool, Optional[str]]:
+    """
+    Normalize a single file (internal helper for async wrapper).
+
+    Args:
+        input_file: Path to the file
+        in_place: Whether to overwrite the original file
+
+    Returns:
+        Tuple of (filename, success, error_message)
+    """
+    try:
+        if in_place:
+            temp_file = input_file.with_suffix(".json.tmp")
+            normalize_annotation(input_file, temp_file)
+            temp_file.replace(input_file)
+        else:
+            output_file = input_file.with_stem(f"{input_file.stem}_normalized")
+            normalize_annotation(input_file, output_file)
+        return (input_file.name, True, None)
+    except Exception as e:
+        return (input_file.name, False, str(e))
+
+
+async def normalize_outputs_in_directory_async(
+    directory: str,
+    in_place: bool = True,
+    concurrency: int = 10,
+    progress_callback: Optional[Callable[[str, int, int], None]] = None,
+) -> Tuple[int, int]:
+    """
+    Normalize all JSON output files in a directory concurrently.
+
+    Args:
+        directory: Directory containing output JSON files
+        in_place: If True, overwrite original files; if False, create *_normalized.json
+        concurrency: Maximum number of files to process concurrently (default 10)
+        progress_callback: Optional callback called after each file with (filename, completed, total)
+
+    Returns:
+        Tuple of (successful_count, failed_count)
+
+    Note:
+        PharmGKB API calls are rate-limited separately (max 2 concurrent) via
+        the global semaphore in term_normalization.cache. This concurrency
+        parameter controls file-level parallelism.
+    """
+    if not os.path.exists(directory):
+        raise FileNotFoundError(f"Directory not found: {directory}")
+
+    # Find all JSON files (excluding combined files)
+    json_files = [
+        f for f in Path(directory).glob("*.json")
+        if "combined" not in f.name
+    ]
+
+    if not json_files:
+        return (0, 0)
+
+    total = len(json_files)
+    successful = 0
+    failed = 0
+    completed = 0
+
+    # Semaphore for file-level concurrency
+    semaphore = asyncio.Semaphore(concurrency)
+
+    async def process_file(input_file: Path) -> Tuple[str, bool, Optional[str]]:
+        async with semaphore:
+            # Run synchronous normalization in thread pool
+            return await asyncio.to_thread(_normalize_single_file, input_file, in_place)
+
+    # Create tasks for all files
+    tasks = [process_file(f) for f in json_files]
+
+    # Process as they complete for real-time progress reporting
+    for coro in asyncio.as_completed(tasks):
+        filename, success, error = await coro
+        completed += 1
+
+        if success:
+            successful += 1
+        else:
+            failed += 1
+
+        if progress_callback:
+            progress_callback(filename, completed, total)
+
+    return (successful, failed)

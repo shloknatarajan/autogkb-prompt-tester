@@ -9,7 +9,7 @@ from term_normalization.search_utils import (
 import pandas as pd
 from loguru import logger
 from pathlib import Path
-from term_normalization.cache import get_term_cache
+from term_normalization.cache import get_term_cache, get_pharmgkb_semaphore
 
 # Global cache for variant TSV data
 _VARIANT_DF_CACHE: Optional[pd.DataFrame] = None
@@ -47,7 +47,9 @@ def pgkb_star_allele_search(
     star_allele: str, threshold: float = 0.8, top_k: int = 1
 ) -> Optional[List[VariantSearchResult]]:
     base_url = "https://api.pharmgkb.org/v1/data/haplotype?symbol="
-    response = requests.get(base_url + star_allele)
+    semaphore = get_pharmgkb_semaphore()
+    with semaphore:
+        response = requests.get(base_url + star_allele, timeout=10)
     if response.status_code == 200:
         data = response.json()
         score = calc_similarity(star_allele, data["data"][0]["symbol"])
@@ -69,7 +71,9 @@ def pgkb_rsid_search(
     rsid: str, threshold: float = 0.8, top_k: int = 1
 ) -> Optional[List[VariantSearchResult]]:
     base_url = "https://api.pharmgkb.org/v1/data/variant?symbol="
-    response = requests.get(base_url + rsid.strip())
+    semaphore = get_pharmgkb_semaphore()
+    with semaphore:
+        response = requests.get(base_url + rsid.strip(), timeout=10)
     if response.status_code == 200:
         data = response.json()
         score = calc_similarity(rsid, data["data"][0]["symbol"])
