@@ -269,6 +269,29 @@ def _normalize_single_file(input_file: Path, in_place: bool) -> Tuple[str, bool,
         return (input_file.name, False, str(e))
 
 
+async def normalize_single_file_async(
+    file_path: Path, in_place: bool = True
+) -> Tuple[str, bool, Optional[str]]:
+    """
+    Normalize a single file asynchronously.
+
+    This function is designed for use in pipelines where normalization
+    should run concurrently with other tasks (e.g., LLM generation).
+
+    Args:
+        file_path: Path to the JSON file to normalize
+        in_place: Whether to overwrite the original file (default True)
+
+    Returns:
+        Tuple of (filename, success, error_message)
+
+    Note:
+        PharmGKB API calls are rate-limited by the global semaphore
+        in term_normalization.cache (max 2 concurrent API calls).
+    """
+    return await asyncio.to_thread(_normalize_single_file, file_path, in_place)
+
+
 async def normalize_outputs_in_directory_async(
     directory: str,
     in_place: bool = True,

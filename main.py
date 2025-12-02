@@ -28,6 +28,7 @@ from utils.output_manager import save_output, combine_outputs
 from utils.normalization import (
     normalize_outputs_in_directory,
     normalize_outputs_in_directory_async,
+    normalize_single_file_async,
 )
 
 app = FastAPI()
@@ -943,66 +944,95 @@ async def run_pipeline_task(job: PipelineJob):
         os.makedirs(output_dir, exist_ok=True)
         job.add_message(f"Output directory: {output_dir}")
 
-        # Stage 1: Process PMCIDs in parallel with concurrency control
+        # Stage 1: Process PMCIDs with overlapped normalization
+        # As each PMCID completes LLM generation, immediately kick off normalization
         job.current_stage = "processing_pmcids"
         concurrency = job.config.get("concurrency", 3)
         semaphore = asyncio.Semaphore(concurrency)
         job.add_message(f"Processing with concurrency: {concurrency}")
+        job.add_message("Normalization will run concurrently with LLM generation")
 
-        # Create tasks for all PMCIDs
-        pmcid_tasks = [
-            process_single_pmcid(
+        # Shared state for tracking
+        all_outputs = {}
+        normalization_tasks = []  # List of (pmcid, task) tuples
+        completed_llm = 0
+        completed_norm = 0
+        total = len(pmcids)
+
+        async def process_and_kick_off_normalization(pmcid):
+            """Process PMCID then immediately kick off normalization task."""
+            nonlocal completed_llm
+
+            # Step 1: LLM generation (uses semaphore for concurrency)
+            result_pmcid, results = await process_single_pmcid(
                 pmcid, data_dir, output_dir, prompt_details_map, semaphore
             )
+
+            completed_llm += 1
+            job.pmcids_processed = completed_llm
+            job.current_pmcid = result_pmcid
+            job.add_message(f"Generated {result_pmcid} ({completed_llm}/{total})")
+
+            # Step 2: Kick off normalization immediately (don't await)
+            output_file = Path(output_dir) / f"{result_pmcid}.json"
+            norm_task = asyncio.create_task(normalize_single_file_async(output_file))
+            normalization_tasks.append((result_pmcid, norm_task))
+
+            return result_pmcid, results
+
+        # Create combined tasks
+        combined_tasks = [
+            process_and_kick_off_normalization(pmcid)
             for pmcid in pmcids
         ]
 
-        # Process with progress tracking
-        all_outputs = {}
-        completed = 0
-
-        for coro in asyncio.as_completed(pmcid_tasks):
+        # Process LLM generation with progress tracking
+        for coro in asyncio.as_completed(combined_tasks):
             # Check for cancellation
             if job.cancelled:
-                job.add_message("Pipeline cancelled during PMCID processing")
+                job.add_message("Pipeline cancelled during processing")
                 return
 
             pmcid, results = await coro
             all_outputs[pmcid] = results
-            completed += 1
-            job.pmcids_processed = completed
-            job.current_pmcid = pmcid
-            job.progress = (completed / len(pmcids)) * 0.5
-            job.add_message(f"Completed {pmcid} ({completed}/{len(pmcids)})")
+            # Progress: 0-50% for LLM generation
+            job.progress = (completed_llm / total) * 0.5
 
-        # Check for cancellation before combining
+        job.add_message(f"All LLM generation complete ({completed_llm}/{total})")
+
+        # Check for cancellation before waiting for normalization
         if job.cancelled:
             job.add_message("Pipeline cancelled")
             return
 
-        job.add_message(f"Completed processing {len(pmcids)} PMCIDs")
-
-        # Check for cancellation before normalization
-        if job.cancelled:
-            job.add_message("Pipeline cancelled before normalization")
-            return
-
-        # Stage 1.5: Normalize terms using async utility with progress
+        # Wait for all normalization tasks to complete
         job.current_stage = "normalizing_terms"
-        job.progress = 0.5
-        job.add_message("Starting term normalization...")
+        job.add_message("Waiting for remaining normalization tasks...")
 
-        def on_file_normalized(filename: str, completed: int, total: int):
-            job.add_message(f"Normalized {filename} ({completed}/{total})")
-            # Progress from 80% to 85% during normalization
-            job.progress = 0.50 + (completed / total) * 0.35
+        normalized_count = 0
+        failed_count = 0
 
-        normalized_count, failed_count = await normalize_outputs_in_directory_async(
-            output_dir,
-            in_place=True,
-            concurrency=10,
-            progress_callback=on_file_normalized,
-        )
+        for pmcid, norm_task in normalization_tasks:
+            if job.cancelled:
+                job.add_message("Pipeline cancelled during normalization")
+                return
+
+            try:
+                filename, success, error = await norm_task
+                completed_norm += 1
+                if success:
+                    normalized_count += 1
+                    job.add_message(f"Normalized {pmcid} ({completed_norm}/{total})")
+                else:
+                    failed_count += 1
+                    job.add_message(f"Normalization failed for {pmcid}: {error}")
+                # Progress: 50-85% for normalization
+                job.progress = 0.5 + (completed_norm / total) * 0.35
+            except Exception as e:
+                failed_count += 1
+                completed_norm += 1
+                job.add_message(f"Normalization error for {pmcid}: {e}")
+                job.progress = 0.5 + (completed_norm / total) * 0.35
 
         # Reload normalized data
         for pmcid in pmcids:
