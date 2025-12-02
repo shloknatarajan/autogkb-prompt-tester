@@ -16,6 +16,7 @@ class Model(str, Enum):
     OPENAI_GPT_4O_MINI = "gpt-4o-mini"
     OPENAI_GPT_35_TURBO = "gpt-3.5-turbo"
     OPENAI_GPT_5 = "gpt-5"
+    OPENAI_GPT_5_1 = "gpt-5.1"
     OPENAI_GPT_5_MINI = "gpt-5-mini"
     OPENAI_GPT_5_PRO = "gpt-5-pro"
 
@@ -51,6 +52,7 @@ async def generate_response(
         Model.OPENAI_GPT_5_MINI,
         Model.OPENAI_GPT_5,
         Model.OPENAI_GPT_5_PRO,
+        Model.OPENAI_GPT_5_1,
     }
     if model in temperature_unsupported_models:
         temperature = 1  # default temperature for these models

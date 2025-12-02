@@ -98,7 +98,7 @@
           "P Value": {
             "type": "string",
             "description": "The p-value and the operator (=, <, etc.) that is reported in the paper",
-            "pattern": "^[<>=≤≥]\\s*[0-9]+(\\.[0-9]+)?(e-?[0-9]+)?$"
+            "pattern": "^[<>=\u2264\u2265]\\s*[0-9]+(\\.[0-9]+)?(e-?[0-9]+)?$"
           },
           "Ratio Stat Type": {
             "type": "string",

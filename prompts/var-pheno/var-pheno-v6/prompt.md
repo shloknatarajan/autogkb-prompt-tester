@@ -2,6 +2,33 @@
 
 Article: \n\n{article_text}\n\n
 
+## CRITICAL: var_pheno vs var_drug Task Selection
+
+**THIS TASK (var_pheno) IS FOR:**
+- Variants associated with PHENOTYPES (side effects, adverse reactions, disease susceptibility)
+- HLA alleles linked to drug hypersensitivity syndromes (SJS/TEN, DRESS, MPE)
+- Genetic variants affecting CLINICAL OUTCOMES of drug exposure
+- Focus: What HAPPENS to the patient (the phenotype)
+
+**DO NOT USE var_pheno FOR:**
+- Variants affecting drug METABOLISM (plasma levels, clearance, AUC)
+- CYP/transporter variants affecting PHARMACOKINETICS
+- Studies measuring drug concentrations or metabolic ratios
+- Focus: What happens to the DRUG (metabolism/PK belongs in var_drug task)
+
+### Decision Examples
+
+| Scenario | Correct Task | Reason |
+|----------|--------------|--------|
+| HLA-B*57:01 + abacavir → hypersensitivity | **var_pheno** | Phenotype = hypersensitivity reaction |
+| HLA-B*15:02 + carbamazepine → SJS/TEN | **var_pheno** | Phenotype = Stevens-Johnson Syndrome |
+| HLA-A*31:01 + carbamazepine → MPE | **var_pheno** | Phenotype = Maculopapular Exanthema |
+| CYP2D6*4 + codeine → reduced metabolism | var_drug | Drug metabolism affected |
+| SLCO1B1*5 + simvastatin → higher plasma levels | var_drug | Drug PK affected |
+| CYP2C19*2 + clopidogrel → reduced efficacy | var_drug | Drug response affected |
+
+**Rule of thumb**: If the association involves HLA alleles and a clinical syndrome (hypersensitivity, SJS, DRESS, etc.), it belongs in var_pheno.
+
 ## Output Format
 
 Extract data according to this JSON structure:
@@ -324,6 +351,10 @@ This becomes **5 separate annotations**:
 
 Before submitting, verify:
 
+**Task Selection:**
+- [ ] HLA + drug + adverse reaction → var_pheno (this task)
+- [ ] CYP/transporter + drug + metabolism/PK → var_drug (different task)
+
 **Annotation Granularity:**
 - [ ] Each variant from tables has its own annotation (NOT consolidated)
 - [ ] All variants listed in association tables are extracted
@@ -346,6 +377,7 @@ Before submitting, verify:
 
 | Mistake | Correction |
 |---------|------------|
+| Putting HLA+hypersensitivity in var_drug | Use var_pheno for phenotype associations |
 | Consolidating table variants into one annotation | Create separate annotation for each variant |
 | `"Stevens-Johnson Syndrome"` | `"Side Effect:Stevens-Johnson Syndrome"` |
 | `"Increased"` | `"increased"` |
@@ -355,4 +387,8 @@ Before submitting, verify:
 
 ## Now Extract
 
-Read the provided PubMed article carefully. **Scan all tables** for variant associations and extract **each variant as a separate annotation**. Follow the above guidelines and return only the JSON output with all extracted entries.
+Read the provided PubMed article carefully. **Scan all tables** for variant associations and extract **each variant as a separate annotation**.
+
+**Remember**: This task is for PHENOTYPE associations (side effects, adverse reactions, hypersensitivity). Drug metabolism/PK associations belong in var_drug.
+
+Follow the above guidelines and return only the JSON output with all extracted entries.

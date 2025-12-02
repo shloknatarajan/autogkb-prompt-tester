@@ -817,6 +817,8 @@ async def process_single_pmcid(
     output_dir: str,
     prompt_details_map: dict,
     semaphore: asyncio.Semaphore,
+    override_model: Model | None = None,
+    override_temperature: float | None = None,
 ) -> tuple[str, dict]:
     """
     Process a single PMCID with all prompts.
@@ -831,18 +833,25 @@ async def process_single_pmcid(
         # Run all prompts in parallel for this PMCID
         async def run_prompt(task: str, prompt_data: dict) -> tuple[str, dict]:
             try:
-                model_str = prompt_data.get("model", "gpt-4o-mini")
-                try:
-                    model = Model(model_str)
-                except ValueError:
-                    model = Model.OPENAI_GPT_4O_MINI
+                # Use override model if provided, otherwise fall back to prompt's model
+                if override_model:
+                    model = override_model
+                else:
+                    model_str = prompt_data.get("model", "gpt-4o-mini")
+                    try:
+                        model = Model(model_str)
+                    except ValueError:
+                        model = Model.OPENAI_GPT_4O_MINI
+
+                # Use override temperature if provided, otherwise fall back to prompt's temperature
+                temperature = override_temperature if override_temperature is not None else prompt_data.get("temperature", 0.0)
 
                 output = await generate_response(
                     prompt=prompt_data["prompt"],
                     text=text,
                     model=model,
                     response_format=prompt_data.get("response_format"),
-                    temperature=prompt_data.get("temperature", 0.0),
+                    temperature=temperature,
                 )
 
                 try:
@@ -875,6 +884,9 @@ async def process_single_pmcid(
         # Generate citations for annotations
         from utils.citation_generator import CITATION_PROMPT_TEMPLATE
 
+        # Use override model for citations, or default to GPT-4o-mini
+        citation_model = override_model if override_model else Model.OPENAI_GPT_4O_MINI
+
         citation_tasks = []
         for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann"]:
             if ann_type in pmcid_results and isinstance(pmcid_results[ann_type], list):
@@ -886,7 +898,7 @@ async def process_single_pmcid(
                             annotation,
                             text,
                             CITATION_PROMPT_TEMPLATE,
-                            Model.OPENAI_GPT_4O_MINI,
+                            citation_model,
                         )
                     )
 
@@ -949,7 +961,19 @@ async def run_pipeline_task(job: PipelineJob):
         job.current_stage = "processing_pmcids"
         concurrency = job.config.get("concurrency", 3)
         semaphore = asyncio.Semaphore(concurrency)
+
+        # Parse model from config
+        model_str = job.config.get("model", "gpt-4o-mini")
+        try:
+            override_model = Model(model_str)
+        except ValueError:
+            override_model = Model.OPENAI_GPT_4O_MINI
+            job.add_message(f"Warning: Unknown model '{model_str}', using gpt-4o-mini")
+
+        override_temperature = job.config.get("temperature", 0.0)
+
         job.add_message(f"Processing with concurrency: {concurrency}")
+        job.add_message(f"Using model: {override_model.value}, temperature: {override_temperature}")
         job.add_message("Normalization will run concurrently with LLM generation")
 
         # Shared state for tracking
@@ -965,7 +989,9 @@ async def run_pipeline_task(job: PipelineJob):
 
             # Step 1: LLM generation (uses semaphore for concurrency)
             result_pmcid, results = await process_single_pmcid(
-                pmcid, data_dir, output_dir, prompt_details_map, semaphore
+                pmcid, data_dir, output_dir, prompt_details_map, semaphore,
+                override_model=override_model,
+                override_temperature=override_temperature,
             )
 
             completed_llm += 1
@@ -981,10 +1007,7 @@ async def run_pipeline_task(job: PipelineJob):
             return result_pmcid, results
 
         # Create combined tasks
-        combined_tasks = [
-            process_and_kick_off_normalization(pmcid)
-            for pmcid in pmcids
-        ]
+        combined_tasks = [process_and_kick_off_normalization(pmcid) for pmcid in pmcids]
 
         # Process LLM generation with progress tracking
         for coro in asyncio.as_completed(combined_tasks):
@@ -1150,6 +1173,7 @@ async def start_pipeline(request: PipelineStartRequest):
             "data_dir": request.data_dir,
             "model": request.model,
             "concurrency": request.concurrency,
+            "temperature": request.temperature,
         }
 
         job = PipelineJob(job_id, config)
