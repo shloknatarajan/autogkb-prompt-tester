@@ -414,6 +414,15 @@ class PhenotypeAnnotationBenchmark:
                     "scores": field_scores,
                 }
 
+        # Add zero scores for unmatched ground truth annotations
+        num_unmatched_gt = len(unmatched_gt)
+        if num_unmatched_gt > 0:
+            for field in results["field_scores"]:
+                scores = results["field_scores"][field]["scores"]
+                scores.extend([0.0] * num_unmatched_gt)
+                results["field_scores"][field]["mean_score"] = sum(scores) / len(scores)
+            results["total_samples"] = len(matched_pairs) + num_unmatched_gt
+
         # Compute overall score with field weights
         field_mean_scores = {
             k: v["mean_score"] for k, v in results["field_scores"].items()
