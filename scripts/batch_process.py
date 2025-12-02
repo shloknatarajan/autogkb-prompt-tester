@@ -219,6 +219,7 @@ class BatchProcessor:
                 text="",
                 model=model,
                 response_format=response_format,
+                temperature=prompt.get("temperature", 0.0),
             )
 
             # Parse output

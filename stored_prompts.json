@@ -1609,5 +1609,600 @@
       "additionalProperties": false
     },
     "timestamp": "2025-12-01T16:41:01.279109"
+  },
+  {
+    "task": "var-drug",
+    "name": "improved_v1",
+    "prompt": "You are an expert pharmacogenomics researcher extracting variant-drug associations from scientific literature.\n\nArticle:\n\n{article_text}\n\n## CRITICAL INSTRUCTIONS FOR ACCURATE EXTRACTION\n\n### Variant/Haplotypes - MOST IMPORTANT\n**PRIORITY ORDER** (extract in this order of preference):\n1. **rs numbers (rsID)** - ALWAYS prefer rs numbers when available (e.g., rs4149056, rs2306283)\n2. Star alleles - If no rs number, use star alleles (e.g., CYP2C19*2, SLCO1B1*15)\n3. HGVS notation - ONLY if neither rs number nor star allele is available (e.g., c.521T>C)\n\n**If the article mentions BOTH** an rs number AND an HGVS notation for the same variant:\n- Extract the **rs number ONLY** (e.g., use \"rs4149056\" NOT \"SLCO1B1 c.521T>C\")\n- The rs number is the primary identifier\n\n**Examples of CORRECT extraction**:\n- Article says \"rs4149056 (c.521T>C)\" \u2192 Extract: \"rs4149056\"\n- Article says \"SLCO1B1 c.521T>C (rs4149056)\" \u2192 Extract: \"rs4149056\"\n- Article says \"CYP2C19*2\" only \u2192 Extract: \"CYP2C19*2\"\n\n### PMID - REQUIRED FIELD\n- **MUST extract PMID** from the article\n- Look in the article metadata, header, or references section\n- If you cannot find it, look for it near the title or in citations\n- This field is REQUIRED and cannot be null\n\n### Variant Annotation ID - REQUIRED FIELD\n- Generate a unique integer ID for each annotation\n- Start from 1 and increment for each annotation in the article\n- This field is REQUIRED\n\n### Drug(s) - EXACT MATCHING\n- Extract the **EXACT drug name or metabolite** as mentioned in the article\n- Include metabolites if specified (e.g., \"simvastatin acid\" NOT just \"simvastatin\")\n- Include pro-drugs if specified (e.g., \"clopidogrel\" vs \"active metabolite of clopidogrel\")\n- Match the terminology used in the results section\n\n### Comparison Allele(s) or Genotype(s) - REQUIRED WHEN APPLICABLE\n- **ALWAYS extract** the reference genotype used for comparison\n- Look for phrases like \"compared to\", \"versus\", \"reference group\"\n- Examples: \"TT\", \"*1/*1\", \"AA\", \"wild-type\"\n- If a comparison is made in the study, this field MUST be filled\n\n### Alleles - EXACT GENOTYPES\n- Extract the EXACT alleles/genotypes studied\n- Include combined genotypes if mentioned (e.g., \"CC + CT\", \"AG + GG\")\n- Match the format used in the results\n\n## EXTRACTION TERMS\n\n### Gene\n- HGNC gene symbol (e.g., SLCO1B1, CYP2C19, DPYD)\n\n### Phenotype Category\n- efficacy: Treatment response, clinical outcomes\n- metabolism/PK: Drug levels, pharmacokinetics, clearance\n- toxicity: Adverse effects, side effects\n- dosage: Dose requirements\n- other: Other outcomes\n\n### Significance\n- yes: p < 0.05 or stated as significant\n- no: p \u2265 0.05 or non-significant\n- not stated: No statistical test reported\n\n### Notes\n- Extract key quotes with statistical results\n- Include p-values, effect sizes, concentration values\n\n### Sentence\n- Format: \"[Genotype/Allele] is [associated with/not associated with] [increased/decreased] [PD/PK term] [drug] [population context] as compared to [comparison genotype].\"\n- Example: \"Genotypes CC + CT is associated with increased concentrations of simvastatin acid in people with Cardiovascular Disease as compared to genotype TT.\"\n\n### Specialty Population\n- Pediatric, Geriatric, or null for general adult population\n\n### Metabolizer types\n- poor metabolizer, intermediate metabolizer, extensive metabolizer, ultrarapid metabolizer, normal function, decreased function, increased function\n\n### isPlural\n- \"Is\" for singular, \"Are\" for plural\n\n### Is/Is Not associated\n- \"Associated with\" or \"Not associated with\"\n\n### Direction of effect\n- \"increased\" or \"decreased\" (null if not applicable)\n\n### PD/PK terms\n- Examples: \"concentrations of\", \"response to\", \"clearance of\", \"metabolism of\", \"dose of\", \"exposure to\"\n\n### Population types\n- \"in people with\", \"in patients with\", \"in individuals with\"\n\n### Population Phenotypes or diseases\n- Format with prefix: \"Disease:Coronary Artery Disease\", \"Other:Dyslipidemia\"\n- Separate multiple with commas\n\n### Multiple drugs And/or\n- \"and\" for combination therapy, \"or\" for individual drugs, null for single drug\n\n### Multiple phenotypes or diseases And/or\n- \"and\" or \"or\" for multiple conditions, null for single condition\n\n### Comparison Metabolizer types\n- Reference metabolizer phenotype for comparison (e.g., \"normal metabolizer\")\n\n## EXTRACTION STRATEGY\n\n1. **Scan for rs numbers FIRST** - Search the entire article for \"rs\" followed by numbers\n2. **Match rs numbers to genes** - Identify which gene each rs number belongs to\n3. **Extract exact drug names** - Note if metabolites or specific forms are mentioned\n4. **Identify genotype comparisons** - Look for \"vs\", \"compared to\", \"than\" to find reference genotypes\n5. **Extract all statistical results** - p-values, concentrations, effect sizes\n6. **Note the population context** - Disease, ethnicity, special populations\n7. **Create standardized sentences** - Follow the format exactly, including comparison genotype\n\n## QUALITY CHECKS BEFORE SUBMITTING\n\n\u2713 Did I use rs number instead of HGVS notation when both were available?\n\u2713 Did I extract PMID from the article?\n\u2713 Did I generate Variant Annotation IDs for each entry?\n\u2713 Did I match the exact drug name (including metabolites) from the article?\n\u2713 Did I extract Comparison Allele(s) when a comparison was made?\n\u2713 Did I include the comparison genotype in the Sentence field?\n\nExtract ALL variant-drug associations mentioned in the article following these guidelines.",
+    "model": "gpt-4o-mini",
+    "response_format": {
+      "type": "object",
+      "properties": {
+        "var_drug_ann": {
+          "type": "array",
+          "description": "Array of variant/drug annotation records",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Variant Annotation ID": {
+                "type": "integer",
+                "description": "Unique ID number for each variant/drug annotation"
+              },
+              "Variant/Haplotypes": {
+                "type": "string",
+                "description": "dbSNP rsID (PREFERRED) or star allele or HGVS notation. Priority: rs number > star allele > HGVS"
+              },
+              "Gene": {
+                "type": "string",
+                "description": "HGNC gene symbol"
+              },
+              "Drug(s)": {
+                "type": "string",
+                "description": "Exact drug name or metabolite as mentioned in article"
+              },
+              "PMID": {
+                "type": [
+                  "integer",
+                  "string"
+                ],
+                "description": "PubMed identifier - REQUIRED"
+              },
+              "Phenotype Category": {
+                "type": "string",
+                "enum": [
+                  "efficacy",
+                  "toxicity",
+                  "dosage",
+                  "metabolism/PK",
+                  "PD",
+                  "other"
+                ]
+              },
+              "Significance": {
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "no",
+                  "not stated"
+                ]
+              },
+              "Notes": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Sentence": {
+                "type": "string",
+                "description": "Standardized sentence including comparison genotype"
+              },
+              "Alleles": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Exact genotypes studied (e.g., 'CC + CT', 'AG + GG')"
+              },
+              "Specialty Population": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Metabolizer types": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "isPlural": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "Is",
+                  "Are",
+                  null
+                ]
+              },
+              "Is/Is Not associated": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "Associated with",
+                  "Not associated with",
+                  null
+                ]
+              },
+              "Direction of effect": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "increased",
+                  "decreased",
+                  null
+                ]
+              },
+              "PD/PK terms": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Multiple drugs And/or": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "and",
+                  "or",
+                  null
+                ]
+              },
+              "Population types": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Population Phenotypes or diseases": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "Multiple phenotypes or diseases And/or": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "and",
+                  "or",
+                  null
+                ]
+              },
+              "Comparison Allele(s) or Genotype(s)": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Reference genotype for comparison - REQUIRED when comparison made"
+              },
+              "Comparison Metabolizer types": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "Variant Annotation ID",
+              "Variant/Haplotypes",
+              "Gene",
+              "Drug(s)",
+              "PMID",
+              "Phenotype Category",
+              "Significance",
+              "Sentence"
+            ]
+          }
+        }
+      },
+      "required": [
+        "var_drug_ann"
+      ]
+    }
+  },
+  {
+    "task": "var-fa",
+    "name": "improved_v1",
+    "prompt": "# Functional Annotation Guidelines\n\n## CRITICAL FIRST STEP: Identify Functional Evidence\n\nBefore extracting, scan for functional experimental data:\n\n**Look for in Results/Methods/Tables:**\n- Enzyme activity measurements\n- Cell-based expression studies  \n- Patient samples measuring enzyme function (plasma metabolite ratios)\n- In vitro/ex vivo functional assays\n\n**Ignore in Introduction/Discussion:**\n- Clinical guidelines (\"recommended for testing\")\n- Literature review (\"previous studies showed\")\n- Treatment recommendations\n- Toxicity associations\n\n**Key Test:** Does this describe HOW the variant affects protein function?\n- YES \u2192 Extract as functional\n- NO \u2192 Skip (belongs in clinical annotations)\n\n## Terms for Extraction\n\n### Variant/Haplotypes - MOST IMPORTANT\n**PRIORITY ORDER** (extract in this order of preference):\n1. **rs numbers (rsID)** - ALWAYS prefer rs numbers when available (e.g., rs56038477, rs72552763)\n2. Star alleles - If no rs number, use star alleles (e.g., CYP2C19*1, CYP2B6*6)\n3. HGVS notation - ONLY if neither rs number nor star allele is available (e.g., c.1905+1G>A)\n\n**If the article mentions BOTH** an rs number AND an HGVS notation or star allele for the same variant:\n- Extract the **rs number ONLY** (e.g., use \"rs56038477\" NOT \"c.1236G>A\" or \"DPYD*2A\")\n- The rs number is the primary identifier\n\n**Examples of CORRECT extraction**:\n- Article says \"rs56038477 (c.1236G>A)\" \u2192 Extract: \"rs56038477\"\n- Article says \"c.1905+1G>A (DPYD*2A, rs3918290)\" \u2192 Extract: \"rs3918290\"\n- Article says \"CYP2C19*2\" only \u2192 Extract: \"CYP2C19*2\"\n\n- **Content**: The specific genetic variant studied\n- **Manual Process**: Scan for rs numbers FIRST, then star alleles, then HGVS notation\n- **Example**: rs56038477, rs72552763, CYP2C19*1 (if no rs number), c.1905+1G>A (if no rs number or star allele)\n\n### Gene\n- **Content**: Gene symbol associated with the variant\n- **Manual Process**: Identify the gene being studied functionally\n- **Example**: CYP2C19, CYP2B6, SLC22A1\n\n### Drug(s)\n- **Content**: Substrate or compound used in the functional assay\n- **Manual Process**: Extract the drug/substrate used to test enzyme activity or transport\n- **Example**: normeperidine, bupropion, warfarin, voriconazole\n\n### Phenotype Category\n- **Content**: Type of functional outcome measured\n- **Manual Process**: Categorize based on what was measured:\n  - Metabolism/PK: Enzyme activity, clearance, transport, binding affinity\n  - Efficacy: Functional response in cellular systems\n  - Leave empty for basic biochemical studies\n- **Example**: \n  - Metabolism/PK (for enzyme kinetics)\n  - Efficacy (for cellular response)\n\n### Significance\n- **Content**: Statistical significance of functional differences\n- **Manual Process**: Look for statistical comparisons:\n  - yes: Significant differences in activity/function\n  - no: No significant differences\n  - not stated: No statistical testing reported\n- **Example**: \n  - yes (for significant activity differences)\n  - not stated (for descriptive studies)\n\n### Notes\n- **Content**: Key experimental details, methodology, quantitative results\n- **Manual Process**: Extract relevant quotes showing experimental conditions, numerical results, or important technical details\n- **Example**: \"Clearance was 26.57% of wild-type. CYP2C19 variants expressed in Sf21 insect cells...\"\n\n### Standardized Sentence\n- **Content**: Standardized description of the functional relationship\n- **Manual Process**: Write in format: \"[Variant] is associated with [increased/decreased] [functional outcome] [experimental context] as compared to [reference variant]\"\n- **Example**: \"CYP2C19 *17/*17 is associated with increased formation of normeperidine as compared to CYP2C19 *1/*1 + *1/*17.\"\n\n### Alleles\n- **Content**: Specific allele or genotype tested\n- **Manual Process**: Extract the exact variant designation\n- **Example**: *17/*17, *1/*1, del, A\n\n### Metabolizer Types\n- **Content**: Phenotype classification if applicable\n- **Manual Process**: Rarely used in functional studies; mainly for CYP phenotyping\n- **Example**: Usually empty\n\n### Comparison Allele(s) or Genotype(s)\n- **Content**: Reference variant for comparison\n- **Manual Process**: Find the control/wild-type variant used for comparison\n- **Example**: *1/*1 + *1/*17, *1, GAT\n\n### Comparison Metabolizer Types\n- **Content**: Reference metabolizer status\n- **Manual Process**: Usually empty for functional studies\n- **Example**: Usually empty\n\n### Assay Type\n- **Content**: Laboratory method or experimental system used\n- **Manual Process**: Extract the specific assay methodology:\n  - in human liver microsomes: Microsomal enzyme assays\n  - hydroxylation assay: Specific metabolic pathway assays\n  - crystal structure prediction: Computational modeling\n  - Leave empty if not specified\n- **Example**: \n  - in human liver microsomes\n  - hydroxylation assay\n  - crystal structure prediction\n\n### Cell Type\n- **Content**: Cell line or tissue system used for the assay\n- **Manual Process**: Extract the specific cellular context:\n  - 293FT cells: Human embryonic kidney cells\n  - COS-7 cells: Monkey kidney cells\n  - Sf21 insect cells: Insect cells for baculovirus expression\n  - in insect microsomes: Microsomal preparations\n  - expressed in [cell type]: Heterologous expression systems\n- **Example**: \n  - in 293FT cells\n  - expressed in COS-7 cells\n\n### Specialty Population\n- **Content**: Age-specific populations (rarely applicable to functional studies)\n- **Manual Process**: Usually leave empty for in vitro studies\n- **Example**: Usually empty\n\n### isPlural\n- **Content**: Grammar helper for sentence construction\n- **Manual Process**: Use Is for singular subjects, Are for plural\n- **Example**: Is\n\n### Is/Is Not Associated\n- **Content**: Direction of functional association\n- **Manual Process**: Determine association type:\n  - Associated with: Functional difference observed\n  - Not associated with: No functional difference\n- **Example**: Associated with\n\n### Direction of Effect\n- **Content**: Whether the variant increases or decreases function\n- **Manual Process**: Look for directional language:\n  - increased: Higher activity, better function, enhanced capability\n  - decreased: Lower activity, reduced function, impaired capability\n- **Example**: \n  - increased (for enhanced activity)\n  - decreased (for reduced activity)\n\n### Functional Terms\n- **Content**: Specific functional outcome measured\n- **Manual Process**: Extract the precise functional parameter:\n  - activity of: Enzyme activity measurements\n  - clearance of: Drug clearance kinetics\n  - formation of: Metabolite formation\n  - transport of: Transporter function\n  - affinity to: Binding affinity\n  - catalytic activity of: Catalytic efficiency\n- **Example**: \n  - formation of\n  - activity of\n  - clearance of\n\n### Gene/Gene Product\n- **Content**: Specific gene or protein being functionally assessed\n- **Manual Process**: Extract the gene symbol when the functional term relates to gene product activity\n- **Example**: CYP2C19, CYP2B6, CYP2C9\n\n### When Treated With/Exposed To/When Assayed With\n- **Content**: Experimental substrate context\n- **Manual Process**: Use standard phrases for functional assays:\n  - when assayed with: For enzyme activity assays\n  - of: For direct metabolite measurements\n  - Leave empty for non-substrate specific functions\n- **Example**: \n  - when assayed with\n  - of\n\n### Multiple Drugs And/Or\n- **Content**: Logical connector for multiple substrates\n- **Manual Process**: If multiple substrates tested:\n  - and: Combination substrate assays\n  - or: Alternative substrate assays\n  - Leave empty for single substrate\n- **Example**: or (for alternative substrates)\n\n## Manual Reading Strategy for Functional Annotations\n\n1. **Identify Experimental System**: Look for cell lines, microsomes, expression systems, computational models\n2. **Find Functional Readouts**: Search for enzyme activity, kinetic parameters, binding affinity, transport rates\n3. **Extract Substrate Information**: Identify the drug/compound used to test function\n4. **Locate Comparison Data**: Find reference variants (usually wild-type or *1 alleles) for comparison\n5. **Quantify Functional Changes**: Look for fold-changes, percentages, kinetic parameters (Km, Vmax, clearance)\n6. **Note Experimental Conditions**: Extract assay conditions, expression systems, substrate concentrations\n7. **Standardize the Relationship**: Convert findings into standardized sentence format describing the functional difference\n\n## 5 Critical Rules for Functional Extraction\n\n**Rule 1: ONLY extract laboratory measurements of protein function**\n- \u2705 YES: Enzyme activity, kinetics, clearance, binding affinity\n- \u2705 YES: Patient-derived samples measuring enzyme activity (plasma metabolite ratios)\n- \u274c NO: Clinical toxicity, treatment response, guidelines\n\n**Rule 2: Distinguish assay systems**\n- Functional: \"in 293FT cells\", \"plasma dihydrouracil/uracil ratio\", \"in microsomes\"\n- NOT functional: \"in patients with cancer\", \"clinical trial results\", \"toxicity in patients\"\n\n**Rule 3: Drug field usage**\n- Use Drug field: Testing activity with specific substrate (e.g., \"ticagrelor metabolism\")\n- Set to NULL: Measuring general enzyme activity (e.g., \"DPYD activity by plasma metabolites\")\n\n**Rule 4: Extract variants WITH STATISTICAL EVIDENCE in Results**\n- PRIMARY: Variants with statistical significance reported in Results/Tables (P-values, statistical tests)\n- Look for: \"significantly associated with\", \"P < 0.05\", \"showed association\"\n- NEVER: Variants only mentioned as \"clinically relevant\" or \"recommended for testing\"\n- NEVER: Literature review in Introduction stating \"previous studies showed\"\n\n**CRITICAL:** If multiple variant sets are in Results, extract the ones THIS STUDY tested for association with functional outcomes (enzyme activity, etc.), NOT variants cited from clinical guidelines.\n\n**Rule 5: Avoid clinical-functional confusion**\n- If text mentions \"toxicity\", \"guidelines\", \"recommended for testing\" \u2192 NOT functional\n- If text shows enzyme kinetics, activity assays \u2192 IS functional\n\n### Examples to Guide Extraction\n\n**Example 1: Patient-derived enzyme assay (PMC10786722-style)**\n\nText: \"rs56038477 significantly associated with low DPD activity measured by plasma [UH2]/[U] ratio (P < 0.05)\"\n\n- Variant: rs56038477\n- Gene: DPYD\n- Drug: null (no specific substrate, general enzyme activity)\n- Assay type: plasma dihydrouracil/uracil  \n- Functional terms: activity of\n- Gene/gene product: DPYD\n- \u2705 IS functional - measuring enzyme activity with plasma biomarkers\n\n**Example 2: Clinical mention to AVOID**\n\nText: \"c.1905+1G>A recommended for pre-treatment testing to reduce fluoropyrimidine toxicity\"\n\n- \u274c NOT functional - clinical guideline for testing\n- This belongs in var-pheno or var-drug (toxicity association)\n\n**Example 3: Subset Selection (CRITICAL for PMC10786722-style articles)**\n\nText: \"Among the seven genetic variants identified, three variants (c.1236G>A or rs56038477; c.496A>G or rs2297595; c.2194G>A or rs1801160) were significantly more frequent in patients with partial DPD deficiency.\"\n\n- \u2705 Extract ONLY the three explicitly named variants: rs56038477, rs2297595, rs1801160\n- \u274c DO NOT extract the other four variants mentioned elsewhere\n- \u274c DO NOT extract rare clinical variants from other parts of Results\n\n**Pattern to recognize:** \"Among X variants, Y specific variants were significantly associated\"\n\u2192 Extract ONLY the Y variants explicitly named in that sentence.\n\n**Purpose**: Functional annotations provide the mechanistic basis for understanding why certain variants affect drug response in patients - they show how genetic changes alter protein function at the molecular level.",
+    "model": "gpt-4o-mini",
+    "response_format": {
+      "type": "object",
+      "properties": {
+        "var_fa_ann": {
+          "type": "array",
+          "description": "Array of variant functional assay annotation records",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Variant Annotation ID": {
+                "type": "integer",
+                "description": "Unique ID number for each variant/drug annotation"
+              },
+              "Variant/Haplotypes": {
+                "type": "string",
+                "description": "dbSNP rsID or haplotype(s) involved in the association. May also contain gene phenotype groups like 'poor metabolizers' or 'intermediate activity'"
+              },
+              "Gene": {
+                "type": "string",
+                "description": "HGNC symbol for the gene involved in the association. Variants typically within gene boundaries but may be upstream affecting gene expression"
+              },
+              "Drug(s)": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The drug(s) involved in the association. Multiple drugs may apply individually or in combination (see 'Multiple drugs And/or' field)"
+              },
+              "PMID": {
+                "type": [
+                  "integer",
+                  "string"
+                ],
+                "description": "PubMed identifier for the article supporting the annotation"
+              },
+              "Phenotype Category": {
+                "type": "string",
+                "enum": [
+                  "efficacy",
+                  "toxicity",
+                  "dosage",
+                  "metabolism/PK",
+                  "PD",
+                  "other"
+                ],
+                "description": "Category of the phenotype association"
+              },
+              "Significance": {
+                "type": "string",
+                "enum": [
+                  "yes",
+                  "no",
+                  "not stated"
+                ],
+                "description": "The significance of the association as stated by the author"
+              },
+              "Notes": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Free text field for notes added by the curator"
+              },
+              "Sentence": {
+                "type": "string",
+                "description": "The structured annotation sentence generated by the variant annotation tool based on curator information"
+              },
+              "Alleles": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The basis for comparison in the annotation. May contain variant(s), haplotype(s), genotype(s), or diplotype(s). Blank if gene phenotype in 'Variant/Haplotypes' field"
+              },
+              "Specialty Population": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Any special populations this annotation is relevant to (e.g. pediatric)"
+              },
+              "Assay type": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Information about the type of assay performed"
+              },
+              "Metabolizer types": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Gene phenotype group if applicable (e.g., 'poor metabolizers'). Used when association is based on gene phenotype groups"
+              },
+              "isPlural": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "Is",
+                  "Are",
+                  null
+                ],
+                "description": "Grammar field to maintain proper sentence structure"
+              },
+              "Is/Is Not associated": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "Associated with",
+                  "Not associated with",
+                  null
+                ],
+                "description": "Indicates whether or not an association was found"
+              },
+              "Direction of effect": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "increased",
+                  "decreased",
+                  null
+                ],
+                "description": "Descriptor of the 'Functional terms' field indicating direction of functional effect"
+              },
+              "Functional terms": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The functional phenotype measured in the association. Connects variant and drug in the sentence (e.g., 'activity of', 'expression of', 'inhibition of')"
+              },
+              "Gene/gene product": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "HGNC gene symbol for the gene (product) being measured by the functional assay. If present, should match the gene in the 'Gene' field"
+              },
+              "When treated with/exposed to/when assayed with": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Connection words between sentence parts (e.g., 'when assayed with', 'when exposed to', 'due to')"
+              },
+              "Multiple drugs And/or": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "enum": [
+                  "and",
+                  "or",
+                  null
+                ],
+                "description": "'or' means association applies to each drug individually; 'and' means association applies to drug combination"
+              },
+              "Cell type": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The type of cell in which the assay was conducted. Free text field"
+              },
+              "Comparison Allele(s) or Genotype(s)": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Indicates allele(s)/haplotype(s)/genotype(s) that were directly compared against those in 'Variant/Haplotypes' field"
+              },
+              "Comparison Metabolizer types": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Indicates gene phenotype groups that were directly compared against those in 'Metabolizer types' field"
+              },
+              "PMID_norm": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Normalized PubMed identifier"
+              },
+              "Variant Annotation ID_norm": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "Normalized Variant Annotation ID"
+              }
+            },
+            "required": [
+              "Variant Annotation ID",
+              "Variant/Haplotypes",
+              "Gene",
+              "PMID",
+              "Phenotype Category",
+              "Significance",
+              "Sentence"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "var_fa_ann"
+      ],
+      "additionalProperties": false
+    },
+    "timestamp": "2025-12-01T16:41:01.276122"
+  },
+  {
+    "task": "study-parameters",
+    "name": "improved_v1",
+    "prompt": "# Task: Extract Study Parameters from Pharmacogenetics Research Articles\n\nYou are a specialized data extraction assistant for pharmacogenetics research. Your task is to carefully read a PubMed article and extract all statistical study parameters into a structured JSON format.\n\n## Output Format\n\nExtract data according to this JSON structure:\n```json\n{\n  \"study_parameters\": [\n    {\n      \"Study Parameters ID\": null,\n      \"Variant Annotation ID\": null,\n      \"Study Type\": null,\n      \"Study Cases\": null,\n      \"Study Controls\": null,\n      \"Characteristics\": \"\",\n      \"Characteristics Type\": \"\",\n      \"Frequency In Cases\": null,\n      \"Allele Of Frequency In Cases\": null,\n      \"Frequency In Controls\": null,\n      \"Allele Of Frequency In Controls\": null,\n      \"P Value\": \"\",\n      \"Ratio Stat Type\": \"\",\n      \"Ratio Stat\": null,\n      \"Confidence Interval Start\": null,\n      \"Confidence Interval Stop\": null,\n      \"Biogeographical Groups\": \"\",\n      \"Variant Annotation ID_norm\": null\n    }\n  ]\n}\n```\n\n## Field Definitions and Extraction Guidelines\n\n### Study Parameters ID\n- Leave as `null` (will be assigned later)\n- Unique identifier for each study parameter entry\n\n### Variant Annotation ID\n- Leave as `null` (will be assigned later)\n- Links to variant annotation data\n\n### Study Type - REQUIRED FIELD\n- **CRITICAL**: ALWAYS extract study type from Methods/Design section\n- Look for keywords: \"cohort study\", \"retrospective\", \"prospective\", \"case-control\", \"cross-sectional\"\n- Can combine types: \"cohort, retrospective\" or \"case/control, prospective\"\n- Valid values: \"cohort\", \"case/control\", \"case series\", \"cross-sectional\", \"clinical trial\", \"meta-analysis\", \"GWAS\", \"replication\", \"prospective\", \"retrospective\", \"linkage\", \"trios\"\n- **DO NOT leave as null** - scan Methods section thoroughly\n- If truly unclear, use \"cohort\" as default for observational pharmacogenetics studies\n\n### Study Cases\n- Extract the number of participants/cases in the study or sub-cohort\n- Look for phrases like: \"n = 916\", \"780 users\", \"184 patients\"\n- Must be a number (can include decimal if reported)\n\n### Study Controls\n- Extract the number of controls used in association analysis\n- Only applicable for case-control studies\n- Use `null` if not a case-control design or not reported\n\n### Characteristics\n- **Critical field**: Free text describing the cohort or subgroup being analyzed\n- Look for:\n  - Drug names (e.g., \"Statin switch, simvastatin\", \"Statin switch, atorvastatin\")\n  - Disease conditions\n  - Age groups (e.g., \"Age > 65 years\")\n  - Gender specifications (e.g., \"Male patients\", \"Female patients\")\n  - Dose information if relevant to the cohort\n- Be specific and include all distinguishing details\n\n### Characteristics Type - IMPORTANT CLASSIFICATION\n- **RULE 1**: If Characteristics mentions a DRUG NAME \u2192 use \"drug\"\n- **RULE 2**: If Characteristics mentions DISEASE without drug \u2192 use \"disease\"\n- **RULE 3**: If Characteristics mentions AGE (e.g., \"> 65 years\") \u2192 use \"age group\"\n- **RULE 4**: If Characteristics mentions GENDER \u2192 use \"gender\"\n- **RULE 5**: Otherwise \u2192 use \"Study Cohort\"\n\n**Examples**:\n- \"warfarin; CT genotype assoc. w/avg decrease...\" \u2192 **\"drug\"** (warfarin mentioned)\n- \"simvastatin users\" \u2192 **\"drug\"** (simvastatin mentioned)\n- \"Thai patients receiving stable warfarin doses\" \u2192 **\"drug\"** (warfarin mentioned)\n- \"patients with cardiovascular disease\" \u2192 **\"disease\"** (no drug mentioned)\n- \"Age > 65 years\" \u2192 **\"age group\"**\n- \"general population cohort\" \u2192 **\"Study Cohort\"**\n\n### Frequency In Cases / Frequency In Controls - IMPORTANT DATA\n- **ALWAYS search for allele frequency data** in:\n  - Results tables (look for \"Frequency\", \"MAF\", \"Allele freq\")\n  - Results text mentioning frequencies\n  - Table columns labeled \"Cases\" vs \"Controls\" or similar\n- Format: decimal number (e.g., 0.832, 0.21, 0.043)\n- Common phrasings: \"allele frequency was 0.21\", \"MAF = 0.15\", \"frequency of T allele = 0.832\"\n- Extract BOTH cases and controls frequencies when available\n- If frequency given as percentage (e.g., \"83.2%\") \u2192 convert to decimal (0.832)\n\n### Allele Of Frequency In Cases / Allele Of Frequency In Controls\n- The specific allele the frequency refers to\n- Format: single letter or variant notation (e.g., \"C\", \"T\", \"A\")\n\n### P Value\n- **Critical field**: Extract the p-value with its operator\n- Format: \"= 0.025\", \"< 0.001\", \"> 0.05\"\n- ALWAYS include the operator (=, <, >)\n- Look for: \"P = 0.025\", \"*P* = 0.011\", \"p-value = 0.047\"\n\n### Ratio Stat Type\n- Type of statistical ratio reported\n- Valid values: \"OR\" (odds ratio), \"RR\" (relative risk), \"HR\" (hazard ratio), \"Unknown\"\n- Look for: \"HR\", \"odds ratio\", \"relative risk\"\n- Use \"Unknown\" if a p-value is reported but no ratio type is specified\n\n### Ratio Stat\n- The numerical value of the ratio\n- Extract the point estimate: \"HR 1.88\" \u2192 1.88\n- Must be a number\n\n### Confidence Interval Start / Stop\n- Extract the confidence interval bounds\n- From \"95% CI 1.08\u20133.25\": Start = 1.08, Stop = 3.25\n- Watch for various notations: \"1.08-3.25\", \"1.08 to 3.25\", \"(1.08, 3.25)\"\n\n### Biogeographical Groups\n- Population ancestry/ethnicity of study participants\n- Valid values: \"African America/Afro-Caribbean\", \"American\", \"Central/South Asian\", \"East Asian\", \"European\", \"Latino\", \"Near Eastern\", \"Oceanian\", \"Sub-Saharan African\", \"Unknown\", \"Multiple Groups\"\n- \"Multiple Groups\" = study included participants from multiple populations\n- Look in Methods section for population description\n\n### Variant Annotation ID_norm\n- Leave as `null` (will be assigned later)\n\n## Extraction Strategy\n\n1. **Identify all statistical comparisons**: Look for hazard ratios, odds ratios, p-values, and confidence intervals in Results section\n\n2. **Create separate entries for each cohort/comparison**: If the study analyzes multiple drugs, genotypes, or subgroups, create a separate study parameter entry for each\n\n3. **Match statistics to cohorts**: Ensure each HR/OR/p-value is correctly associated with the right patient group or drug\n\n4. **Extract from Tables**: Statistical results are often in tables - extract each row as a separate entry\n\n5. **Handle multiple phenotypes**: If the study uses different outcome definitions (e.g., \"statin switch\" vs \"statin switch + CK measurement\"), create separate entries for each\n\n## Example Extraction\n\n**From the text:**\n\"We confirmed the association of SLCO1B1 c.521C/C genotype with simvastatin intolerance both by using phenotype of switching initial statin to another as a marker of statin intolerance [hazard ratio (HR) 1.88, 95% confidence interval (CI) 1.08\u20133.25, P = 0.025] and statin switching along with creatine kinase measurement (HR 5.44, 95% CI 1.49\u201319.9, P = 0.011).\"\n\n**Study context:**\n- 916 simvastatin users (European population)\n- Cohort study design\n\n**Extract as TWO entries:**\n\nEntry 1:\n```json\n{\n  \"Study Parameters ID\": null,\n  \"Variant Annotation ID\": null,\n  \"Study Type\": null,\n  \"Study Cases\": 916.0,\n  \"Study Controls\": null,\n  \"Characteristics\": \"Statin switch\",\n  \"Characteristics Type\": \"Study Cohort\",\n  \"Frequency In Cases\": null,\n  \"Allele Of Frequency In Cases\": null,\n  \"Frequency In Controls\": null,\n  \"Allele Of Frequency In Controls\": null,\n  \"P Value\": \"= 0.025\",\n  \"Ratio Stat Type\": \"HR\",\n  \"Ratio Stat\": 1.88,\n  \"Confidence Interval Start\": 1.08,\n  \"Confidence Interval Stop\": 3.25,\n  \"Biogeographical Groups\": \"European\",\n  \"Variant Annotation ID_norm\": null\n}\n```\n\nEntry 2:\n```json\n{\n  \"Study Parameters ID\": null,\n  \"Variant Annotation ID\": null,\n  \"Study Type\": null,\n  \"Study Cases\": 916.0,\n  \"Study Controls\": null,\n  \"Characteristics\": \"Statin switch\",\n  \"Characteristics Type\": \"Study Cohort\",\n  \"Frequency In Cases\": null,\n  \"Allele Of Frequency In Cases\": null,\n  \"Frequency In Controls\": null,\n  \"Allele Of Frequency In Controls\": null,\n  \"P Value\": \"= 0.011\",\n  \"Ratio Stat Type\": \"HR\",\n  \"Ratio Stat\": 5.44,\n  \"Confidence Interval Start\": 1.49,\n  \"Confidence Interval Stop\": 19.9,\n  \"Biogeographical Groups\": \"European\",\n  \"Variant Annotation ID_norm\": null\n}\n```\n\n## Quality Checks\n\nBefore submitting your extraction:\n- [ ] Each statistical result has its own entry\n- [ ] P Values include operators (=, <, >)\n- [ ] Confidence intervals are paired correctly (start < stop)\n- [ ] Study Cases numbers are extracted for each cohort\n- [ ] Characteristics describe what makes each cohort unique\n- [ ] All null values are explicitly set to `null`, not empty strings\n- [ ] Biogeographical Groups use exact terminology from the valid values list\n\n## Common Pitfalls to Avoid\n\n1. **Don't merge multiple comparisons** - Each HR/OR/RR with its p-value should be a separate entry\n2. **Don't forget the operator in P Values** - Always include =, <, or >\n3. **Don't confuse cohort size** - For sub-analyses (e.g., \"780 atorvastatin users\"), use 780, not the total study N\n4. **Don't use empty strings for missing data** - Use `null` for numeric and null/empty fields\n5. **Don't modify Characteristics text** - Extract as written, maintaining drug names, doses, and descriptions\n\n## Now Extract\n\nRead the provided PubMed article carefully and extract all study parameters following the above guidelines. Return only the JSON output with all extracted entries.",
+    "model": "gpt-4o-mini",
+    "response_format": {
+      "type": "object",
+      "properties": {
+        "study_parameters": {
+          "type": "array",
+          "description": "Array of study parameter entries containing statistical and methodological details from research papers",
+          "items": {
+            "type": "object",
+            "properties": {
+              "Study Parameters ID": {
+                "type": "integer",
+                "description": "Unique ID number for each Study Parameters entry"
+              },
+              "Variant Annotation ID": {
+                "type": "integer",
+                "description": "ID number of the associated Variant Annotation. The ID number in this field will match with a 'Variant Annotation ID' in one of the three variant annotation files"
+              },
+              "Study Type": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The type of study reported in the paper",
+                "enum": [
+                  "cohort",
+                  "case/control",
+                  "case series",
+                  "cross-sectional",
+                  "clinical trial",
+                  "meta-analysis",
+                  "GWAS",
+                  "replication",
+                  "prospective",
+                  "retrospective",
+                  "linkage",
+                  "trios",
+                  null
+                ]
+              },
+              "Study Cases": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "The number of cases in the paper"
+              },
+              "Study Controls": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "The number of controls used in the association analysis in the paper"
+              },
+              "Characteristics": {
+                "type": "string",
+                "description": "Free text entered by the curator to record details such as gender, disease, age group or other distinguishing characteristics about the group studied"
+              },
+              "Characteristics Type": {
+                "type": "string",
+                "description": "The standardized term used to describe the 'Characteristics' field",
+                "enum": [
+                  "disease",
+                  "drug",
+                  "age group",
+                  "gender",
+                  "study cohort",
+                  "Study Cohort"
+                ]
+              },
+              "Frequency In Cases": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "Allele frequency in the cases if clearly reported in the paper"
+              },
+              "Allele Of Frequency In Cases": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The allele the 'Frequency in Cases' refers to"
+              },
+              "Frequency In Controls": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "Allele frequency in the controls if clearly reported in the paper"
+              },
+              "Allele Of Frequency In Controls": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "description": "The allele the 'Frequency in Controls' refers to"
+              },
+              "P Value": {
+                "type": "string",
+                "description": "The p-value and the operator (=, <, etc.) that is reported in the paper",
+                "pattern": "^[<>=\u2264\u2265]\\s*[0-9]+(\\.[0-9]+)?(e-?[0-9]+)?$"
+              },
+              "Ratio Stat Type": {
+                "type": "string",
+                "description": "The type of statistic reported in the paper: OR (odds ratio), RR (relative risk), HR (hazard ratio), or Unknown",
+                "enum": [
+                  "OR",
+                  "RR",
+                  "HR",
+                  "Unknown"
+                ]
+              },
+              "Ratio Stat": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "The number associated with the 'Ratio Stat Type' reported in the paper"
+              },
+              "Confidence Interval Start": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "The start of the confidence interval for the 'Ratio Stat'"
+              },
+              "Confidence Interval Stop": {
+                "type": [
+                  "number",
+                  "null"
+                ],
+                "description": "The end of the confidence interval for the 'Ratio Stat'"
+              },
+              "Biogeographical Groups": {
+                "type": "string",
+                "description": "The population groups from PMID:30506572. Options include African America/Afro-Caribbean, American, Central/South Asian, East Asian, European, Latino, Near Eastern, Oceanian, Sub-Saharan African, Unknown, Multiple Groups. The 'Multiple Groups' option indicates that the study group was comprised of people from more than one biogeographical population group",
+                "enum": [
+                  "African America/Afro-Caribbean",
+                  "American",
+                  "Central/South Asian",
+                  "East Asian",
+                  "European",
+                  "Latino",
+                  "Near Eastern",
+                  "Oceanian",
+                  "Sub-Saharan African",
+                  "Unknown",
+                  "Multiple Groups"
+                ]
+              },
+              "Variant Annotation ID_norm": {
+                "type": "string",
+                "description": "Normalized version of the Variant Annotation ID"
+              }
+            },
+            "required": [
+              "Study Parameters ID",
+              "Variant Annotation ID",
+              "Characteristics",
+              "Characteristics Type",
+              "P Value",
+              "Ratio Stat Type",
+              "Biogeographical Groups",
+              "Variant Annotation ID_norm"
+            ]
+          }
+        }
+      },
+      "required": [
+        "study_parameters"
+      ],
+      "additionalProperties": false
+    },
+    "timestamp": "2025-12-01T16:41:01.276257"
   }
 ]

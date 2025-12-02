@@ -1,7 +1,7 @@
 {
   "var-pheno": "structured",
-  "var-drug": "from docs",
-  "var-fa": "from readme",
-  "study-parameters": "llm generated",
+  "var-drug": "improved_v1",
+  "var-fa": "improved_v1",
+  "study-parameters": "improved_v1",
   "summary": "basic"
 }

@@ -21,9 +21,26 @@ class Model(str, Enum):
 
 
 async def generate_response(
-    prompt: str, text: str, model: Model, response_format: dict | None = None
+    prompt: str,
+    text: str,
+    model: Model,
+    response_format: dict | None = None,
+    temperature: float = 0.0,
 ) -> str:
-    """Generate a response using OpenAI API."""
+    """
+    Generate a response using OpenAI API.
+
+    Args:
+        prompt: The system/instruction prompt
+        text: The user input text
+        model: The model to use
+        response_format: Optional JSON schema for structured output
+        temperature: Sampling temperature (0.0-2.0). Default 0.0 for reproducibility.
+                    Lower values = more deterministic, higher = more creative.
+
+    Returns:
+        Generated response text
+    """
     client = AsyncOpenAI(api_key=OPENAI_API_KEY)
 
     # Combine the prompt with the text
@@ -32,6 +49,7 @@ async def generate_response(
     params = {
         "model": model.value,
         "messages": [{"role": "user", "content": full_prompt}],
+        "temperature": temperature,
     }
 
     # Add response_format if structured output is requested

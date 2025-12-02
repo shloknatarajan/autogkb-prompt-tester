@@ -93,6 +93,7 @@ class PipelineStartRequest(BaseModel):
     data_dir: str = MARKDOWN_DIR
     model: str = "gpt-4o-mini"
     concurrency: int = 3
+    temperature: float = 0.0
 
 
 class PromptRequest(BaseModel):
@@ -100,6 +101,7 @@ class PromptRequest(BaseModel):
     text: str
     model: Model
     response_format: dict | None = None
+    temperature: float = 0.0
 
 
 class PromptResponse(BaseModel):
@@ -114,6 +116,7 @@ class SavePromptRequest(BaseModel):
     model: Model
     response_format: dict | None = None
     output: str
+    temperature: float = 0.0
 
 
 class SaveAllPromptsRequest(BaseModel):
@@ -127,6 +130,7 @@ class BestPrompt(BaseModel):
     model: Model
     response_format: dict | None = None
     name: str
+    temperature: float = 0.0
 
 
 class RunBestPromptsRequest(BaseModel):
@@ -155,6 +159,7 @@ async def test_prompt(request: PromptRequest):
             text=request.text,
             model=request.model,
             response_format=response_format,
+            temperature=request.temperature,
         )
         return {"output": output}
     except Exception as e:
@@ -292,6 +297,7 @@ async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
             text=text,
             model=best_prompt.model,
             response_format=best_prompt.response_format,
+            temperature=best_prompt.temperature,
         )
 
         # Parse output as JSON
@@ -748,6 +754,7 @@ async def process_single_pmcid(
                     text=text,
                     model=model,
                     response_format=prompt_data.get("response_format"),
+                    temperature=prompt_data.get("temperature", 0.0),
                 )
 
                 try:
