@@ -128,6 +128,10 @@ class RenamePromptRequest(BaseModel):
     new_name: str
 
 
+class UpdateBestPromptsRequest(BaseModel):
+    best_prompts: dict[str, str]
+
+
 class BestPrompt(BaseModel):
     task: str
     prompt: str
@@ -229,6 +233,29 @@ async def get_best_prompts():
             with open(best_prompts_file, "r") as f:
                 return json.load(f)
         return {}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.post("/best-prompts")
+async def update_best_prompts(request: UpdateBestPromptsRequest):
+    """Update the best prompts configuration."""
+    try:
+        prompt_manager = PromptManager()
+        success = prompt_manager.update_best_prompts(request.best_prompts)
+
+        if success:
+            return {
+                "status": "success",
+                "message": "Best prompts configuration updated"
+            }
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Failed to update best prompts (one or more prompts not found)"
+            )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

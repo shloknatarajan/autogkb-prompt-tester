@@ -346,11 +346,45 @@ export function usePrompts() {
     }
   };
 
-  const setBestPrompt = (task: string, promptId: number) => {
-    setBestPrompts((prev) => ({
-      ...prev,
+  const setBestPrompt = async (task: string, promptId: number) => {
+    // Update local state
+    const updatedBest = {
+      ...bestPrompts,
       [task]: promptId,
-    }));
+    };
+    setBestPrompts(updatedBest);
+
+    try {
+      // Build best prompts config for backend (task -> name mapping)
+      const bestPromptsConfig: { [task: string]: string } = {};
+
+      for (const [taskName, pId] of Object.entries(updatedBest)) {
+        const prompt = prompts.find((p) => p.id === pId);
+        if (prompt) {
+          bestPromptsConfig[taskName] = prompt.name;
+        }
+      }
+
+      // Persist to backend
+      const response = await fetch('http://localhost:8000/best-prompts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          best_prompts: bestPromptsConfig,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      console.log('Best prompts updated successfully');
+    } catch (err) {
+      console.error('Failed to save best prompts:', err);
+      // Don't show alert to user - this is a background save
+    }
   };
 
   const runBestPrompts = async (

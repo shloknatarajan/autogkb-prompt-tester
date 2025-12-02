@@ -508,3 +508,45 @@ class PromptManager:
         except Exception as e:
             logger.error(f"Error renaming prompt {task}/{old_name} to {new_name}: {e}")
             return False
+
+    def update_best_prompts(self, best_prompts: Dict[str, str]) -> bool:
+        """
+        Update the best prompts configuration file.
+
+        Args:
+            best_prompts: Dictionary mapping task -> prompt name
+                         Example: {"var-pheno": "structured", "var-drug": "improved_v1"}
+
+        Returns:
+            True if updated successfully, False otherwise
+
+        Note:
+            - Validates that all referenced prompts exist
+            - Writes to best_prompts.json
+            - Clears cache after update
+        """
+        try:
+            # Validate that all referenced prompts exist
+            all_prompts = self.load_prompts()
+            prompt_set = {(p["task"], p["name"]) for p in all_prompts}
+
+            for task, name in best_prompts.items():
+                if (task, name) not in prompt_set:
+                    logger.warning(
+                        f"Best prompt validation failed: {task}/{name} does not exist"
+                    )
+                    return False
+
+            # Write to file
+            with open(self.best_prompts_file, "w", encoding="utf-8") as f:
+                json.dump(best_prompts, f, indent=2)
+
+            # Clear cache
+            self._best_config = None
+
+            logger.info(f"Updated best prompts configuration: {best_prompts}")
+            return True
+
+        except Exception as e:
+            logger.error(f"Error updating best prompts: {e}")
+            return False
