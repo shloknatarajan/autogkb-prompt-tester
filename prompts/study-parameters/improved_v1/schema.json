@@ -1,0 +1,173 @@
+{
+  "type": "object",
+  "properties": {
+    "study_parameters": {
+      "type": "array",
+      "description": "Array of study parameter entries containing statistical and methodological details from research papers",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Study Parameters ID": {
+            "type": "integer",
+            "description": "Unique ID number for each Study Parameters entry"
+          },
+          "Variant Annotation ID": {
+            "type": "integer",
+            "description": "ID number of the associated Variant Annotation. The ID number in this field will match with a 'Variant Annotation ID' in one of the three variant annotation files"
+          },
+          "Study Type": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The type of study reported in the paper",
+            "enum": [
+              "cohort",
+              "case/control",
+              "case series",
+              "cross-sectional",
+              "clinical trial",
+              "meta-analysis",
+              "GWAS",
+              "replication",
+              "prospective",
+              "retrospective",
+              "linkage",
+              "trios",
+              null
+            ]
+          },
+          "Study Cases": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "The number of cases in the paper"
+          },
+          "Study Controls": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "The number of controls used in the association analysis in the paper"
+          },
+          "Characteristics": {
+            "type": "string",
+            "description": "Free text entered by the curator to record details such as gender, disease, age group or other distinguishing characteristics about the group studied"
+          },
+          "Characteristics Type": {
+            "type": "string",
+            "description": "The standardized term used to describe the 'Characteristics' field",
+            "enum": [
+              "disease",
+              "drug",
+              "age group",
+              "gender",
+              "study cohort",
+              "Study Cohort"
+            ]
+          },
+          "Frequency In Cases": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Allele frequency in the cases if clearly reported in the paper"
+          },
+          "Allele Of Frequency In Cases": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The allele the 'Frequency in Cases' refers to"
+          },
+          "Frequency In Controls": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "Allele frequency in the controls if clearly reported in the paper"
+          },
+          "Allele Of Frequency In Controls": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "The allele the 'Frequency in Controls' refers to"
+          },
+          "P Value": {
+            "type": "string",
+            "description": "The p-value and the operator (=, <, etc.) that is reported in the paper",
+            "pattern": "^[<>=\u2264\u2265]\\s*[0-9]+(\\.[0-9]+)?(e-?[0-9]+)?$"
+          },
+          "Ratio Stat Type": {
+            "type": "string",
+            "description": "The type of statistic reported in the paper: OR (odds ratio), RR (relative risk), HR (hazard ratio), or Unknown",
+            "enum": [
+              "OR",
+              "RR",
+              "HR",
+              "Unknown"
+            ]
+          },
+          "Ratio Stat": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "The number associated with the 'Ratio Stat Type' reported in the paper"
+          },
+          "Confidence Interval Start": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "The start of the confidence interval for the 'Ratio Stat'"
+          },
+          "Confidence Interval Stop": {
+            "type": [
+              "number",
+              "null"
+            ],
+            "description": "The end of the confidence interval for the 'Ratio Stat'"
+          },
+          "Biogeographical Groups": {
+            "type": "string",
+            "description": "The population groups from PMID:30506572. Options include African America/Afro-Caribbean, American, Central/South Asian, East Asian, European, Latino, Near Eastern, Oceanian, Sub-Saharan African, Unknown, Multiple Groups. The 'Multiple Groups' option indicates that the study group was comprised of people from more than one biogeographical population group",
+            "enum": [
+              "African America/Afro-Caribbean",
+              "American",
+              "Central/South Asian",
+              "East Asian",
+              "European",
+              "Latino",
+              "Near Eastern",
+              "Oceanian",
+              "Sub-Saharan African",
+              "Unknown",
+              "Multiple Groups"
+            ]
+          },
+          "Variant Annotation ID_norm": {
+            "type": "string",
+            "description": "Normalized version of the Variant Annotation ID"
+          }
+        },
+        "required": [
+          "Study Parameters ID",
+          "Variant Annotation ID",
+          "Characteristics",
+          "Characteristics Type",
+          "P Value",
+          "Ratio Stat Type",
+          "Biogeographical Groups",
+          "Variant Annotation ID_norm"
+        ]
+      }
+    }
+  },
+  "required": [
+    "study_parameters"
+  ],
+  "additionalProperties": false
+}

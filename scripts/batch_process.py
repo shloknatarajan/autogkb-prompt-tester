@@ -123,26 +123,28 @@ class BatchProcessor:
         self.logger.info(f"Logging to {log_file}")
 
     def load_prompts(self) -> List[Dict]:
-        """Load prompts from stored_prompts.json."""
-        self.logger.info(f"Loading prompts from {self.prompts_file}")
-        with open(self.prompts_file, "r") as f:
-            prompts = json.load(f)
+        """Load prompts via PromptManager."""
+        from utils.prompt_manager import PromptManager
+
+        self.logger.info("Loading prompts via PromptManager")
+        manager = PromptManager()
+        prompts = manager.load_prompts()
         self.logger.info(f"Loaded {len(prompts)} prompts")
         return prompts
 
     def load_best_prompts_config(self) -> Dict[str, str]:
-        """Load best prompts configuration mapping task -> prompt name."""
-        if not self.best_prompts_file.exists():
-            self.logger.warning(
-                f"Best prompts config not found: {self.best_prompts_file}"
-            )
-            return {}
+        """Load best prompts configuration via PromptManager."""
+        from utils.prompt_manager import PromptManager
 
-        self.logger.info(f"Loading best prompts config from {self.best_prompts_file}")
-        with open(self.best_prompts_file, "r") as f:
-            config = json.load(f)
-        self.logger.info(f"Best prompts config: {config}")
-        return config
+        self.logger.info("Loading best prompts config via PromptManager")
+        manager = PromptManager()
+        try:
+            config = manager.load_best_config()
+            self.logger.info(f"Best prompts config: {config}")
+            return config
+        except FileNotFoundError:
+            self.logger.warning("Best prompts config not found")
+            return {}
 
     def select_best_prompts(
         self, prompts: List[Dict], config: Dict[str, str]

@@ -124,6 +124,10 @@ class SaveAllPromptsRequest(BaseModel):
     text: str
 
 
+class RenamePromptRequest(BaseModel):
+    new_name: str
+
+
 class BestPrompt(BaseModel):
     task: str
     prompt: str
@@ -170,36 +174,35 @@ async def test_prompt(request: PromptRequest):
 @app.post("/save-prompt")
 async def save_prompt(request: SavePromptRequest):
     try:
-        # Read existing prompts
-        if os.path.exists(PROMPTS_FILE):
-            with open(PROMPTS_FILE, "r") as f:
-                prompts = json.load(f)
-        else:
-            prompts = []
+        # Use PromptManager to save to folder structure
+        prompt_manager = PromptManager()
+        prompt_manager.save_prompt(
+            task=request.task,
+            name=request.name,
+            prompt=request.prompt,
+            response_format=request.response_format or {},
+            model=request.model,
+            temperature=request.temperature
+        )
 
-        # Try to parse output as JSON if possible
-        try:
-            parsed_output = json.loads(request.output)
-        except:
-            parsed_output = request.output
+        # Also save output to outputs/ folder if provided
+        if request.output:
+            try:
+                parsed_output = json.loads(request.output)
+            except:
+                parsed_output = request.output
 
-        # Create new prompt entry
-        new_prompt = {
-            "task": request.task,
-            "name": request.name,
-            "prompt": request.prompt,
-            "model": request.model,
-            "response_format": request.response_format,
-            # "output": parsed_output,  # Removed to reduce file size
-            "timestamp": datetime.now().isoformat(),
-        }
+            # Create output filename
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            output_filename = f"{request.task}_{request.name}_{timestamp}.json"
+            output_path = os.path.join("outputs", output_filename)
 
-        # Append new prompt
-        prompts.append(new_prompt)
+            # Ensure outputs directory exists
+            os.makedirs("outputs", exist_ok=True)
 
-        # Save back to file
-        with open(PROMPTS_FILE, "w") as f:
-            json.dump(prompts, f, indent=2)
+            # Save output
+            with open(output_path, "w") as f:
+                json.dump(parsed_output, f, indent=2)
 
         return {"status": "success", "message": "Prompt saved successfully"}
     except Exception as e:
@@ -209,12 +212,10 @@ async def save_prompt(request: SavePromptRequest):
 @app.get("/prompts")
 async def get_prompts():
     try:
-        if os.path.exists(PROMPTS_FILE):
-            with open(PROMPTS_FILE, "r") as f:
-                prompts = json.load(f)
-            return {"prompts": prompts}
-        else:
-            return {"prompts": []}
+        # Use PromptManager to load from folder structure
+        prompt_manager = PromptManager()
+        prompts = prompt_manager.load_prompts()
+        return {"prompts": prompts}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -235,18 +236,21 @@ async def get_best_prompts():
 @app.post("/save-all-prompts")
 async def save_all_prompts(request: SaveAllPromptsRequest):
     try:
-        saved_prompts = []
+        # Use PromptManager to save each prompt to folder structure
+        prompt_manager = PromptManager()
+
+        # Get existing prompts from disk to detect deletions
+        existing_prompts = prompt_manager.load_prompts(force_reload=True)
+        existing_set = {(p["task"], p["name"]) for p in existing_prompts}
+
+        # Build set of prompts being saved
+        saved_set = set()
+        saved_count = 0
 
         for prompt_data in request.prompts:
-            # Try to parse output as JSON if possible
-            try:
-                parsed_output = (
-                    json.loads(prompt_data["output"])
-                    if prompt_data.get("output")
-                    else None
-                )
-            except:
-                parsed_output = prompt_data.get("output")
+            task = prompt_data.get("task", "Default")
+            name = prompt_data.get("name", "Untitled Prompt")
+            saved_set.add((task, name))
 
             # Try to parse response format if it's a string
             response_format = prompt_data.get("responseFormat")
@@ -254,27 +258,82 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
                 try:
                     response_format = json.loads(response_format)
                 except:
-                    response_format = None
+                    response_format = {}
+            elif not response_format:
+                response_format = {}
 
-            saved_prompt = {
-                "task": prompt_data.get("task", "Default"),
-                "name": prompt_data.get("name", "Untitled Prompt"),
-                "prompt": prompt_data.get("prompt", ""),
-                "model": prompt_data.get("model", "gpt-4o-mini"),
-                "response_format": response_format,
-                # "output": parsed_output,  # Removed to reduce file size
-                "timestamp": datetime.now().isoformat(),
-            }
-            saved_prompts.append(saved_prompt)
+            # Save using PromptManager
+            prompt_manager.save_prompt(
+                task=task,
+                name=name,
+                prompt=prompt_data.get("prompt", ""),
+                response_format=response_format,
+                model=prompt_data.get("model", "gpt-4o-mini"),
+                temperature=prompt_data.get("temperature", 0.0)
+            )
+            saved_count += 1
 
-        # Overwrite the file with current prompts
-        with open(PROMPTS_FILE, "w") as f:
-            json.dump(saved_prompts, f, indent=2)
+        # Delete prompts that existed but are not in the saved list
+        deleted_count = 0
+        for task, name in existing_set:
+            if (task, name) not in saved_set:
+                if prompt_manager.delete_prompt(task, name):
+                    deleted_count += 1
+
+        message = f"Saved {saved_count} prompts successfully"
+        if deleted_count > 0:
+            message += f", deleted {deleted_count} prompts"
 
         return {
             "status": "success",
-            "message": f"Saved {len(saved_prompts)} prompts successfully",
+            "message": message,
         }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.delete("/prompts/{task}/{name}")
+async def delete_prompt(task: str, name: str):
+    """Delete a prompt from the folder structure."""
+    try:
+        prompt_manager = PromptManager()
+        success = prompt_manager.delete_prompt(task, name)
+
+        if success:
+            return {
+                "status": "success",
+                "message": f"Deleted prompt: {task}/{name}"
+            }
+        else:
+            raise HTTPException(
+                status_code=404,
+                detail=f"Prompt not found: {task}/{name}"
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.put("/prompts/{task}/{old_name}/rename")
+async def rename_prompt(task: str, old_name: str, request: RenamePromptRequest):
+    """Rename a prompt in the folder structure."""
+    try:
+        prompt_manager = PromptManager()
+        success = prompt_manager.rename_prompt(task, old_name, request.new_name)
+
+        if success:
+            return {
+                "status": "success",
+                "message": f"Renamed prompt: {task}/{old_name} -> {task}/{request.new_name}"
+            }
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Could not rename prompt (not found or destination exists)"
+            )
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

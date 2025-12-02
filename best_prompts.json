@@ -1,7 +1,7 @@
 {
   "var-pheno": "structured",
   "var-drug": "improved_v1",
-  "var-fa": "improved_v1",
+  "var-fa": "improved_v2",
   "study-parameters": "improved_v1",
   "summary": "basic"
 }

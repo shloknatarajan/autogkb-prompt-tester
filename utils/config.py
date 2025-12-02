@@ -8,10 +8,12 @@ used across the application, preventing inconsistencies and hardcoded paths.
 import os
 
 # File paths
-PROMPTS_FILE = "stored_prompts.json"
+PROMPTS_FILE = "stored_prompts.json"  # Legacy file (for fallback)
+PROMPTS_BACKUP_FILE = "stored_prompts.json.backup"  # Migration backup
 BEST_PROMPTS_FILE = "best_prompts.json"
 
 # Directories
+PROMPTS_DIR = "prompts"  # Prompts folder structure
 OUTPUT_DIR = "outputs"
 BENCHMARK_RESULTS_DIR = "benchmark_results"
 MARKDOWN_DIR = "persistent_data/benchmark_articles_md"
