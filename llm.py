@@ -46,6 +46,15 @@ async def generate_response(
     # Combine the prompt with the text
     full_prompt = f"{prompt}\n\n{text}"
 
+    # change temperature if not supported by model
+    temperature_unsupported_models = {
+        Model.OPENAI_GPT_5_MINI,
+        Model.OPENAI_GPT_5,
+        Model.OPENAI_GPT_5_PRO,
+    }
+    if model in temperature_unsupported_models:
+        temperature = 1  # default temperature for these models
+
     params = {
         "model": model.value,
         "messages": [{"role": "user", "content": full_prompt}],

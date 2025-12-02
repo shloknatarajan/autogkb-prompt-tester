@@ -1,7 +1,7 @@
 {
   "var-drug": "improved_v1",
   "var-fa": "improved_v2",
-  "study-parameters": "improved_v1",
+  "study-parameters": "study-parameters-v2",
   "summary": "basic",
-  "var-pheno": "improved v2"
+  "var-pheno": "var-pheno-v5"
 }
