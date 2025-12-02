@@ -6,6 +6,7 @@ from llm import Model, generate_response
 import asyncio
 import json
 import os
+import re
 import uuid
 from datetime import datetime
 from pathlib import Path
@@ -460,6 +461,135 @@ async def get_output(filename: str):
         return content
     except json.JSONDecodeError:
         raise HTTPException(status_code=500, detail="Invalid JSON file")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+# Pipeline output directory pattern
+PIPELINE_RUN_PATTERN = re.compile(r"^pipeline_run_(\d{8})_(\d{6})$")
+
+
+@app.get("/pipeline-outputs")
+async def list_pipeline_outputs():
+    """List all pipeline run directories with metadata."""
+    try:
+        if not os.path.exists(OUTPUT_DIR):
+            return {"runs": []}
+
+        runs = []
+        for dirname in os.listdir(OUTPUT_DIR):
+            dirpath = os.path.join(OUTPUT_DIR, dirname)
+            if not os.path.isdir(dirpath):
+                continue
+
+            match = PIPELINE_RUN_PATTERN.match(dirname)
+            if not match:
+                continue
+
+            # Parse timestamp from directory name
+            date_str, time_str = match.groups()
+            timestamp = datetime.strptime(f"{date_str}_{time_str}", "%Y%m%d_%H%M%S")
+
+            # Count files and check for combined
+            pmcid_count = 0
+            has_combined = False
+
+            for filename in os.listdir(dirpath):
+                if filename.endswith(".json"):
+                    if filename.startswith("combined_"):
+                        has_combined = True
+                    else:
+                        pmcid_count += 1
+
+            runs.append({
+                "directory": dirname,
+                "timestamp": timestamp.isoformat(),
+                "display_date": timestamp.strftime("%b %d, %Y %I:%M %p"),
+                "pmcid_count": pmcid_count,
+                "has_combined": has_combined,
+            })
+
+        # Sort by timestamp descending (newest first)
+        runs.sort(key=lambda x: x["timestamp"], reverse=True)
+        return {"runs": runs}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/pipeline-outputs/{run_directory}")
+async def list_pipeline_run_files(run_directory: str):
+    """List all files in a specific pipeline run directory."""
+    try:
+        # Validate directory name matches expected pattern (security)
+        if not PIPELINE_RUN_PATTERN.match(run_directory):
+            raise HTTPException(status_code=400, detail="Invalid pipeline run directory name")
+
+        dirpath = os.path.join(OUTPUT_DIR, run_directory)
+        if not os.path.exists(dirpath) or not os.path.isdir(dirpath):
+            raise HTTPException(status_code=404, detail="Pipeline run directory not found")
+
+        files = []
+        for filename in os.listdir(dirpath):
+            if not filename.endswith(".json"):
+                continue
+
+            filepath = os.path.join(dirpath, filename)
+            stat = os.stat(filepath)
+
+            if filename.startswith("combined_"):
+                file_type = "combined"
+                pmcid = None
+            else:
+                file_type = "pmcid"
+                pmcid = filename.replace(".json", "")
+
+            files.append({
+                "filename": filename,
+                "pmcid": pmcid,
+                "type": file_type,
+                "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                "size": stat.st_size,
+            })
+
+        # Sort: PMCID files first (alphabetically), then combined files
+        files.sort(key=lambda x: (x["type"] == "combined", x["filename"]))
+
+        return {
+            "directory": run_directory,
+            "files": files,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/pipeline-outputs/{run_directory}/{filename}")
+async def get_pipeline_output_file(run_directory: str, filename: str):
+    """Get the contents of a specific file from a pipeline run."""
+    try:
+        # Validate directory name matches expected pattern (security)
+        if not PIPELINE_RUN_PATTERN.match(run_directory):
+            raise HTTPException(status_code=400, detail="Invalid pipeline run directory name")
+
+        # Sanitize filename to prevent directory traversal
+        filename = os.path.basename(filename)
+        filepath = os.path.join(OUTPUT_DIR, run_directory, filename)
+
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="File not found")
+
+        with open(filepath, "r") as f:
+            content = json.load(f)
+
+        return content
+
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid JSON file")
+    except HTTPException:
+        raise
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

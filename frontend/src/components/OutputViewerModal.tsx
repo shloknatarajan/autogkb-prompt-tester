@@ -27,6 +27,22 @@ interface OutputData {
   [key: string]: any;
 }
 
+interface PipelineRun {
+  directory: string;
+  timestamp: string;
+  display_date: string;
+  pmcid_count: number;
+  has_combined: boolean;
+}
+
+interface PipelineFile {
+  filename: string;
+  pmcid: string | null;
+  type: "pmcid" | "combined";
+  modified: string;
+  size: number;
+}
+
 interface OutputViewerModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -42,10 +58,34 @@ export default function OutputViewerModal({
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Load list of output files when modal opens
+  // Pipeline outputs state
+  const [viewMode, setViewMode] = useState<"single" | "pipeline">("single");
+  const [pipelineRuns, setPipelineRuns] = useState<PipelineRun[]>([]);
+  const [selectedRun, setSelectedRun] = useState<string | null>(null);
+  const [runFiles, setRunFiles] = useState<PipelineFile[]>([]);
+  const [selectedPipelineFile, setSelectedPipelineFile] = useState<string | null>(null);
+  const [pipelineOutputData, setPipelineOutputData] = useState<OutputData | null>(null);
+  const [loadingRuns, setLoadingRuns] = useState(false);
+  const [loadingRunFiles, setLoadingRunFiles] = useState(false);
+
+  // Load data when modal opens or view mode changes
   useEffect(() => {
     if (open) {
-      loadOutputFiles();
+      if (viewMode === "single") {
+        loadOutputFiles();
+      } else {
+        loadPipelineRuns();
+      }
+    }
+  }, [open, viewMode]);
+
+  // Reset pipeline state when modal closes
+  useEffect(() => {
+    if (!open) {
+      setSelectedRun(null);
+      setRunFiles([]);
+      setSelectedPipelineFile(null);
+      setPipelineOutputData(null);
     }
   }, [open]);
 
@@ -89,6 +129,75 @@ export default function OutputViewerModal({
     }
   };
 
+  // Pipeline API functions
+  const loadPipelineRuns = async () => {
+    try {
+      setLoadingRuns(true);
+      setError("");
+      const response = await fetch("http://localhost:8000/pipeline-outputs");
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setPipelineRuns(data.runs);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoadingRuns(false);
+    }
+  };
+
+  const loadRunFiles = async (runDirectory: string) => {
+    try {
+      setLoadingRunFiles(true);
+      setError("");
+      const response = await fetch(`http://localhost:8000/pipeline-outputs/${runDirectory}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setRunFiles(data.files);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoadingRunFiles(false);
+    }
+  };
+
+  const loadPipelineFile = async (runDirectory: string, filename: string) => {
+    try {
+      setLoading(true);
+      setError("");
+      setSelectedPipelineFile(filename);
+      const response = await fetch(`http://localhost:8000/pipeline-outputs/${runDirectory}/${filename}`);
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setPipelineOutputData(data);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const toggleRunExpand = async (runDirectory: string) => {
+    if (selectedRun === runDirectory) {
+      // Collapse
+      setSelectedRun(null);
+      setRunFiles([]);
+      setSelectedPipelineFile(null);
+      setPipelineOutputData(null);
+    } else {
+      // Expand and load files
+      setSelectedRun(runDirectory);
+      setSelectedPipelineFile(null);
+      setPipelineOutputData(null);
+      await loadRunFiles(runDirectory);
+    }
+  };
+
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleString();
@@ -100,19 +209,19 @@ export default function OutputViewerModal({
     return (bytes / (1024 * 1024)).toFixed(1) + " MB";
   };
 
-  const copyToClipboard = async () => {
-    if (!outputData) return;
+  const copyToClipboard = async (data: OutputData | null) => {
+    if (!data) return;
 
     try {
-      await navigator.clipboard.writeText(JSON.stringify(outputData, null, 2));
+      await navigator.clipboard.writeText(JSON.stringify(data, null, 2));
       alert("JSON copied to clipboard!");
     } catch (err) {
       alert("Failed to copy to clipboard");
     }
   };
 
-  const renderAnnotations = () => {
-    if (!outputData) return null;
+  const renderAnnotations = (data: OutputData | null) => {
+    if (!data) return null;
 
     const annotationTypes = [
       { key: "var_pheno_ann", label: "Variant-Phenotype Annotations" },
@@ -124,7 +233,7 @@ export default function OutputViewerModal({
     return (
       <div className="space-y-6">
         {annotationTypes.map(({ key, label }) => {
-          const annotations = outputData[key];
+          const annotations = data[key];
           if (!annotations || !Array.isArray(annotations)) return null;
 
           return (
@@ -174,12 +283,12 @@ export default function OutputViewerModal({
     );
   };
 
-  const renderSummary = () => {
-    if (!outputData) return null;
+  const renderSummary = (data: OutputData | null) => {
+    if (!data) return null;
 
-    const varPhenoCount = outputData.var_pheno_ann?.length || 0;
-    const varDrugCount = outputData.var_drug_ann?.length || 0;
-    const varFaCount = outputData.var_fa_ann?.length || 0;
+    const varPhenoCount = data.var_pheno_ann?.length || 0;
+    const varDrugCount = data.var_drug_ann?.length || 0;
+    const varFaCount = data.var_fa_ann?.length || 0;
     const totalAnnotations = varPhenoCount + varDrugCount + varFaCount;
 
     return (
@@ -187,19 +296,19 @@ export default function OutputViewerModal({
         <Card className="p-4">
           <h3 className="text-lg font-semibold mb-3">Overview</h3>
           <div className="space-y-2 text-sm">
-            {outputData.pmcid && (
+            {data.pmcid && (
               <div>
                 <span className="font-medium">PMCID:</span>{" "}
                 <span className="text-muted-foreground">
-                  {outputData.pmcid}
+                  {data.pmcid}
                 </span>
               </div>
             )}
-            {outputData.timestamp && (
+            {data.timestamp && (
               <div>
                 <span className="font-medium">Generated:</span>{" "}
                 <span className="text-muted-foreground">
-                  {formatDate(outputData.timestamp)}
+                  {formatDate(data.timestamp)}
                 </span>
               </div>
             )}
@@ -230,11 +339,11 @@ export default function OutputViewerModal({
           </div>
         </Card>
 
-        {outputData.prompts_used && (
+        {data.prompts_used && (
           <Card className="p-4">
             <h3 className="text-lg font-semibold mb-3">Prompts Used</h3>
             <div className="space-y-2 text-sm">
-              {Object.entries(outputData.prompts_used).map(([task, prompt]) => (
+              {Object.entries(data.prompts_used).map(([task, prompt]) => (
                 <div key={task}>
                   <span className="font-medium">{task}:</span>{" "}
                   <span className="text-muted-foreground">{prompt}</span>
@@ -247,6 +356,62 @@ export default function OutputViewerModal({
     );
   };
 
+  // Render the content viewer (Summary/Annotations/JSON tabs)
+  const renderContentViewer = (data: OutputData | null, isLoading: boolean) => {
+    if (!data && !isLoading) {
+      return (
+        <p className="text-muted-foreground">
+          Select an output file to view
+        </p>
+      );
+    }
+    if (isLoading) {
+      return <p className="text-muted-foreground">Loading output...</p>;
+    }
+    if (!data) return null;
+
+    return (
+      <Tabs defaultValue="summary">
+        <TabsList>
+          <TabsTrigger value="summary">Summary</TabsTrigger>
+          <TabsTrigger value="annotations">Annotations</TabsTrigger>
+          <TabsTrigger value="json">JSON</TabsTrigger>
+        </TabsList>
+
+        <TabsContent
+          value="summary"
+          className="max-h-[60vh] overflow-y-auto flex-1"
+        >
+          {renderSummary(data)}
+        </TabsContent>
+
+        <TabsContent
+          value="annotations"
+          className="max-h-[60vh] overflow-y-auto flex-1"
+        >
+          {renderAnnotations(data)}
+        </TabsContent>
+
+        <TabsContent
+          value="json"
+          className="max-h-[60vh] overflow-auto flex-1 min-w-0"
+        >
+          <Button
+            onClick={() => copyToClipboard(data)}
+            variant="outline"
+            size="sm"
+            className="mb-3"
+          >
+            Copy JSON
+          </Button>
+          <pre className="text-xs bg-muted p-4 rounded-lg overflow-auto flex-1 min-w-0">
+            {JSON.stringify(data, null, 2)}
+          </pre>
+        </TabsContent>
+      </Tabs>
+    );
+  };
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-[90vw] max-h-[90vh] min-h-[70vh] overflow-hidden flex flex-col">
@@ -254,99 +419,133 @@ export default function OutputViewerModal({
           <DialogTitle>Output Viewer</DialogTitle>
         </DialogHeader>
 
-        <div className="flex gap-4 flex-1 overflow-hidden">
-          {/* Left sidebar - File list */}
-          <div className="w-64 border-r pr-4 overflow-y-auto">
-            <h3 className="font-semibold mb-3">Saved Outputs</h3>
-            {loading && files.length === 0 && (
-              <p className="text-sm text-muted-foreground">Loading...</p>
-            )}
-            {error && (
-              <p className="text-sm text-destructive">Error: {error}</p>
-            )}
-            {files.length === 0 && !loading && (
-              <p className="text-sm text-muted-foreground">
-                No outputs found. Run best prompts to generate outputs.
-              </p>
-            )}
-            <div className="space-y-2">
-              {files.map((file) => (
-                <Button
-                  key={file.filename}
-                  variant={
-                    selectedFile === file.filename ? "default" : "outline"
-                  }
-                  className="w-full justify-start text-left h-auto py-2"
-                  onClick={() => loadOutputFile(file.filename)}
-                >
-                  <div className="flex flex-col items-start gap-1 w-full">
-                    <span className="font-medium text-sm truncate w-full">
-                      {file.filename.replace(".json", "")}
-                    </span>
-                    <span className="text-xs opacity-70">
-                      {formatDate(file.modified)}
-                    </span>
-                    <span className="text-xs opacity-70">
-                      {formatFileSize(file.size)}
-                    </span>
-                  </div>
-                </Button>
-              ))}
+        {/* Top-level tabs for Single vs Pipeline outputs */}
+        <Tabs value={viewMode} onValueChange={(v) => setViewMode(v as "single" | "pipeline")} className="flex-1 flex flex-col overflow-hidden">
+          <TabsList className="mb-4 w-fit">
+            <TabsTrigger value="single">Single Outputs</TabsTrigger>
+            <TabsTrigger value="pipeline">Pipeline Runs</TabsTrigger>
+          </TabsList>
+
+          {/* Single Outputs Tab */}
+          <TabsContent value="single" className="flex-1 overflow-hidden mt-0">
+            <div className="flex gap-4 h-full overflow-hidden">
+              {/* Left sidebar - File list */}
+              <div className="w-64 border-r pr-4 overflow-y-auto">
+                <h3 className="font-semibold mb-3">Saved Outputs</h3>
+                {loading && files.length === 0 && (
+                  <p className="text-sm text-muted-foreground">Loading...</p>
+                )}
+                {error && (
+                  <p className="text-sm text-destructive">Error: {error}</p>
+                )}
+                {files.length === 0 && !loading && (
+                  <p className="text-sm text-muted-foreground">
+                    No outputs found. Run best prompts to generate outputs.
+                  </p>
+                )}
+                <div className="space-y-2">
+                  {files.map((file) => (
+                    <Button
+                      key={file.filename}
+                      variant={
+                        selectedFile === file.filename ? "default" : "outline"
+                      }
+                      className="w-full justify-start text-left h-auto py-2"
+                      onClick={() => loadOutputFile(file.filename)}
+                    >
+                      <div className="flex flex-col items-start gap-1 w-full">
+                        <span className="font-medium text-sm truncate w-full">
+                          {file.filename.replace(".json", "")}
+                        </span>
+                        <span className="text-xs opacity-70">
+                          {formatDate(file.modified)}
+                        </span>
+                        <span className="text-xs opacity-70">
+                          {formatFileSize(file.size)}
+                        </span>
+                      </div>
+                    </Button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Right content - Tabs */}
+              <div className="flex-1 flex flex-col min-h-0 min-w-0">
+                {renderContentViewer(outputData, loading)}
+              </div>
             </div>
-          </div>
+          </TabsContent>
 
-          {/* Right content - Tabs */}
-          <div className="flex-1 flex flex-col min-h-0 min-w-0">
-            {!outputData && !loading && (
-              <p className="text-muted-foreground">
-                Select an output file to view
-              </p>
-            )}
-            {loading && (
-              <p className="text-muted-foreground">Loading output...</p>
-            )}
-            {outputData && (
-              <Tabs defaultValue="summary">
-                <TabsList>
-                  <TabsTrigger value="summary">Summary</TabsTrigger>
-                  <TabsTrigger value="annotations">Annotations</TabsTrigger>
-                  <TabsTrigger value="json">JSON</TabsTrigger>
-                </TabsList>
+          {/* Pipeline Runs Tab */}
+          <TabsContent value="pipeline" className="flex-1 overflow-hidden mt-0">
+            <div className="flex gap-4 h-full overflow-hidden">
+              {/* Left sidebar - Pipeline runs list */}
+              <div className="w-72 border-r pr-4 overflow-y-auto">
+                <h3 className="font-semibold mb-3">Pipeline Runs</h3>
+                {loadingRuns && (
+                  <p className="text-sm text-muted-foreground">Loading...</p>
+                )}
+                {error && (
+                  <p className="text-sm text-destructive">Error: {error}</p>
+                )}
+                {pipelineRuns.length === 0 && !loadingRuns && (
+                  <p className="text-sm text-muted-foreground">
+                    No pipeline runs found.
+                  </p>
+                )}
+                <div className="space-y-1">
+                  {pipelineRuns.map((run) => (
+                    <div key={run.directory} className="border rounded-lg overflow-hidden">
+                      {/* Collapsible header */}
+                      <button
+                        onClick={() => toggleRunExpand(run.directory)}
+                        className="w-full flex items-center justify-between p-3 hover:bg-muted/50 transition-colors text-left"
+                      >
+                        <div className="flex items-center gap-2">
+                          <span className="text-xs">
+                            {selectedRun === run.directory ? "▼" : "▶"}
+                          </span>
+                          <span className="font-medium text-sm">{run.display_date}</span>
+                        </div>
+                        <span className="text-xs bg-muted px-2 py-1 rounded">
+                          {run.pmcid_count}
+                        </span>
+                      </button>
 
-                <TabsContent
-                  value="summary"
-                  className="max-h-[60vh] overflow-y-auto flex-1"
-                >
-                  {renderSummary()}
-                </TabsContent>
+                      {/* Expanded content - file list */}
+                      {selectedRun === run.directory && (
+                        <div className="pl-6 pr-2 pb-2 space-y-1">
+                          {loadingRunFiles ? (
+                            <p className="text-xs text-muted-foreground py-2">Loading...</p>
+                          ) : (
+                            runFiles.map((file) => (
+                              <button
+                                key={file.filename}
+                                onClick={() => loadPipelineFile(run.directory, file.filename)}
+                                className={`w-full text-left px-3 py-1.5 text-sm rounded transition-colors ${
+                                  selectedPipelineFile === file.filename
+                                    ? "bg-primary text-primary-foreground"
+                                    : "hover:bg-muted"
+                                } ${file.type === "combined" ? "italic text-muted-foreground" : ""}`}
+                              >
+                                {file.type === "combined" ? "[Combined Output]" : file.pmcid}
+                              </button>
+                            ))
+                          )}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
 
-                <TabsContent
-                  value="annotations"
-                  className="max-h-[60vh] overflow-y-auto flex-1"
-                >
-                  {renderAnnotations()}
-                </TabsContent>
-
-                <TabsContent
-                  value="json"
-                  className="max-h-[60vh] overflow-auto flex-1 min-w-0"
-                >
-                  <Button
-                    onClick={copyToClipboard}
-                    variant="outline"
-                    size="sm"
-                    className="mb-3"
-                  >
-                    Copy JSON
-                  </Button>
-                  <pre className="text-xs bg-muted p-4 rounded-lg overflow-auto flex-1 min-w-0">
-                    {JSON.stringify(outputData, null, 2)}
-                  </pre>
-                </TabsContent>
-              </Tabs>
-            )}
-          </div>
-        </div>
+              {/* Right content - Output viewer */}
+              <div className="flex-1 flex flex-col min-h-0 min-w-0">
+                {renderContentViewer(pipelineOutputData, loading)}
+              </div>
+            </div>
+          </TabsContent>
+        </Tabs>
       </DialogContent>
     </Dialog>
   );
