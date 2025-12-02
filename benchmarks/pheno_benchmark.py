@@ -7,6 +7,8 @@ from benchmarks.shared_utils import (
     compute_weighted_score,
     parse_variant_list,
     normalize_variant,
+    get_normalized_variant_id,
+    get_normalized_drug_id,
 )
 
 
@@ -41,9 +43,11 @@ def align_pheno_annotations_by_variant(
 ]:
     """
     Align pheno annotations by variant with tracking of unmatched samples.
-    1) Expand multi-variant records to one per variant
-    2) Prefer rsID intersection; fallback to normalized substring containment
-    3) If no variant match, fallback to Gene + Drug(s) matching
+    Priority order for matching:
+    1) Match by normalized variant_id (from Variant/Haplotypes_normalized)
+    2) Match by rsID intersection
+    3) Match by normalized substring containment
+    4) Fallback to Gene + Drug(s) matching
     Returns aligned pairs + unmatched samples from both GT and predictions.
     """
     rs_re = re.compile(r"rs\d+", re.IGNORECASE)
@@ -51,12 +55,14 @@ def align_pheno_annotations_by_variant(
     gt_expanded = expand_pheno_annotations_by_variant(ground_truth_list or [])
     pred_expanded = expand_pheno_annotations_by_variant(predictions_list or [])
 
-    pred_index: List[Tuple[set, str, Dict[str, Any]]] = []
+    # Build prediction index with variant_id, rsids, and normalized string
+    pred_index: List[Tuple[Optional[str], set, str, Dict[str, Any]]] = []
     for rec in pred_expanded:
         raw = (rec.get("Variant/Haplotypes") or "").strip()
         raw_norm = normalize_variant(raw).lower()
         rsids = set(m.group(0).lower() for m in rs_re.finditer(raw))
-        pred_index.append((rsids, raw_norm, rec))
+        variant_id = get_normalized_variant_id(rec)
+        pred_index.append((variant_id, rsids, raw_norm, rec))
 
     aligned_gt: List[Dict[str, Any]] = []
     aligned_pred: List[Dict[str, Any]] = []
@@ -68,18 +74,30 @@ def align_pheno_annotations_by_variant(
         gt_raw = (gt_rec.get("Variant/Haplotypes") or "").strip()
         gt_norm = normalize_variant(gt_raw).lower()
         gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
+        gt_variant_id = get_normalized_variant_id(gt_rec)
 
         match_idx = None
         match_rec = None
 
-        if gt_rs:
-            for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+        # Priority 1: Match by normalized variant_id (highest confidence)
+        if gt_variant_id:
+            for idx, (pred_variant_id, rsids, raw_norm, pred_rec) in enumerate(pred_index):
+                if idx not in matched_pred_indices and pred_variant_id and gt_variant_id == pred_variant_id:
+                    match_idx = idx
+                    match_rec = pred_rec
+                    break
+
+        # Priority 2: Match by rsID intersection
+        if match_idx is None and gt_rs:
+            for idx, (pred_variant_id, rsids, raw_norm, pred_rec) in enumerate(pred_index):
                 if idx not in matched_pred_indices and rsids & gt_rs:
                     match_idx = idx
                     match_rec = pred_rec
                     break
+
+        # Priority 3: Match by normalized substring
         if match_idx is None and gt_norm:
-            for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+            for idx, (pred_variant_id, rsids, raw_norm, pred_rec) in enumerate(pred_index):
                 if idx not in matched_pred_indices and (gt_norm in raw_norm or raw_norm in gt_norm):
                     match_idx = idx
                     match_rec = pred_rec
@@ -89,7 +107,8 @@ def align_pheno_annotations_by_variant(
             aligned_gt.append(gt_rec)
             aligned_pred.append(match_rec)
             matched_pred_indices.add(match_idx)
-            disp = next(iter(gt_rs)) if gt_rs else gt_norm
+            # Use variant_id for display if available, else rsID, else normalized string
+            disp = gt_variant_id if gt_variant_id else (next(iter(gt_rs)) if gt_rs else gt_norm)
             display_keys.append(disp)
 
     # Second pass: for unmatched GT records, try Gene + Drug(s) matching
@@ -99,21 +118,31 @@ def align_pheno_annotations_by_variant(
 
         gt_gene = str(gt_rec.get("Gene", "")).strip().lower()
         gt_drug = str(gt_rec.get("Drug(s)", "")).strip().lower()
+        gt_drug_id = get_normalized_drug_id(gt_rec)
 
         if not gt_gene and not gt_drug:
             continue
 
         # Try to find match by Gene + Drug
-        for idx, (_, _, pred_rec) in enumerate(pred_index):
+        for idx, (_, _, _, pred_rec) in enumerate(pred_index):
             if idx in matched_pred_indices:
                 continue
 
             pred_gene = str(pred_rec.get("Gene", "")).strip().lower()
             pred_drug = str(pred_rec.get("Drug(s)", "")).strip().lower()
+            pred_drug_id = get_normalized_drug_id(pred_rec)
 
-            # Match if Gene matches and (Drug matches or both are empty)
+            # Match if Gene matches and (Drug matches via drug_id, raw string, or both empty)
             gene_match = gt_gene and pred_gene and gt_gene == pred_gene
-            drug_match = (not gt_drug and not pred_drug) or (gt_drug and pred_drug and gt_drug == pred_drug)
+
+            # Drug matching: prefer drug_id if available
+            drug_match = False
+            if gt_drug_id and pred_drug_id:
+                drug_match = gt_drug_id == pred_drug_id
+            elif not gt_drug and not pred_drug:
+                drug_match = True
+            elif gt_drug and pred_drug:
+                drug_match = gt_drug == pred_drug
 
             if gene_match and drug_match:
                 aligned_gt.append(gt_rec)
@@ -127,7 +156,7 @@ def align_pheno_annotations_by_variant(
     # Collect unmatched samples
     unmatched_gt = [rec for rec in gt_expanded if rec not in aligned_gt]
     unmatched_pred = [
-        pred_index[i][2] for i in range(len(pred_index))
+        pred_index[i][3] for i in range(len(pred_index))
         if i not in matched_pred_indices
     ]
 

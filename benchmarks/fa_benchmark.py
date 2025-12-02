@@ -7,6 +7,7 @@ from benchmarks.shared_utils import (
     category_equal,
     variant_substring_match,
     compute_weighted_score,
+    get_normalized_variant_id,
 )
 
 
@@ -54,8 +55,10 @@ def align_fa_annotations_by_variant(
 ]:
     """
     Align FA annotations by variant with tracking of unmatched samples.
-    1) Expand multi-variant records to one per variant
-    2) Prefer rsID intersection; fallback to normalized substring containment
+    Priority order for matching:
+    1) Match by normalized variant_id (from Variant/Haplotypes_normalized)
+    2) Match by rsID intersection
+    3) Match by normalized substring containment
     Returns aligned pairs + unmatched samples from both GT and predictions.
     """
     rs_re = re.compile(r"rs\d+", re.IGNORECASE)
@@ -63,12 +66,14 @@ def align_fa_annotations_by_variant(
     gt_expanded = expand_annotations_by_variant(ground_truth_fa or [])
     pred_expanded = expand_annotations_by_variant(predictions_fa or [])
 
-    pred_index: List[Tuple[set, str, Dict[str, Any]]] = []
+    # Build prediction index with variant_id, rsids, and normalized string
+    pred_index: List[Tuple[Optional[str], set, str, Dict[str, Any]]] = []
     for rec in pred_expanded:
         raw = (rec.get("Variant/Haplotypes") or "").strip()
         raw_norm = normalize_variant(raw).lower()
         rsids = set(m.group(0).lower() for m in rs_re.finditer(raw))
-        pred_index.append((rsids, raw_norm, rec))
+        variant_id = get_normalized_variant_id(rec)
+        pred_index.append((variant_id, rsids, raw_norm, rec))
 
     aligned_gt: List[Dict[str, Any]] = []
     aligned_pred: List[Dict[str, Any]] = []
@@ -79,17 +84,30 @@ def align_fa_annotations_by_variant(
         gt_raw = (gt_rec.get("Variant/Haplotypes") or "").strip()
         gt_norm = normalize_variant(gt_raw).lower()
         gt_rs = set(m.group(0).lower() for m in rs_re.finditer(gt_raw))
+        gt_variant_id = get_normalized_variant_id(gt_rec)
 
         match = None
         match_idx = None
-        if gt_rs:
-            for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+
+        # Priority 1: Match by normalized variant_id (highest confidence)
+        if gt_variant_id:
+            for idx, (pred_variant_id, rsids, raw_norm, pred_rec) in enumerate(pred_index):
+                if idx not in matched_pred_indices and pred_variant_id and gt_variant_id == pred_variant_id:
+                    match = pred_rec
+                    match_idx = idx
+                    break
+
+        # Priority 2: Match by rsID intersection
+        if match is None and gt_rs:
+            for idx, (pred_variant_id, rsids, raw_norm, pred_rec) in enumerate(pred_index):
                 if idx not in matched_pred_indices and rsids & gt_rs:
                     match = pred_rec
                     match_idx = idx
                     break
+
+        # Priority 3: Match by normalized substring
         if match is None and gt_norm:
-            for idx, (rsids, raw_norm, pred_rec) in enumerate(pred_index):
+            for idx, (pred_variant_id, rsids, raw_norm, pred_rec) in enumerate(pred_index):
                 if idx not in matched_pred_indices and gt_norm in raw_norm:
                     match = pred_rec
                     match_idx = idx
@@ -99,13 +117,14 @@ def align_fa_annotations_by_variant(
             aligned_gt.append(gt_rec)
             aligned_pred.append(match)
             matched_pred_indices.add(match_idx)
-            disp = next(iter(gt_rs)) if gt_rs else gt_norm
+            # Use variant_id for display if available, else rsID, else normalized string
+            disp = gt_variant_id if gt_variant_id else (next(iter(gt_rs)) if gt_rs else gt_norm)
             display_keys.append(disp)
 
     # Collect unmatched samples
     unmatched_gt = [rec for rec in gt_expanded if rec not in aligned_gt]
     unmatched_pred = [
-        pred_index[i][2] for i in range(len(pred_index))
+        pred_index[i][3] for i in range(len(pred_index))
         if i not in matched_pred_indices
     ]
 

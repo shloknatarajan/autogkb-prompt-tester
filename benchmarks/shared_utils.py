@@ -161,3 +161,35 @@ def compute_weighted_score(
         total_weight += weight
 
     return weighted_sum / total_weight if total_weight > 0 else 0.0
+
+
+def get_normalized_variant_id(annotation: Dict[str, Any]) -> Optional[str]:
+    """
+    Extract variant_id from normalized field if available.
+
+    Args:
+        annotation: Annotation dictionary that may contain Variant/Haplotypes_normalized
+
+    Returns:
+        The variant_id string if available, None otherwise
+    """
+    normalized = annotation.get("Variant/Haplotypes_normalized", {})
+    if isinstance(normalized, dict):
+        return normalized.get("variant_id")
+    return None
+
+
+def get_normalized_drug_id(annotation: Dict[str, Any]) -> Optional[str]:
+    """
+    Extract drug_id from normalized field if available.
+
+    Args:
+        annotation: Annotation dictionary that may contain Drug(s)_normalized
+
+    Returns:
+        The drug_id string if available, None otherwise
+    """
+    normalized = annotation.get("Drug(s)_normalized", {})
+    if isinstance(normalized, dict):
+        return normalized.get("drug_id")
+    return None
