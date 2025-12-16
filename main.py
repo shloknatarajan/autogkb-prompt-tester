@@ -382,7 +382,11 @@ async def generate_citations_for_annotation(
     """Generate citations for a single annotation by finding supporting quotes in the text."""
     # Use the shared utility function
     return await generate_citations(
-        annotation, full_text, model, citation_prompt_template, return_usage=return_usage
+        annotation,
+        full_text,
+        model,
+        citation_prompt_template,
+        return_usage=return_usage,
     )
 
 
@@ -526,13 +530,15 @@ async def list_pipeline_outputs():
                     else:
                         pmcid_count += 1
 
-            runs.append({
-                "directory": dirname,
-                "timestamp": timestamp.isoformat(),
-                "display_date": timestamp.strftime("%b %d, %Y %I:%M %p"),
-                "pmcid_count": pmcid_count,
-                "has_combined": has_combined,
-            })
+            runs.append(
+                {
+                    "directory": dirname,
+                    "timestamp": timestamp.isoformat(),
+                    "display_date": timestamp.strftime("%b %d, %Y %I:%M %p"),
+                    "pmcid_count": pmcid_count,
+                    "has_combined": has_combined,
+                }
+            )
 
         # Sort by timestamp descending (newest first)
         runs.sort(key=lambda x: x["timestamp"], reverse=True)
@@ -548,11 +554,15 @@ async def list_pipeline_run_files(run_directory: str):
     try:
         # Validate directory name matches expected pattern (security)
         if not PIPELINE_RUN_PATTERN.match(run_directory):
-            raise HTTPException(status_code=400, detail="Invalid pipeline run directory name")
+            raise HTTPException(
+                status_code=400, detail="Invalid pipeline run directory name"
+            )
 
         dirpath = os.path.join(OUTPUT_DIR, run_directory)
         if not os.path.exists(dirpath) or not os.path.isdir(dirpath):
-            raise HTTPException(status_code=404, detail="Pipeline run directory not found")
+            raise HTTPException(
+                status_code=404, detail="Pipeline run directory not found"
+            )
 
         files = []
         for filename in os.listdir(dirpath):
@@ -569,13 +579,15 @@ async def list_pipeline_run_files(run_directory: str):
                 file_type = "pmcid"
                 pmcid = filename.replace(".json", "")
 
-            files.append({
-                "filename": filename,
-                "pmcid": pmcid,
-                "type": file_type,
-                "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
-                "size": stat.st_size,
-            })
+            files.append(
+                {
+                    "filename": filename,
+                    "pmcid": pmcid,
+                    "type": file_type,
+                    "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                    "size": stat.st_size,
+                }
+            )
 
         # Sort: PMCID files first (alphabetically), then combined files
         files.sort(key=lambda x: (x["type"] == "combined", x["filename"]))
@@ -597,7 +609,9 @@ async def get_pipeline_output_file(run_directory: str, filename: str):
     try:
         # Validate directory name matches expected pattern (security)
         if not PIPELINE_RUN_PATTERN.match(run_directory):
-            raise HTTPException(status_code=400, detail="Invalid pipeline run directory name")
+            raise HTTPException(
+                status_code=400, detail="Invalid pipeline run directory name"
+            )
 
         # Sanitize filename to prevent directory traversal
         filename = os.path.basename(filename)
@@ -998,7 +1012,9 @@ async def process_single_pmcid(
             text = f.read()
 
         # Run all prompts in parallel for this PMCID
-        async def run_prompt(task: str, prompt_data: dict) -> tuple[str, dict, UsageInfo | None]:
+        async def run_prompt(
+            task: str, prompt_data: dict
+        ) -> tuple[str, dict, UsageInfo | None]:
             try:
                 # Use override model if provided, otherwise fall back to prompt's model
                 if override_model:
@@ -1008,7 +1024,11 @@ async def process_single_pmcid(
                     model = prompt_data.get("model", "gpt-4o-mini")
 
                 # Use override temperature if provided, otherwise fall back to prompt's temperature
-                temperature = override_temperature if override_temperature is not None else prompt_data.get("temperature", 0.0)
+                temperature = (
+                    override_temperature
+                    if override_temperature is not None
+                    else prompt_data.get("temperature", 0.0)
+                )
 
                 result = await generate_response(
                     prompt=prompt_data["prompt"],
@@ -1142,7 +1162,9 @@ async def run_pipeline_task(job: PipelineJob):
         override_temperature = job.config.get("temperature", 0.0)
 
         job.add_message(f"Processing with concurrency: {concurrency}")
-        job.add_message(f"Using model: {override_model}, temperature: {override_temperature}")
+        job.add_message(
+            f"Using model: {override_model}, temperature: {override_temperature}"
+        )
         job.add_message("Normalization will run concurrently with LLM generation")
 
         # Shared state for tracking
@@ -1158,7 +1180,11 @@ async def run_pipeline_task(job: PipelineJob):
 
             # Step 1: LLM generation (uses semaphore for concurrency)
             result_pmcid, results, pmcid_cost_tracker = await process_single_pmcid(
-                pmcid, data_dir, output_dir, prompt_details_map, semaphore,
+                pmcid,
+                data_dir,
+                output_dir,
+                prompt_details_map,
+                semaphore,
                 override_model=override_model,
                 override_temperature=override_temperature,
             )
@@ -1172,7 +1198,9 @@ async def run_pipeline_task(job: PipelineJob):
             job.pmcids_processed = completed_llm
             job.current_pmcid = result_pmcid
             cost_str = f"${pmcid_cost:.4f}"
-            job.add_message(f"Generated {result_pmcid} ({completed_llm}/{total}) - Cost: {cost_str}")
+            job.add_message(
+                f"Generated {result_pmcid} ({completed_llm}/{total}) - Cost: {cost_str}"
+            )
 
             # Step 2: Kick off normalization immediately (don't await)
             output_file = Path(output_dir) / f"{result_pmcid}.json"

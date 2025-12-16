@@ -8,9 +8,6 @@ that support extracted annotations by finding relevant quotes in the source text
 import json
 from typing import Dict, List, Tuple, Union
 
-from llm import generate_response
-from utils.cost import UsageInfo
-
 
 # Single source of truth for citation prompt template
 CITATION_PROMPT_TEMPLATE = """You are a research assistant helping extract citations from a scientific article.
@@ -44,7 +41,7 @@ async def generate_citations(
     model: str = "openai/gpt-4o-mini",
     citation_prompt_template: str = CITATION_PROMPT_TEMPLATE,
     return_usage: bool = False,
-) -> Union[List[str], Tuple[List[str], UsageInfo]]:
+) -> Union[List[str], Tuple[List[str], "UsageInfo"]]:
     """
     Generate citations for a single annotation by finding supporting quotes.
 
@@ -75,6 +72,10 @@ async def generate_citations(
         >>> print(citations)
         ["Patients with rs1234 showed reduced codeine metabolism...", ...]
     """
+    # Lazy imports to avoid circular dependency (llm -> utils.cost -> utils -> citation_generator -> llm)
+    from llm import generate_response
+    from utils.cost import UsageInfo
+
     try:
         # Format prompt with annotation details
         formatted_prompt = citation_prompt_template.format(
