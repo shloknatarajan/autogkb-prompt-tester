@@ -2,7 +2,7 @@ from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from llm import Model, generate_response
+from llm import Model, generate_response, normalize_model
 import asyncio
 import json
 import os
@@ -31,6 +31,7 @@ from utils.normalization import (
     normalize_outputs_in_directory_async,
     normalize_single_file_async,
 )
+from utils.cost import CostTracker, UsageInfo
 
 app = FastAPI()
 
@@ -62,6 +63,9 @@ class PipelineJob:
         self.created_at = datetime.now().isoformat()
         self.updated_at = datetime.now().isoformat()
         self.cancelled: bool = False
+        # Cost tracking
+        self.total_cost_usd: float = 0.0
+        self.cost_by_pmcid: dict[str, float] = {}
 
     def add_message(self, message: str):
         timestamp = datetime.now().strftime("%H:%M:%S")
@@ -87,6 +91,8 @@ class PipelineJob:
             "error": self.error,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
+            "total_cost_usd": round(self.total_cost_usd, 6),
+            "cost_by_pmcid": {k: round(v, 6) for k, v in self.cost_by_pmcid.items()},
         }
 
 
@@ -104,7 +110,7 @@ class PipelineStartRequest(BaseModel):
 class PromptRequest(BaseModel):
     prompt: str
     text: str
-    model: Model
+    model: str  # Provider-prefixed format: "openai/gpt-4o", "anthropic/claude-3-5-sonnet"
     response_format: dict | None = None
     temperature: float = 0.0
 
@@ -118,7 +124,7 @@ class SavePromptRequest(BaseModel):
     name: str
     prompt: str
     text: str
-    model: Model
+    model: str  # Provider-prefixed format: "openai/gpt-4o", "anthropic/claude-3-5-sonnet"
     response_format: dict | None = None
     output: str
     temperature: float = 0.0
@@ -140,7 +146,7 @@ class UpdateBestPromptsRequest(BaseModel):
 class BestPrompt(BaseModel):
     task: str
     prompt: str
-    model: Model
+    model: str  # Provider-prefixed format: "openai/gpt-4o", "anthropic/claude-3-5-sonnet"
     response_format: dict | None = None
     name: str
     temperature: float = 0.0
@@ -367,25 +373,38 @@ async def rename_prompt(task: str, old_name: str, request: RenamePromptRequest):
 
 
 async def generate_citations_for_annotation(
-    annotation: dict, full_text: str, citation_prompt_template: str, model: Model
-) -> list[str]:
+    annotation: dict,
+    full_text: str,
+    citation_prompt_template: str,
+    model: str,
+    return_usage: bool = False,
+):
     """Generate citations for a single annotation by finding supporting quotes in the text."""
     # Use the shared utility function
     return await generate_citations(
-        annotation, full_text, model, citation_prompt_template
+        annotation, full_text, model, citation_prompt_template, return_usage=return_usage
     )
 
 
-async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
-    """Run a single task and return (task_name, prompt_name, output, error)."""
+async def run_single_task(
+    best_prompt: BestPrompt, text: str, track_cost: bool = False
+) -> tuple:
+    """Run a single task and return (task_name, prompt_name, output, error, usage_info)."""
     try:
-        output = await generate_response(
+        result = await generate_response(
             prompt=best_prompt.prompt,
             text=text,
             model=best_prompt.model,
             response_format=best_prompt.response_format,
             temperature=best_prompt.temperature,
+            return_usage=track_cost,
         )
+
+        if track_cost:
+            output, usage_info = result
+        else:
+            output = result
+            usage_info = None
 
         # Parse output as JSON
         try:
@@ -393,9 +412,9 @@ async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
         except:
             parsed_output = {best_prompt.name: output}
 
-        return (best_prompt.task, best_prompt.name, parsed_output, None)
+        return (best_prompt.task, best_prompt.name, parsed_output, None, usage_info)
     except Exception as e:
-        return (best_prompt.task, best_prompt.name, None, str(e))
+        return (best_prompt.task, best_prompt.name, None, str(e), None)
 
 
 async def generate_single_citation(
@@ -404,16 +423,22 @@ async def generate_single_citation(
     annotation: dict,
     text: str,
     citation_prompt: str,
-    model: Model,
+    model: str,
+    track_cost: bool = False,
 ) -> tuple:
-    """Generate citation for one annotation and return (ann_type, index, citations, error)."""
+    """Generate citation for one annotation and return (ann_type, index, citations, error, usage_info)."""
     try:
-        citations = await generate_citations_for_annotation(
-            annotation, text, citation_prompt, model
+        result = await generate_citations_for_annotation(
+            annotation, text, citation_prompt, model, return_usage=track_cost
         )
-        return (ann_type, index, citations, None)
+        if track_cost:
+            citations, usage_info = result
+        else:
+            citations = result
+            usage_info = None
+        return (ann_type, index, citations, None, usage_info)
     except Exception as e:
-        return (ann_type, index, [], str(e))
+        return (ann_type, index, [], str(e), None)
 
 
 @app.get("/outputs")
@@ -599,17 +624,18 @@ async def run_best_prompts(request: RunBestPromptsRequest):
     try:
         task_results = {}
         prompts_used = {}
+        cost_tracker = CostTracker()
 
-        # Run all tasks in parallel
+        # Run all tasks in parallel with cost tracking
         print(f"Running {len(request.best_prompts)} tasks in parallel...")
         task_coroutines = [
-            run_single_task(best_prompt, request.text)
+            run_single_task(best_prompt, request.text, track_cost=True)
             for best_prompt in request.best_prompts
         ]
         task_execution_results = await asyncio.gather(*task_coroutines)
 
-        # Process results
-        for task_name, prompt_name, output, error in task_execution_results:
+        # Process results and accumulate costs
+        for task_name, prompt_name, output, error, usage_info in task_execution_results:
             if error:
                 task_results[task_name] = {"error": error}
                 print(f"✗ Task '{task_name}' failed: {error}")
@@ -617,6 +643,8 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                 task_results.update(output)
                 print(f"✓ Completed task: {task_name} using prompt: {prompt_name}")
             prompts_used[task_name] = prompt_name
+            if usage_info:
+                cost_tracker.add_usage(task_name, usage_info)
 
         # Generate citations if citation prompt is provided
         total_annotations = 0
@@ -640,6 +668,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                             request.text,
                             request.citation_prompt,
                             request.best_prompts[0].model,
+                            track_cost=True,
                         )
                     )
 
@@ -655,6 +684,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                             request.text,
                             request.citation_prompt,
                             request.best_prompts[0].model,
+                            track_cost=True,
                         )
                     )
 
@@ -670,6 +700,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                             request.text,
                             request.citation_prompt,
                             request.best_prompts[0].model,
+                            track_cost=True,
                         )
                     )
 
@@ -677,27 +708,30 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                 print(f"Generating {len(citation_tasks)} citations in parallel...")
                 citation_results = await asyncio.gather(*citation_tasks)
 
-                # Apply results
+                # Apply results and accumulate citation costs
                 successful = 0
                 failed = 0
-                for ann_type, index, citations, error in citation_results:
+                for ann_type, index, citations, error, usage_info in citation_results:
                     task_results[ann_type][index]["Citations"] = citations
                     if error:
                         task_results[ann_type][index]["Citation_Error"] = error
                         failed += 1
                     else:
                         successful += 1
+                    if usage_info:
+                        cost_tracker.add_usage("citations", usage_info)
 
                 citations_generated = len(citation_results)
                 total_annotations = len(citation_results)
                 print(f"✓ Citations complete: {successful} successful, {failed} failed")
 
-        # Combine outputs
+        # Combine outputs with usage information
         combined_output = {
             **task_results,
             "input_text": request.text,
             "timestamp": datetime.now().isoformat(),
             "prompts_used": prompts_used,
+            "usage": cost_tracker.get_summary(),
         }
 
         # Save to file
@@ -729,6 +763,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
             "output_file": filename,
             "total_annotations": total_annotations,
             "citations_generated": citations_generated,
+            "usage": cost_tracker.get_summary(),
             "results": combined_output,
         }
     except Exception as e:
@@ -947,51 +982,52 @@ async def process_single_pmcid(
     output_dir: str,
     prompt_details_map: dict,
     semaphore: asyncio.Semaphore,
-    override_model: Model | None = None,
+    override_model: str | None = None,
     override_temperature: float | None = None,
-) -> tuple[str, dict]:
+) -> tuple[str, dict, CostTracker]:
     """
     Process a single PMCID with all prompts.
-    Returns (pmcid, results_dict)
+    Returns (pmcid, results_dict, cost_tracker)
     """
     async with semaphore:
+        cost_tracker = CostTracker()
+
         # Load markdown file
         md_path = os.path.join(data_dir, f"{pmcid}.md")
         with open(md_path, "r") as f:
             text = f.read()
 
         # Run all prompts in parallel for this PMCID
-        async def run_prompt(task: str, prompt_data: dict) -> tuple[str, dict]:
+        async def run_prompt(task: str, prompt_data: dict) -> tuple[str, dict, UsageInfo | None]:
             try:
                 # Use override model if provided, otherwise fall back to prompt's model
                 if override_model:
                     model = override_model
                 else:
-                    model_str = prompt_data.get("model", "gpt-4o-mini")
-                    try:
-                        model = Model(model_str)
-                    except ValueError:
-                        model = Model.OPENAI_GPT_4O_MINI
+                    # Use model string directly (normalize_model handles prefixing)
+                    model = prompt_data.get("model", "gpt-4o-mini")
 
                 # Use override temperature if provided, otherwise fall back to prompt's temperature
                 temperature = override_temperature if override_temperature is not None else prompt_data.get("temperature", 0.0)
 
-                output = await generate_response(
+                result = await generate_response(
                     prompt=prompt_data["prompt"],
                     text=text,
                     model=model,
                     response_format=prompt_data.get("response_format"),
                     temperature=temperature,
+                    return_usage=True,
                 )
+                output, usage_info = result
 
                 try:
                     parsed_output = json.loads(output)
-                    return (task, parsed_output)
+                    return (task, parsed_output, usage_info)
                 except json.JSONDecodeError:
-                    return (task, {"error": "JSON parse failed"})
+                    return (task, {"error": "JSON parse failed"}, usage_info)
 
             except Exception as e:
-                return (task, {"error": str(e)})
+                return (task, {"error": str(e)}, None)
 
         # Run all tasks in parallel
         prompt_tasks = [
@@ -1000,22 +1036,24 @@ async def process_single_pmcid(
         ]
         task_results = await asyncio.gather(*prompt_tasks)
 
-        # Combine results
+        # Combine results and accumulate costs
         pmcid_results = {"pmcid": pmcid}
         prompts_used = {}
 
-        for task, result in task_results:
+        for task, result, usage_info in task_results:
             if isinstance(result, dict) and "error" in result:
                 pmcid_results[task] = result
             else:
                 pmcid_results.update(result)
             prompts_used[task] = prompt_details_map[task].get("name", "unknown")
+            if usage_info:
+                cost_tracker.add_usage(task, usage_info)
 
         # Generate citations for annotations
         from utils.citation_generator import CITATION_PROMPT_TEMPLATE
 
         # Use override model for citations, or default to GPT-4o-mini
-        citation_model = override_model if override_model else Model.OPENAI_GPT_4O_MINI
+        citation_model = override_model if override_model else "openai/gpt-4o-mini"
 
         citation_tasks = []
         for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann"]:
@@ -1029,26 +1067,30 @@ async def process_single_pmcid(
                             text,
                             CITATION_PROMPT_TEMPLATE,
                             citation_model,
+                            track_cost=True,
                         )
                     )
 
         if citation_tasks:
             citation_results = await asyncio.gather(*citation_tasks)
-            for ann_type, index, citations, error in citation_results:
+            for ann_type, index, citations, error, usage_info in citation_results:
                 pmcid_results[ann_type][index]["Citations"] = citations
                 if error:
                     pmcid_results[ann_type][index]["Citation_Error"] = error
+                if usage_info:
+                    cost_tracker.add_usage("citations", usage_info)
 
-        # Add metadata
+        # Add metadata and usage
         pmcid_results["timestamp"] = datetime.now().isoformat()
         pmcid_results["prompts_used"] = prompts_used
+        pmcid_results["usage"] = cost_tracker.get_summary()
 
         # Save individual output
         output_file = os.path.join(output_dir, f"{pmcid}.json")
         with open(output_file, "w") as f:
             json.dump(pmcid_results, f, indent=2)
 
-        return (pmcid, pmcid_results)
+        return (pmcid, pmcid_results, cost_tracker)
 
 
 async def run_pipeline_task(job: PipelineJob):
@@ -1092,18 +1134,15 @@ async def run_pipeline_task(job: PipelineJob):
         concurrency = job.config.get("concurrency", 3)
         semaphore = asyncio.Semaphore(concurrency)
 
-        # Parse model from config
-        model_str = job.config.get("model", "gpt-4o-mini")
-        try:
-            override_model = Model(model_str)
-        except ValueError:
-            override_model = Model.OPENAI_GPT_4O_MINI
-            job.add_message(f"Warning: Unknown model '{model_str}', using gpt-4o-mini")
+        # Get model from config (supports provider-prefixed format like "anthropic/claude-3-5-sonnet")
+        override_model = job.config.get("model", "gpt-4o-mini")
+        # normalize_model will auto-prefix unprefixed models with "openai/"
+        override_model = normalize_model(override_model)
 
         override_temperature = job.config.get("temperature", 0.0)
 
         job.add_message(f"Processing with concurrency: {concurrency}")
-        job.add_message(f"Using model: {override_model.value}, temperature: {override_temperature}")
+        job.add_message(f"Using model: {override_model}, temperature: {override_temperature}")
         job.add_message("Normalization will run concurrently with LLM generation")
 
         # Shared state for tracking
@@ -1118,16 +1157,22 @@ async def run_pipeline_task(job: PipelineJob):
             nonlocal completed_llm
 
             # Step 1: LLM generation (uses semaphore for concurrency)
-            result_pmcid, results = await process_single_pmcid(
+            result_pmcid, results, pmcid_cost_tracker = await process_single_pmcid(
                 pmcid, data_dir, output_dir, prompt_details_map, semaphore,
                 override_model=override_model,
                 override_temperature=override_temperature,
             )
 
+            # Accumulate costs
+            pmcid_cost = pmcid_cost_tracker.total_cost_usd
+            job.cost_by_pmcid[result_pmcid] = pmcid_cost
+            job.total_cost_usd += pmcid_cost
+
             completed_llm += 1
             job.pmcids_processed = completed_llm
             job.current_pmcid = result_pmcid
-            job.add_message(f"Generated {result_pmcid} ({completed_llm}/{total})")
+            cost_str = f"${pmcid_cost:.4f}"
+            job.add_message(f"Generated {result_pmcid} ({completed_llm}/{total}) - Cost: {cost_str}")
 
             # Step 2: Kick off normalization immediately (don't await)
             output_file = Path(output_dir) / f"{result_pmcid}.json"
@@ -1282,9 +1327,13 @@ async def run_pipeline_task(job: PipelineJob):
             "total_pmcids": len(pmcids),
             "overall_score": overall_score,
             "task_scores": average_scores,
+            "usage": {
+                "total_cost_usd": round(job.total_cost_usd, 6),
+                "by_pmcid": {k: round(v, 6) for k, v in job.cost_by_pmcid.items()},
+            },
         }
         job.add_message(
-            f"Pipeline completed successfully! Overall score: {overall_score:.2%}"
+            f"Pipeline completed successfully! Overall score: {overall_score:.2%}, Total cost: ${job.total_cost_usd:.4f}"
         )
 
     except Exception as e:

@@ -18,10 +18,17 @@ export interface PipelineJob {
     total_pmcids: number;
     overall_score: number;
     task_scores: { [task: string]: number };
+    usage?: {
+      total_cost_usd: number;
+      by_pmcid: { [pmcid: string]: number };
+    };
   } | null;
   error: string | null;
   created_at: string;
   updated_at: string;
+  // Cost tracking
+  total_cost_usd: number;
+  cost_by_pmcid: { [pmcid: string]: number };
 }
 
 export interface PipelineJobSummary {

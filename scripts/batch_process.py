@@ -23,7 +23,8 @@ import argparse
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 from main import generate_citations_for_annotation
-from llm import generate_response, Model
+from llm import generate_response, normalize_model
+from utils.cost import CostTracker, UsageInfo
 
 # Citation prompt template
 CITATION_PROMPT = """You are analyzing a genetic variant annotation. Your task is to find direct quotes from the article text that support this specific annotation.
@@ -69,14 +70,8 @@ class BatchProcessor:
         self.output_dir = Path(args.output_dir)
         self.concurrency = args.concurrency
         self.skip_existing = args.skip_existing
-        self.model = args.model
-
-        # check if model is valid
-        if self.model not in [m for m in Model]:
-            print(f"Model {self.model} not recognized. Falling back to gpt-5-mini.")
-            self.model = Model.OPENAI_GPT_5_MINI
-        else:
-            self.model = Model(self.model)
+        # Normalize model to provider-prefixed format (e.g., "openai/gpt-4o")
+        self.model = normalize_model(args.model)
 
         # Create necessary directories
         self.output_dir.mkdir(exist_ok=True)
@@ -92,6 +87,7 @@ class BatchProcessor:
             "failed": 0,
             "skipped": 0,
             "start_time": datetime.now(),
+            "total_cost_usd": 0.0,
         }
 
     def setup_logging(self):
@@ -193,7 +189,7 @@ class BatchProcessor:
         self.logger.info(f"Found {len(files)} article files in {self.data_dir}")
         return files
 
-    async def run_single_task(self, prompt: Dict, text: str, model: Model) -> tuple:
+    async def run_single_task(self, prompt: Dict, text: str, model: str) -> tuple:
         """
         Run a single task prompt and return results.
 
@@ -212,50 +208,54 @@ class BatchProcessor:
             else:
                 formatted_prompt = prompt["prompt"].replace("{article_text}", text)
 
-            # Generate response
+            # Generate response with usage tracking
             self.logger.debug(
                 f"Running task: {prompt['task']} with prompt: {prompt['name']}"
             )
-            output = await generate_response(
+            result = await generate_response(
                 prompt=formatted_prompt,
                 text="",
                 model=model,
                 response_format=response_format,
                 temperature=prompt.get("temperature", 0.0),
+                return_usage=True,
             )
+            output, usage_info = result
 
             # Parse output
             parsed_output = json.loads(output)
             self.logger.debug(f"Task {prompt['task']} completed successfully")
 
-            return (prompt["task"], prompt["name"], parsed_output, None)
+            return (prompt["task"], prompt["name"], parsed_output, None, usage_info)
 
         except Exception as e:
             self.logger.error(f"Error running task {prompt['task']}: {str(e)}")
-            return (prompt["task"], prompt["name"], None, str(e))
+            return (prompt["task"], prompt["name"], None, str(e), None)
 
     async def generate_single_citation(
-        self, ann_type: str, index: int, annotation: Dict, text: str, model: Model
+        self, ann_type: str, index: int, annotation: Dict, text: str, model: str
     ) -> tuple:
         """
         Generate citation for one annotation.
 
         Returns:
-            (ann_type, index, citations, error)
+            (ann_type, index, citations, error, usage_info)
         """
         try:
-            citations = await generate_citations_for_annotation(
+            result = await generate_citations_for_annotation(
                 annotation=annotation,
                 full_text=text,
                 citation_prompt_template=CITATION_PROMPT,
                 model=model,
+                return_usage=True,
             )
-            return (ann_type, index, citations, None)
+            citations, usage_info = result
+            return (ann_type, index, citations, None, usage_info)
         except Exception as e:
             self.logger.error(
                 f"Error generating citation for {ann_type}[{index}]: {str(e)}"
             )
-            return (ann_type, index, [], str(e))
+            return (ann_type, index, [], str(e), None)
 
     async def process_single_file(
         self, file_path: Path, prompts: List[Dict], semaphore: asyncio.Semaphore
@@ -290,17 +290,20 @@ class BatchProcessor:
                 ]
                 task_results_list = await asyncio.gather(*task_coroutines)
 
-                # Combine task results
+                # Combine task results and track costs
                 task_results = {}
                 prompts_used = {}
+                cost_tracker = CostTracker()
 
-                for task_name, prompt_name, output, error in task_results_list:
+                for task_name, prompt_name, output, error, usage_info in task_results_list:
                     if error:
                         task_results[task_name] = {"error": error}
                         self.logger.error(f"Task {task_name} failed: {error}")
                     else:
                         task_results.update(output)
                     prompts_used[task_name] = prompt_name
+                    if usage_info:
+                        cost_tracker.add_usage(task_name, usage_info)
 
                 # Generate citations in parallel
                 citation_tasks = []
@@ -324,21 +327,24 @@ class BatchProcessor:
                     )
                     citation_results = await asyncio.gather(*citation_tasks)
 
-                    # Add citations to annotations
-                    for ann_type, index, citations, error in citation_results:
+                    # Add citations to annotations and track costs
+                    for ann_type, index, citations, error, usage_info in citation_results:
                         if error:
                             self.logger.warning(
                                 f"Citation generation failed for {ann_type}[{index}]: {error}"
                             )
                         task_results[ann_type][index]["Citations"] = citations
+                        if usage_info:
+                            cost_tracker.add_usage("citations", usage_info)
 
                 # Extract PMCID from results or use filename
                 pmcid = task_results.get("pmcid", file_path.stem)
 
-                # Add metadata
+                # Add metadata and usage
                 task_results["input_text"] = text
                 task_results["timestamp"] = datetime.now().isoformat()
                 task_results["prompts_used"] = prompts_used
+                task_results["usage"] = cost_tracker.get_summary()
 
                 # Save output file
                 output_file = self.output_dir / f"{pmcid}.json"
@@ -360,11 +366,13 @@ class BatchProcessor:
                     json.dump(task_results, f, indent=2, ensure_ascii=False)
 
                 duration = (datetime.now() - start_time).total_seconds()
+                file_cost = cost_tracker.total_cost_usd
                 self.logger.info(
-                    f"✓ Completed {file_path.name} in {duration:.1f}s -> {output_file}"
+                    f"✓ Completed {file_path.name} in {duration:.1f}s (${file_cost:.4f}) -> {output_file}"
                 )
 
                 self.stats["success"] += 1
+                self.stats["total_cost_usd"] += file_cost
 
                 return {
                     "file": file_path.name,
@@ -374,6 +382,7 @@ class BatchProcessor:
                     "tasks_completed": len(prompts_used),
                     "citations_generated": len(citation_tasks),
                     "duration": duration,
+                    "cost_usd": file_cost,
                 }
 
             except Exception as e:
@@ -435,13 +444,15 @@ class BatchProcessor:
         self.logger.info(f"Failed: {self.stats['failed']}")
         self.logger.info(f"Skipped: {self.stats['skipped']}")
         self.logger.info(f"Total duration: {duration:.1f}s")
+        self.logger.info(f"Total API cost: ${self.stats['total_cost_usd']:.4f}")
 
         if self.stats["success"] > 0:
             avg_duration = (
                 sum(r["duration"] for r in results if r["status"] == "success")
                 / self.stats["success"]
             )
-            self.logger.info(f"Average per file: {avg_duration:.1f}s")
+            avg_cost = self.stats["total_cost_usd"] / self.stats["success"]
+            self.logger.info(f"Average per file: {avg_duration:.1f}s, ${avg_cost:.4f}")
 
         # List failed files
         failed = [r for r in results if r["status"] == "failed"]

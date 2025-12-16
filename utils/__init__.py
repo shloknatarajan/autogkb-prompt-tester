@@ -19,6 +19,13 @@ from .prompt_manager import PromptManager
 from .citation_generator import CITATION_PROMPT_TEMPLATE, generate_citations
 from .output_manager import save_output, load_output, combine_outputs
 from .normalization import normalize_outputs_in_directory
+from .cost import (
+    MODEL_PRICING,
+    UsageInfo,
+    CostTracker,
+    calculate_cost,
+    extract_usage_from_response,
+)
 
 __all__ = [
     # Config
@@ -40,4 +47,10 @@ __all__ = [
     "normalize_outputs_in_directory",
     # Constants
     "CITATION_PROMPT_TEMPLATE",
+    "MODEL_PRICING",
+    # Cost tracking
+    "UsageInfo",
+    "CostTracker",
+    "calculate_cost",
+    "extract_usage_from_response",
 ]

@@ -17,6 +17,9 @@ numpy = ">=2.3.4,<3"
 sentence-transformers = ">=5.1.2,<6"
 loguru = ">=0.7.3,<0.8"
 
+[pypi-dependencies]
+litellm = "*"
+
 [tasks]
 # Backend tasks
 be = "uvicorn main:app --reload"

@@ -19,20 +19,30 @@ import { Input } from "@/components/ui/input";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const MODELS = [
-  "gpt-4o",
-  "gpt-4o-mini",
-  "gpt-4-turbo",
-  "gpt-4",
-  "gpt-3.5-turbo",
-  "gpt-5",
-  "gpt-5.1",
-  "gpt-5-mini",
-  "gpt-5-pro",
+  // OpenAI
+  "openai/gpt-4o",
+  "openai/gpt-4o-mini",
+  "openai/gpt-4-turbo",
+  "openai/gpt-4",
+  "openai/gpt-3.5-turbo",
+  "openai/gpt-5",
+  "openai/gpt-5.1",
+  "openai/gpt-5-mini",
+  "openai/gpt-5-pro",
+  // Anthropic (use shorthand aliases or full versioned IDs)
+  "anthropic/claude-opus-4-5-20251101",
+  "anthropic/claude-sonnet-4-5-20250929",
+  "anthropic/claude-3-5-sonnet-20240620",
+  "anthropic/claude-3-haiku-20240307",
+  // Google Gemini
+  "gemini/gemini-2.0-flash",
+  "gemini/gemini-1.5-pro",
+  "gemini/gemini-1.5-flash",
 ];
 
 function App() {
   const [text, setText] = useState("");
-  const [globalModel, setGlobalModel] = useState("gpt-4o-mini");
+  const [globalModel, setGlobalModel] = useState("openai/gpt-4o-mini");
   const [selectedFileName, setSelectedFileName] = useState("");
   const [outputViewerOpen, setOutputViewerOpen] = useState(false);
   const {

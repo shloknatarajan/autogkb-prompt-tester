@@ -6,9 +6,10 @@ that support extracted annotations by finding relevant quotes in the source text
 """
 
 import json
-from typing import Dict, List
+from typing import Dict, List, Tuple, Union
 
-from llm import Model, generate_response
+from llm import generate_response
+from utils.cost import UsageInfo
 
 
 # Single source of truth for citation prompt template
@@ -40,9 +41,10 @@ Return your response as JSON with a "citations" array containing the exact quote
 async def generate_citations(
     annotation: Dict,
     full_text: str,
-    model: Model = Model.OPENAI_GPT_4O_MINI,
+    model: str = "openai/gpt-4o-mini",
     citation_prompt_template: str = CITATION_PROMPT_TEMPLATE,
-) -> List[str]:
+    return_usage: bool = False,
+) -> Union[List[str], Tuple[List[str], UsageInfo]]:
     """
     Generate citations for a single annotation by finding supporting quotes.
 
@@ -56,9 +58,10 @@ async def generate_citations(
         full_text: Complete article text to search for citations
         model: LLM model to use for citation generation
         citation_prompt_template: Optional custom prompt template
+        return_usage: If True, returns (citations, UsageInfo) tuple for cost tracking
 
     Returns:
-        List of citation strings (direct quotes from the article)
+        List of citation strings, or (citations, UsageInfo) tuple if return_usage=True
 
     Example:
         >>> annotation = {
@@ -84,7 +87,7 @@ async def generate_citations(
         )
 
         # Call LLM with JSON output format
-        response = await generate_response(
+        result = await generate_response(
             prompt=formatted_prompt,
             text="",
             model=model,
@@ -98,21 +101,35 @@ async def generate_citations(
                 },
                 "required": ["citations"],
             },
+            return_usage=return_usage,
         )
 
+        # Extract response text and optional usage info
+        if return_usage:
+            response_text, usage_info = result
+        else:
+            response_text = result
+            usage_info = None
+
         # Parse and return citations
-        citations_data = json.loads(response)
-        return citations_data.get("citations", [])
+        citations_data = json.loads(response_text)
+        citations = citations_data.get("citations", [])
+
+        if return_usage:
+            return citations, usage_info
+        return citations
 
     except Exception as e:
         print(f"Error generating citations: {e}")
+        if return_usage:
+            return [], UsageInfo()
         return []
 
 
 async def generate_citations_batch(
     annotations: List[Dict],
     full_text: str,
-    model: Model = Model.OPENAI_GPT_4O_MINI,
+    model: str = "openai/gpt-4o-mini",
 ) -> List[List[str]]:
     """
     Generate citations for multiple annotations in batch.

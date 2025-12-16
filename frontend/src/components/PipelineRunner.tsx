@@ -19,6 +19,7 @@ import {
   Cpu,
   StopCircle,
   XCircle,
+  DollarSign,
 } from "lucide-react";
 import { PipelineJob, PipelineJobSummary } from "../hooks/usePipeline";
 
@@ -48,7 +49,7 @@ export default function PipelineRunner({
   const [dataDir, setDataDir] = useState<string>(
     "persistent_data/benchmark_articles_md",
   );
-  const [model, setModel] = useState<string>("gpt-4o-mini");
+  const [model, setModel] = useState<string>("openai/gpt-4o-mini");
   const [concurrency, setConcurrency] = useState<number>(3);
   const [cancelling, setCancelling] = useState<boolean>(false);
 
@@ -145,11 +146,20 @@ export default function PipelineRunner({
                   <SelectValue placeholder="Select model" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="gpt-4o-mini">GPT-4o Mini</SelectItem>
-                  <SelectItem value="gpt-4o">GPT-4o</SelectItem>
-                  <SelectItem value="gpt-4-turbo">GPT-4 Turbo</SelectItem>
-                  <SelectItem value="gpt-5-mini">GPT-5-mini</SelectItem>
-                  <SelectItem value="gpt-5.1">GPT-5.1</SelectItem>
+                  {/* OpenAI */}
+                  <SelectItem value="openai/gpt-4o-mini">OpenAI GPT-4o Mini</SelectItem>
+                  <SelectItem value="openai/gpt-4o">OpenAI GPT-4o</SelectItem>
+                  <SelectItem value="openai/gpt-4-turbo">OpenAI GPT-4 Turbo</SelectItem>
+                  <SelectItem value="openai/gpt-5-mini">OpenAI GPT-5 Mini</SelectItem>
+                  <SelectItem value="openai/gpt-5.1">OpenAI GPT-5.1</SelectItem>
+                  {/* Anthropic */}
+                  <SelectItem value="anthropic/claude-opus-4-5-20251101">Claude Opus 4.5</SelectItem>
+                  <SelectItem value="anthropic/claude-sonnet-4-5-20250929">Claude Sonnet 4.5</SelectItem>
+                  <SelectItem value="anthropic/claude-3-5-sonnet-20240620">Claude 3.5 Sonnet</SelectItem>
+                  <SelectItem value="anthropic/claude-3-haiku-20240307">Claude 3 Haiku</SelectItem>
+                  {/* Google */}
+                  <SelectItem value="gemini/gemini-2.0-flash">Gemini 2.0 Flash</SelectItem>
+                  <SelectItem value="gemini/gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -243,7 +253,7 @@ export default function PipelineRunner({
             </div>
 
             {/* Stats */}
-            <div className="grid grid-cols-3 gap-4 text-center">
+            <div className="grid grid-cols-4 gap-4 text-center">
               <div className="bg-muted p-3 rounded">
                 <div className="text-2xl font-bold">
                   {currentJob.pmcids_processed}
@@ -257,10 +267,17 @@ export default function PipelineRunner({
                 <div className="text-xs text-muted-foreground">Total</div>
               </div>
               <div className="bg-muted p-3 rounded">
-                <div className="text-2xl font-bold">
+                <div className="text-2xl font-bold truncate">
                   {currentJob.current_pmcid || "-"}
                 </div>
                 <div className="text-xs text-muted-foreground">Current</div>
+              </div>
+              <div className="bg-green-50 p-3 rounded border border-green-200">
+                <div className="text-2xl font-bold text-green-700 flex items-center justify-center gap-1">
+                  <DollarSign className="w-5 h-5" />
+                  {(currentJob.total_cost_usd ?? 0).toFixed(4)}
+                </div>
+                <div className="text-xs text-green-600">Cost (USD)</div>
               </div>
             </div>
 
@@ -289,6 +306,12 @@ export default function PipelineRunner({
                     <strong>Total PMCIDs:</strong>{" "}
                     {currentJob.result.total_pmcids}
                   </div>
+                  {currentJob.result.usage && (
+                    <div>
+                      <strong>Total Cost:</strong>{" "}
+                      ${currentJob.result.usage.total_cost_usd.toFixed(4)} USD
+                    </div>
+                  )}
                   <div>
                     <strong>Output Directory:</strong>{" "}
                     {currentJob.result.output_directory}

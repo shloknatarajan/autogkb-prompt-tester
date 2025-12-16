@@ -195,7 +195,9 @@ class DrugLookup(BaseModel):
 
         return []
 
-    def rxcui_to_pa_id(self, rxcui: str, raw_input: str) -> Optional[List[DrugSearchResult]]:
+    def rxcui_to_pa_id(
+        self, rxcui: str, raw_input: str
+    ) -> Optional[List[DrugSearchResult]]:
         """
         Convert a RXCUI to a PharmGKB Accession Id using the 'RxNorm Identifiers' column in drugs.tsv.
         """

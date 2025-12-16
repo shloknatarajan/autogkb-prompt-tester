@@ -64,7 +64,7 @@ export function usePrompts() {
             task: savedPrompt.task || 'Default',
             name: savedPrompt.name || `Prompt ${index + 1}`,
             prompt: savedPrompt.prompt || '',
-            model: savedPrompt.model || 'gpt-4o-mini',
+            model: savedPrompt.model || 'openai/gpt-4o-mini',
             responseFormat: savedPrompt.response_format
               ? JSON.stringify(savedPrompt.response_format, null, 2)
               : '',
@@ -138,7 +138,7 @@ export function usePrompts() {
       task: selectedTask,
       name: `Prompt ${taskPrompts.length + 1}`,
       prompt: '',
-      model: 'gpt-4o-mini',
+      model: 'openai/gpt-4o-mini',
       responseFormat: '',
       output: null,
       loading: false,
@@ -168,7 +168,7 @@ export function usePrompts() {
   const runPrompt = async (
     index: number,
     text: string,
-    model: string = 'gpt-4o-mini',
+    model: string = 'openai/gpt-4o-mini',
   ) => {
     const prompt = prompts[index];
     updatePrompt(index, 'loading', true);
@@ -214,7 +214,7 @@ export function usePrompts() {
     }
   };
 
-  const runAllPrompts = async (text: string, model: string = 'gpt-4o-mini') => {
+  const runAllPrompts = async (text: string, model: string = 'openai/gpt-4o-mini') => {
     setLoading(true);
     // Only run prompts for the selected task
     const taskPromptIndices = prompts
@@ -389,7 +389,7 @@ export function usePrompts() {
 
   const runBestPrompts = async (
     text: string,
-    model: string = 'gpt-4o-mini',
+    model: string = 'openai/gpt-4o-mini',
   ) => {
     setLoading(true);
     setError('');
