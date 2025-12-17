@@ -19,6 +19,7 @@ loguru = ">=0.7.3,<0.8"
 
 [pypi-dependencies]
 litellm = "*"
+anthropic = ">=0.40.0"
 
 [tasks]
 # Backend tasks
@@ -32,3 +33,7 @@ frontend = { depends-on = ["fe"] }
 # Run both frontend and backend concurrently
 dev = { depends-on = ["be", "fe"] }
 start = { depends-on = ["dev"] }
+
+# Prompt optimization agent
+optimize = "python -m agents.run_optimizer"
+optimize-help = "python -m agents.run_optimizer --help"

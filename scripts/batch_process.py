@@ -132,8 +132,8 @@ class BatchProcessor:
         """Load best prompts configuration via PromptManager."""
         from utils.prompt_manager import PromptManager
 
-        self.logger.info("Loading best prompts config via PromptManager")
-        manager = PromptManager()
+        self.logger.info(f"Loading best prompts config from: {self.best_prompts_file}")
+        manager = PromptManager(best_prompts_file=str(self.best_prompts_file))
         try:
             config = manager.load_best_config()
             self.logger.info(f"Best prompts config: {config}")
