@@ -1072,8 +1072,8 @@ async def process_single_pmcid(
         # Generate citations for annotations
         from utils.citation_generator import CITATION_PROMPT_TEMPLATE
 
-        # Use override model for citations, or default to GPT-4o-mini
-        citation_model = override_model if override_model else "openai/gpt-4o-mini"
+        # Always use Claude Haiku 4.5 for citations (cost-optimized)
+        citation_model = "anthropic/claude-haiku-4-5-20251001"
 
         citation_tasks = []
         for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann"]:

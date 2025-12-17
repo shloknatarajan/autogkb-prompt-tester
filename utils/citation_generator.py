@@ -38,7 +38,7 @@ Return your response as JSON with a "citations" array containing the exact quote
 async def generate_citations(
     annotation: Dict,
     full_text: str,
-    model: str = "openai/gpt-4o-mini",
+    model: str = "anthropic/claude-haiku-4-5-20251001",
     citation_prompt_template: str = CITATION_PROMPT_TEMPLATE,
     return_usage: bool = False,
 ) -> Union[List[str], Tuple[List[str], "UsageInfo"]]:
@@ -130,7 +130,7 @@ async def generate_citations(
 async def generate_citations_batch(
     annotations: List[Dict],
     full_text: str,
-    model: str = "openai/gpt-4o-mini",
+    model: str = "anthropic/claude-haiku-4-5-20251001",
 ) -> List[List[str]]:
     """
     Generate citations for multiple annotations in batch.

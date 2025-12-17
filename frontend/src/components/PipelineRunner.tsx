@@ -147,19 +147,38 @@ export default function PipelineRunner({
                 </SelectTrigger>
                 <SelectContent>
                   {/* OpenAI */}
-                  <SelectItem value="openai/gpt-4o-mini">OpenAI GPT-4o Mini</SelectItem>
+                  <SelectItem value="openai/gpt-4o-mini">
+                    OpenAI GPT-4o Mini
+                  </SelectItem>
                   <SelectItem value="openai/gpt-4o">OpenAI GPT-4o</SelectItem>
-                  <SelectItem value="openai/gpt-4-turbo">OpenAI GPT-4 Turbo</SelectItem>
-                  <SelectItem value="openai/gpt-5-mini">OpenAI GPT-5 Mini</SelectItem>
+                  <SelectItem value="openai/gpt-4-turbo">
+                    OpenAI GPT-4 Turbo
+                  </SelectItem>
+                  <SelectItem value="openai/gpt-5-mini">
+                    OpenAI GPT-5 Mini
+                  </SelectItem>
                   <SelectItem value="openai/gpt-5.1">OpenAI GPT-5.1</SelectItem>
+                  <SelectItem value="openai/gpt-5.2">OpenAI GPT-5.2</SelectItem>
                   {/* Anthropic */}
-                  <SelectItem value="anthropic/claude-opus-4-5-20251101">Claude Opus 4.5</SelectItem>
-                  <SelectItem value="anthropic/claude-sonnet-4-5-20250929">Claude Sonnet 4.5</SelectItem>
-                  <SelectItem value="anthropic/claude-3-5-sonnet-20240620">Claude 3.5 Sonnet</SelectItem>
-                  <SelectItem value="anthropic/claude-3-haiku-20240307">Claude 3 Haiku</SelectItem>
+                  <SelectItem value="anthropic/claude-opus-4-5-20251101">
+                    Claude Opus 4.5
+                  </SelectItem>
+                  <SelectItem value="anthropic/claude-sonnet-4-5-20250929">
+                    Claude Sonnet 4.5
+                  </SelectItem>
+                  <SelectItem value="anthropic/claude-3-5-sonnet-20240620">
+                    Claude 3.5 Sonnet
+                  </SelectItem>
+                  <SelectItem value="anthropic/claude-3-haiku-20240307">
+                    Claude 3 Haiku
+                  </SelectItem>
                   {/* Google */}
-                  <SelectItem value="gemini/gemini-2.0-flash">Gemini 2.0 Flash</SelectItem>
-                  <SelectItem value="gemini/gemini-1.5-pro">Gemini 1.5 Pro</SelectItem>
+                  <SelectItem value="gemini/gemini-2.0-flash">
+                    Gemini 2.0 Flash
+                  </SelectItem>
+                  <SelectItem value="gemini/gemini-1.5-pro">
+                    Gemini 1.5 Pro
+                  </SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -308,8 +327,8 @@ export default function PipelineRunner({
                   </div>
                   {currentJob.result.usage && (
                     <div>
-                      <strong>Total Cost:</strong>{" "}
-                      ${currentJob.result.usage.total_cost_usd.toFixed(4)} USD
+                      <strong>Total Cost:</strong> $
+                      {currentJob.result.usage.total_cost_usd.toFixed(4)} USD
                     </div>
                   )}
                   <div>
