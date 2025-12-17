@@ -24,6 +24,8 @@ load_dotenv()
 # Enable client-side JSON validation for providers without native support
 litellm.enable_json_schema_validation = True
 
+litellm.drop_params = True  # Drop unsupported params automatically
+
 
 # DEPRECATED: Keep Model enum for backward compatibility
 # New code should use string model names with provider prefix
@@ -100,7 +102,7 @@ def extract_json_from_response(response_text: str) -> str:
         Extracted JSON string
     """
     # Try to find JSON in markdown code blocks first
-    json_block_pattern = r'```(?:json)?\s*\n?([\s\S]*?)\n?```'
+    json_block_pattern = r"```(?:json)?\s*\n?([\s\S]*?)\n?```"
     matches = re.findall(json_block_pattern, response_text)
     if matches:
         # Return the first valid JSON block
@@ -114,11 +116,11 @@ def extract_json_from_response(response_text: str) -> str:
     # Try to find JSON object/array directly
     # Look for content starting with { or [
     response_text = response_text.strip()
-    if response_text.startswith('{') or response_text.startswith('['):
+    if response_text.startswith("{") or response_text.startswith("["):
         return response_text
 
     # Try to extract JSON object from anywhere in the text
-    json_obj_pattern = r'(\{[\s\S]*\})'
+    json_obj_pattern = r"(\{[\s\S]*\})"
     obj_matches = re.findall(json_obj_pattern, response_text)
     if obj_matches:
         # Return the longest valid JSON match

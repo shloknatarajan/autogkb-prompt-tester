@@ -18,8 +18,9 @@ MODEL_PRICING: Dict[str, Dict[str, float]] = {
     "openai/gpt-4o-mini": {"input": 0.15, "output": 0.60},
     "openai/gpt-4-turbo": {"input": 10.00, "output": 30.00},
     "openai/gpt-4": {"input": 30.00, "output": 60.00},
-    "openai/gpt-5-mini": {"input": 1.10, "output": 4.40},
-    "openai/gpt-5.1": {"input": 2.00, "output": 8.00},
+    "openai/gpt-5-mini": {"input": 0.25, "output": 2.00},
+    "openai/gpt-5.1": {"input": 1.25, "output": 10.00},
+    "openai/gpt-5.2": {"input": 1.75, "output": 14.00},
     # Anthropic models
     "anthropic/claude-opus-4-5-20251101": {"input": 15.00, "output": 75.00},
     "anthropic/claude-sonnet-4-5-20250929": {"input": 3.00, "output": 15.00},
