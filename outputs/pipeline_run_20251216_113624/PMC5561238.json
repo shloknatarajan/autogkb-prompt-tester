@@ -1,0 +1,2388 @@
+{
+    "pmcid": "PMC5561238",
+    "var_drug_ann": [
+        {
+            "Variant Annotation ID": 1,
+            "Variant/Haplotypes": "HLA-C*04:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR = 3.06, P = 0.0001 in whole cohort analysis; Asian: OR = 5.49, P = 0.0001; Caucasian: OR = 2.08, P = 0.02; African: OR = 3.84, P = 0.04. Primary predisposing allele for cutaneous NVP HSR across all ancestral groups.",
+            "Sentence": "HLA-C*04:01 is associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in people with HIV Infections as compared to non-HLA-C*04:01 carriers.",
+            "Alleles": "HLA-C*04:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-HLA-C*04:01 carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In single allele logistic regression analyses *HLA-C*04:01* was the only allele for which a consistent, significant predisposing relationship for cutaneous manifestations of NVP HSR was observed across all ancestral groups (Odds ratio (OR) = 3.06 and *P* = 0.0001 in whole cohort analysis, (Fig. 1A)); Asian: OR = 5.49, *P* = 0.0001; Caucasian: OR = 2.08, *P* = 0.02; and African: OR = 3.84, *P* = 0.04).",
+                "We demonstrate that primary predisposition to cutaneous NVP HSR, seen across ancestral groups, can be attributed to a cluster of HLA-C alleles sharing a common binding groove F pocket with HLA-C*04:01."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*04:01",
+                "variant_id": "PA165957046",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 2,
+            "Variant/Haplotypes": "HLA-C*05:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR = 2.84, P = 0.002 in Caucasians. Shares F pocket structure with HLA-C*04:01.",
+            "Sentence": "HLA-C*05:01 is associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in Caucasian people with HIV Infections as compared to non-HLA-C*05:01 carriers.",
+            "Alleles": "HLA-C*05:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in Caucasian people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-HLA-C*05:01 carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "analyses specific to ancestral groups also revealed several other *HLA-C* allelic associations indicative of HSR predisposition, namely *HLA-C*05:01* in Caucasians (versus non-*HLA-C*05:01* carriers: OR = 2.84, *P* = 0.002)",
+                "Similarities between binding specificities for the identified *HLA-C* risk alleles (*HLA-C*04:01*, *-*05:01* and *-*18:01*) were examined with *MHCcluster* (which groups HLA molecules according to their peptide-binding specificity) and according to their characteristic motif across pockets (A-F) of the HLA-C peptide-binding groove",
+                "the F pocket, where commonality of the residues Asp74-Asn77-Lys80-Leu81-Tyr84-Leu95-Arg97-Asn114-Phe116-Tyr123-Trp133-Thr143-Lys146-Trp147 grouped risk alleles *HLA-C*05:01* and *HLA-C*18:01* with *HLA-C*04:01* in a cluster that also included *HLA-C*-04:03* and -*04:06*"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*05:01",
+                "variant_id": "PA165957192",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 3,
+            "Variant/Haplotypes": "HLA-C*18:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR = 2.67, P = 0.2 vs non-HLA-C*18:01 carriers; OR = 4.71, P = 0.06 vs non-HLA-C*04:01/-C*18:01 carriers in African ancestry patients. Shares F pocket structure with HLA-C*04:01.",
+            "Sentence": "HLA-C*18:01 is associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in African ancestry people with HIV Infections as compared to non-HLA-C*18:01 carriers.",
+            "Alleles": "HLA-C*18:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in African ancestry people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-HLA-C*18:01 carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "*HLA-C*18:01* in patients with African ancestry (versus non-*HLA-C*18:01* carriers: OR = 2.67, *P* = 0.2; vs non-*HLA-C*04:01*/*-C*18:01* carriers: OR = 4.71, *P* = 0.06).",
+                "the F pocket^4^, where commonality of the residues Asp74-Asn77-Lys80-Leu81-Tyr84-Leu95-Arg97-Asn114-Phe116-Tyr123-Trp133-Thr143-Lys146-Trp147 grouped risk alleles *HLA-C*05:01* and *HLA-C*18:01* with *HLA-C*04:01* in a cluster that also included *HLA-C*-04:03* and -*04:06*"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*18:01",
+                "variant_id": "PA165958003",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 4,
+            "Variant/Haplotypes": "HLA-B*15:01, HLA-B*15:12, HLA-B*15:24, HLA-B*15:25, HLA-B*15:27, HLA-B*15:32, HLA-B*15:35, HLA-B*52:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR = 0.18, P = 0.0001 (adjusted for ethnicity); OR = 0.20, P = 0.0003 (adjusted for HLA-C risk cluster). Protective HLA-B B62 supertype alleles sharing common B pocket structure.",
+            "Sentence": "HLA-B*15:01/12/24/25/27/32/35 and HLA-B*52:01 are associated with decreased risk of cutaneous hypersensitivity reaction to nevirapine in people with HIV Infections as compared to non-carriers.",
+            "Alleles": "HLA-B*15:01, HLA-B*15:12, HLA-B*15:24, HLA-B*15:25, HLA-B*15:27, HLA-B*15:32, HLA-B*15:35, HLA-B*52:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Are",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The most prominent HLA-B motif associated with risk for cutaneous NVP HSR was the E pocket sequence Ser97-Asp114-Trp147-Val152-Leu156 uniquely carried by *HLA-B*35:05* (Fig. 2A, Table S3). Notably, all other *HLA-B*35* alleles lack the Ser97 residue and significant predisposition did not extend to the *HLA-B*35* allelic group considered as a whole (Table 1). In this cohort, haplotypic *HLA-C*04:01* is carried with *HLA-B*35:05* in 9 of 10 Southeast Asian cutaneous NVP HSR cases so it is possible that the alleles may act synergistically.",
+                "P-value plots of the most significant characteristic motif associated with each pocket demonstrate that little effect could be attributed to HLA-A, and the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster) (Fig. 2A). The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:01, HLA-B*15:12, HLA-B*15:24, HLA-B*15:25, HLA-B*15:27, HLA-B*15:32, HLA-B*15:35, HLA-B*52:01",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 5,
+            "Variant/Haplotypes": "HLA-B*35:05",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Most prominent HLA-B motif associated with risk. Unique E pocket sequence Ser97-Asp114-Trp147-Val152-Leu156. Carried with HLA-C*04:01 in 9 of 10 Southeast Asian cases, suggesting synergistic effect.",
+            "Sentence": "HLA-B*35:05 is associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in people with HIV Infections as compared to non-carriers.",
+            "Alleles": "HLA-B*35:05",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The most prominent HLA-B motif associated with risk for cutaneous NVP HSR was the E pocket sequence Ser97-Asp114-Trp147-Val152-Leu156 uniquely carried by *HLA-B*35:05* (Fig. 2A, Table S3). Notably, all other *HLA-B*35* alleles lack the Ser97 residue and significant predisposition did not extend to the *HLA-B*35* allelic group considered as a whole (Table 1). In this cohort, haplotypic *HLA-C*04:01* is carried with *HLA-B*35:05* in 9 of 10 Southeast Asian cutaneous NVP HSR cases so it is possible that the alleles may act synergistically."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*35:05",
+                "variant_id": "PA165955262",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 6,
+            "Variant/Haplotypes": "HLA-B*51:01, HLA-B*51:02, HLA-B*54:01, HLA-B*55:01, HLA-B*55:02, HLA-B*56:01, HLA-B*56:04",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR = 2.09, P = 0.003 after adjusting for HLA-C*04:01 risk cluster. B07 supertype risk alleles.",
+            "Sentence": "HLA-B*51/54/55/56 alleles are associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in people with HIV Infections as compared to non-carriers.",
+            "Alleles": "HLA-B*51:01, HLA-B*51:02, HLA-B*54:01, HLA-B*55:01, HLA-B*55:02, HLA-B*56:01, HLA-B*56:04",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Are",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "B07 | B*51; *54; *55; *56 | 1.66 | [1.05\u20132.63] | 0.03 | 2.09 | [1.29\u20133.39] | 0.003"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*51:01, HLA-B*51:02, HLA-B*54:01, HLA-B*55:01, HLA-B*55:02, HLA-B*56:01, HLA-B*56:04",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 7,
+            "Variant/Haplotypes": "HLA-B*38:01, HLA-B*38:02, HLA-B*39:01, HLA-B*39:05, HLA-B*39:06, HLA-B*39:09",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR = 1.82, P = 0.04 after adjusting for HLA-C*04:01 risk cluster. B27 supertype risk alleles.",
+            "Sentence": "HLA-B*38/39 alleles are associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in people with HIV Infections as compared to non-carriers.",
+            "Alleles": "HLA-B*38:01, HLA-B*38:02, HLA-B*39:01, HLA-B*39:05, HLA-B*39:06, HLA-B*39:09",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Are",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "While there was no single common HLA binding pocket motif that characterised the *HLA-B* B07 and B27 supertype risk alleles, the *HLA-B*38*/*-B*39* group was characterised by the E/F pocket sequence Leu95-Arg97-Asn114-(Phe/Lys)116-Val152-Leu156",
+                "B27 | B*38; *39 | 1.50 | [0.86\u20132.61] | 0.2 | 1.82 | [1.02\u20133.22] | 0.04"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:01, HLA-B*38:02, HLA-B*39:01, HLA-B*39:05, HLA-B*39:06, HLA-B*39:09",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 8,
+            "Variant/Haplotypes": "HLA-DRB1*01:01, HLA-DRB1*01:02, HLA-DRB1*01:03, HLA-DRB1*04:04, HLA-DRB1*04:05, HLA-DRB1*04:08, HLA-DRB1*04:10",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Secondary association with cutaneous NVP HSR. Risk alleles share P4 pocket sequence. OR = 2.00 [1.23-3.24] in multivariate model.",
+            "Sentence": "HLA-DRB1*01:01/02/03 and HLA-DRB1*04:04/05/08/10 are associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in people with HIV Infections as compared to non-carriers.",
+            "Alleles": "HLA-DRB1*01:01, HLA-DRB1*01:02, HLA-DRB1*01:03, HLA-DRB1*04:04, HLA-DRB1*04:05, HLA-DRB1*04:08, HLA-DRB1*04:10",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Are",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "From MHCcluster (Figure S4) and binding groove analyses of the HLA-DRB1 alleles within the cohort we identified a cluster including both supertype HLA-DR1 and -DR4 alleles (HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10), respectively) that exhibited a secondary association with cutaneous NVP HSR (Fig. 2A).",
+                "The identified risk alleles for cutaneous NVP HSR share the sequence (Phe/His)13-Gln70-Arg71-Ala74-Tyr78 over residues forming the P4 pocket (Table S4).",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*01:01, HLA-DRB1*01:02, HLA-DRB1*01:03, HLA-DRB1*04:04, HLA-DRB1*04:05, HLA-DRB1*04:08, HLA-DRB1*04:10",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 9,
+            "Variant/Haplotypes": "HLA-DRB1*04:01, HLA-DRB1*04:15",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "2 cases, 26 controls, P = 0.01 in Caucasians. Differ from risk group only at position \u03b271 within P4 pocket.",
+            "Sentence": "HLA-DRB1*04:01 and HLA-DRB1*04:15 are associated with decreased risk of cutaneous hypersensitivity reaction to nevirapine in Caucasian people with HIV Infections as compared to non-carriers.",
+            "Alleles": "HLA-DRB1*04:01, HLA-DRB1*04:15",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Are",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in Caucasian people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In contrast, the predominantly Caucasian alleles *HLA-DRB1*04:01* and -*DRB1*04:15* differed from the risk group only at position \u03b271 within the P4 pocket, and yet appeared to be protective in this ancestral group (2 cases, 26 controls, p = 0.01)."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*04:01, HLA-DRB1*04:15",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 10,
+            "Variant/Haplotypes": "CYP2B6*6",
+            "Gene": "CYP2B6",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR = 2.07 [1.12-3.82] for slow CYP2B6 metabolizer in multivariate model. CYP2B6 516 G\u2192T and 983 T\u2192C correlate with increased plasma levels of NVP and increased risk for cutaneous NVP HSR.",
+            "Sentence": "CYP2B6 slow metabolizer genotype is associated with increased risk of cutaneous hypersensitivity reaction to nevirapine in people with HIV Infections as compared to normal metabolizers.",
+            "Alleles": null,
+            "Specialty Population": null,
+            "Metabolizer types": "slow metabolizer",
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of cutaneous hypersensitivity reaction to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": null,
+            "Comparison Metabolizer types": "normal metabolizer",
+            "Citations": [
+                "The cluster effects remain strong when the models additionally account for the independent impact of NVP metabolism as conferred by *CYP2B6* genotype, noted previously in this cohort^21^ (Table 2).",
+                "Slow CYP2B6 metabolizer | 2.07 [1.12\u20133.82]",
+                "For example, slow metabolizer genotypes for *CYP2B6* (516 G \u2192 T and 983 T \u2192 C) have previously been shown to correlate with both increased plasma levels of NVP and increased risk for class I HLA restricted cutaneous NVP HSR^54\u201356^."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "CYP2B6*6",
+                "variant_id": "PA165818762",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        }
+    ],
+    "var_fa_ann": [],
+    "study-parameters": {
+        "error": "JSON parse failed"
+    },
+    "summary": "This pharmacogenomics study investigated the multiple HLA allele associations with cutaneous nevirapine (NVP) hypersensitivity reactions (HSR) in HIV-1 infected patients by examining similarities in peptide binding specificities and binding pocket structures of HLA molecules. The researchers analyzed 151 cases and 413 controls across Asian, African, and Caucasian ancestral groups using high-resolution HLA typing. Key findings include: (1) Primary predisposition to cutaneous NVP HSR is attributed to a cluster of HLA-C alleles (HLA-C*04:01, -C*05:01, -C*18:01) sharing a common F pocket structure, with HLA-C*04:01 showing consistent risk across all ethnic groups (OR=3.06, P=0.0001); (2) An independent secondary association was found with HLA-DRB1 class II alleles sharing a common P4 pocket (HLA-DRB1*01:01/02/03 and -DRB1*04:04/05/08/10); (3) Protection against NVP HSR was conferred by a cluster of HLA-B alleles (HLA-B*15:01/12/24/25/27/32/35 and -B*52:01) characterized by a specific B pocket structure. Molecular docking studies suggested NVP preferentially binds to the F pocket of HLA-C*04:01. The study demonstrates that drug-specific interactions within the HLA antigen binding cleft can be shared across HLA molecules with similar binding pockets, providing a mechanistic explanation for the multiple HLA associations observed in cutaneous NVP HSR and identifying novel risk and protective alleles.",
+    "title": "Shared peptide binding of HLA Class I and II alleles associate with cutaneous nevirapine hypersensitivity and identify novel risk alleles",
+    "pmid": "28819312",
+    "var_pheno_ann": [
+        {
+            "Variant Annotation ID": 1,
+            "Variant/Haplotypes": "HLA-C*04:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR=3.06, P=0.0001 in whole cohort analysis. Asian: OR=5.49, P=0.0001; Caucasian: OR=2.08, P=0.02; African: OR=3.84, P=0.04. Primary predisposing allele across all ancestral groups.",
+            "Sentence": "HLA-C*04:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In single allele logistic regression analyses *HLA-C*04:01* was the only allele for which a consistent, significant predisposing relationship for cutaneous manifestations of NVP HSR was observed across all ancestral groups (Odds ratio (OR) = 3.06 and *P* = 0.0001 in whole cohort analysis, (Fig. 1A)); Asian: OR = 5.49, *P* = 0.0001; Caucasian: OR = 2.08, *P* = 0.02; and African: OR = 3.84, *P* = 0.04).",
+                "We demonstrate that primary predisposition to cutaneous NVP HSR, seen across ancestral groups, can be attributed to a cluster of HLA-C alleles sharing a common binding groove F pocket with HLA-C*04:01."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*04:01",
+                "variant_id": "PA165957046",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 2,
+            "Variant/Haplotypes": "HLA-C*04:03",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-C F pocket risk cluster sharing common binding groove with HLA-C*04:01. OR=2.5 [1.6-3.9] for C*04:01/03/06 cluster.",
+            "Sentence": "HLA-C*04:03 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:03",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "the F pocket, where commonality of the residues Asp74-Asn77-Lys80-Leu81-Tyr84-Leu95-Arg97-Asn114-Phe116-Tyr123-Trp133-Thr143-Lys146-Trp147 grouped risk alleles *HLA-C*05:01* and *HLA-C*18:01* with *HLA-C*04:01* in a cluster that also included *HLA-C*-04:03* and -*04:06*",
+                "multivariable OR[95% CI]: *C*05:01*/09 = 2.2[1.2\u20133.9] < *C*04:01*/03/06 = 2.5[1.6\u20133.9] < *C*18:01* = 2.6[0.6\u201311.1]",
+                "primary predisposition to cutaneous NVP HSR, seen across ancestral groups, can be attributed to a cluster of HLA-C alleles sharing a common binding groove F pocket with HLA-C*04:01"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*04:03",
+                "variant_id": "PA165957085",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 3,
+            "Variant/Haplotypes": "HLA-C*04:06",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-C F pocket risk cluster sharing common binding groove with HLA-C*04:01. OR=2.5 [1.6-3.9] for C*04:01/03/06 cluster.",
+            "Sentence": "HLA-C*04:06 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:06",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "For every pocket, the characteristic *HLA-C*04:01* motif demonstrated greatest impact on development of cutaneous NVP HSR (Fig. 1B), with the greatest significance attributable to the F pocket, where commonality of the residues Asp74-Asn77-Lys80-Leu81-Tyr84-Leu95-Arg97-Asn114-Phe116-Tyr123-Trp133-Thr143-Lys146-Trp147 grouped risk alleles *HLA-C*05:01* and *HLA-C*18:01* with *HLA-C*04:01* in a cluster that also included *HLA-C*-04:03* and -*04:06* (Fig. 1C).",
+                "MFI expression units: *C*05:01* = 154 < *C*04:01* = 199 < *C*18:01* = 239; multivariable OR[95% CI]: *C*05:01*/09 = 2.2[1.2\u20133.9] < *C*04:01*/03/06 = 2.5[1.6\u20133.9] < *C*18:01* = 2.6[0.6\u201311.1]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*04:06",
+                "variant_id": "PA165957089",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 4,
+            "Variant/Haplotypes": "HLA-C*05:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR=2.84, P=0.002 in Caucasians. Shares F pocket structure with HLA-C*04:01. OR=2.2 [1.2-3.9] for C*05:01/09 cluster.",
+            "Sentence": "HLA-C*05:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*05:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "*HLA-C*05:01* in Caucasians (versus non-*HLA-C*05:01* carriers: OR = 2.84, *P* = 0.002)",
+                "the F pocket^4^, where commonality of the residues Asp74-Asn77-Lys80-Leu81-Tyr84-Leu95-Arg97-Asn114-Phe116-Tyr123-Trp133-Thr143-Lys146-Trp147 grouped risk alleles *HLA-C*05:01* and *HLA-C*18:01* with *HLA-C*04:01* in a cluster that also included *HLA-C*-04:03* and -*04:06*",
+                "MFI expression units: *C*05:01* = 154 < *C*04:01* = 199 < *C*18:01* = 239; multivariable OR[95% CI]: *C*05:01*/09 = 2.2[1.2\u20133.9] < *C*04:01*/03/06 = 2.5[1.6\u20133.9] < *C*18:01* = 2.6[0.6\u201311.1]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*05:01",
+                "variant_id": "PA165957192",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 5,
+            "Variant/Haplotypes": "HLA-C*18:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR=2.67, P=0.2 in African ancestry patients. Shares F pocket structure with HLA-C*04:01. OR=2.6 [0.6-11.1] for C*18:01.",
+            "Sentence": "HLA-C*18:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*18:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "*HLA-C*18:01* in patients with African ancestry (versus non-*HLA-C*18:01* carriers: OR = 2.67, *P* = 0.2; vs non-*HLA-C*04:01*/*-C*18:01* carriers: OR = 4.71, *P* = 0.06).",
+                "the F pocket^4^, where commonality of the residues Asp74-Asn77-Lys80-Leu81-Tyr84-Leu95-Arg97-Asn114-Phe116-Tyr123-Trp133-Thr143-Lys146-Trp147 grouped risk alleles *HLA-C*05:01* and *HLA-C*18:01* with *HLA-C*04:01* in a cluster that also included *HLA-C*-04:03* and -*04:06*",
+                "MFI expression units: *C*05:01* = 154 < *C*04:01* = 199 < *C*18:01* = 239; multivariable OR[95% CI]: *C*05:01*/09 = 2.2[1.2\u20133.9] < *C*04:01*/03/06 = 2.5[1.6\u20133.9] < *C*18:01* = 2.6[0.6\u201311.1]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*18:01",
+                "variant_id": "PA165958003",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 6,
+            "Variant/Haplotypes": "HLA-B*15:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster. OR=0.18, P=0.0001 for protective B pocket cluster. OR=0.43 [0.25-0.74], P=0.002 for HLA-B*15 group.",
+            "Sentence": "HLA-B*15:01 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*15:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster)",
+                "B62 | B*15 | 0.43 | [0.25\u20130.74] | 0.002 | 0.40 | [0.23\u20130.70] | 0.001"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:01",
+                "variant_id": "PA165954745",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 7,
+            "Variant/Haplotypes": "HLA-B*15:12",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster sharing common B pocket structure.",
+            "Sentence": "HLA-B*15:12 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*15:12",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster)",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:12",
+                "variant_id": "PA165954792",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 8,
+            "Variant/Haplotypes": "HLA-B*15:24",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster sharing common B pocket structure.",
+            "Sentence": "HLA-B*15:24 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*15:24",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster)",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:24",
+                "variant_id": "PA165954811",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 9,
+            "Variant/Haplotypes": "HLA-B*15:25",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster sharing common B pocket structure.",
+            "Sentence": "HLA-B*15:25 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*15:25",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster)",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:25",
+                "variant_id": "PA165954812",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 10,
+            "Variant/Haplotypes": "HLA-B*15:27",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster sharing common B pocket structure.",
+            "Sentence": "HLA-B*15:27 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*15:27",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster)",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:27",
+                "variant_id": "PA165954816",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 11,
+            "Variant/Haplotypes": "HLA-B*15:32",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster sharing common B pocket structure.",
+            "Sentence": "HLA-B*15:32 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*15:32",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket.",
+                "the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster)"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:32",
+                "variant_id": "PA165954823",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 12,
+            "Variant/Haplotypes": "HLA-B*15:35",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster sharing common B pocket structure.",
+            "Sentence": "HLA-B*15:35 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*15:35",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01 (Figure S3 and Table S2), consistent with a previously reported protective *HLA-B*15* association with cutaneous NVP reactions observed in an Indian population",
+                "the most prominent secondary effect is protection associated with the HLA-B B pocket, which is independent of HLA-C risk (OR = 0.18, p = 0.0001 and OR = 0.20, p = 0.0003 for models with and without adjustment for the primary HLA-C cluster)",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:35",
+                "variant_id": "PA165954826",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 13,
+            "Variant/Haplotypes": "HLA-B*52:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of protective HLA-B B62 supertype cluster. OR=0.19 [0.03-1.48], P=0.1.",
+            "Sentence": "HLA-B*52:01 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*52:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The B pocket motif Tyr7-Tyr9-Ala24-Val34-(Met/Thr)45-Glu63-Ile66-Ser67-Asn70-(Tyr/Phe)99 is characteristic of a cluster of HLA-B B62 supertype alleles: *HLA-B*15:*(*01*/12/24/25/27/35) and *HLA-B*52:*01",
+                "B62 | B*52 | 0.19 | [0.03\u20131.48] | 0.1 | 0.22 | [0.03\u20131.73] | 0.2",
+                "In contrast, NVP HSR protection is afforded by a cluster of HLA-B alleles defined by a characteristic peptide binding groove B pocket."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*52:01",
+                "variant_id": "PA165956366",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 14,
+            "Variant/Haplotypes": "HLA-B*35:05",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Most prominent HLA-B risk allele. Unique E pocket sequence. Carried with HLA-C*04:01 in 9 of 10 Southeast Asian cases, suggesting synergistic effect.",
+            "Sentence": "HLA-B*35:05 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*35:05",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "The most prominent HLA-B motif associated with risk for cutaneous NVP HSR was the E pocket sequence Ser97-Asp114-Trp147-Val152-Leu156 uniquely carried by *HLA-B*35:05* (Fig. 2A, Table S3). Notably, all other *HLA-B*35* alleles lack the Ser97 residue and significant predisposition did not extend to the *HLA-B*35* allelic group considered as a whole (Table 1).",
+                "In this cohort, haplotypic *HLA-C*04:01* is carried with *HLA-B*35:05* in 9 of 10 Southeast Asian cutaneous NVP HSR cases so it is possible that the alleles may act synergistically."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*35:05",
+                "variant_id": "PA165955262",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 15,
+            "Variant/Haplotypes": "HLA-B*39:10",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*39:10 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*39:10",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*39:10",
+                "variant_id": "PA165955566",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 16,
+            "Variant/Haplotypes": "HLA-B*51:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*51:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*51:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*51:01",
+                "variant_id": "PA165956201",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 17,
+            "Variant/Haplotypes": "HLA-B*51:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*51:02 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*51:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*51:02",
+                "variant_id": "PA165956231",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 18,
+            "Variant/Haplotypes": "HLA-B*54:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*54:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*54:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*54:01",
+                "variant_id": "PA165956438",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 19,
+            "Variant/Haplotypes": "HLA-B*55:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*55:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*55:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*55:01",
+                "variant_id": "PA165956463",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 20,
+            "Variant/Haplotypes": "HLA-B*55:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*55:02 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*55:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*55:02",
+                "variant_id": "PA165956471",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 21,
+            "Variant/Haplotypes": "HLA-B*56:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*56:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*56:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*56:01",
+                "variant_id": "PA165956528",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 22,
+            "Variant/Haplotypes": "HLA-B*56:04",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*56:04 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*56:04",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*56:04",
+                "variant_id": "PA165956534",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 23,
+            "Variant/Haplotypes": "HLA-B*67:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*67:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*67:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]",
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with MHCcluster designated peptide binding specificities after adjusting for the effect of the HLA-C*04:01 risk allele group (Figure S3, Table 1). These included HLA-B*51*/-B*54*/-B*55*/-B*56* from the supertype B07 and HLA-B*38*/-B*39* from supertype B27."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*67:01",
+                "variant_id": "PA165956680",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 24,
+            "Variant/Haplotypes": "HLA-B*78:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk B07 alleles group. OR=2.32 [1.42-3.79] for risk B07 alleles cluster.",
+            "Sentence": "HLA-B*78:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*78:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Risk B07 alleles HLA-B*35:05, -B*39:10, -B*51:(01/02), -B*54:01, HLA-B*55:(01/02), -B*56:(01/04), -B*67:01, HLA-B*78:01 | 2.32 [1.42\u20133.79]",
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with MHCcluster designated peptide binding specificities after adjusting for the effect of the HLA-C*04:01 risk allele group (Figure S3, Table 1). These included HLA-B*51*/-B*54*/-B*55*/-B*56* from the supertype B07 and HLA-B*38*/-B*39* from supertype B27."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*78:01",
+                "variant_id": "PA165956686",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 25,
+            "Variant/Haplotypes": "HLA-B*13:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group. OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*13:02 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*13:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*13:02",
+                "variant_id": "PA165954649",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 26,
+            "Variant/Haplotypes": "HLA-B*38:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group (B27 supertype). OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*38:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*38:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:01",
+                "variant_id": "PA165955500",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 27,
+            "Variant/Haplotypes": "HLA-B*38:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group (B27 supertype). OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*38:02 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*38:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:02",
+                "variant_id": "PA165955505",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 28,
+            "Variant/Haplotypes": "HLA-B*39:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group (B27 supertype). OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*39:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*39:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*39:01",
+                "variant_id": "PA165955543",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 29,
+            "Variant/Haplotypes": "HLA-B*39:05",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group (B27 supertype). OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*39:05 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*39:05",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*39:05",
+                "variant_id": "PA165955559",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 30,
+            "Variant/Haplotypes": "HLA-B*39:06",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group (B27 supertype). OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*39:06 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*39:06",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*39:06",
+                "variant_id": "PA165955561",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 31,
+            "Variant/Haplotypes": "HLA-B*39:09",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group (B27 supertype). OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*39:09 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*39:09",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Other secondary HLA-B risk alleles were identified by analysis of supertypes in combination with *MHCcluster* designated peptide binding specificities after adjusting for the effect of the *HLA-C*04:01* risk allele group (Figure S3, Table 1). These included *HLA-B*51*/*-B*54*/*-B*55*/*-B*56* from the supertype B07 and *HLA-B*38*/*-B*39* from supertype B27.",
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*39:09",
+                "variant_id": "PA165955565",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 32,
+            "Variant/Haplotypes": "HLA-B*51:07",
+            "Gene": "HLA-B",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of risk non-B07 HLA-B alleles group. OR=1.76 [1.02-3.02] for risk non-B07 alleles cluster.",
+            "Sentence": "HLA-B*51:07 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*51:07",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Risk non-B07 HLA-B alleles HLA-B*13:02, B*38:(01/02), -B*39:(01/05/06/09), B*51:07 | 1.76 [1.02\u20133.02]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*51:07",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 33,
+            "Variant/Haplotypes": "HLA-DRB1*01:01",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-DRB1 P4 pocket risk cluster. OR=2.00 [1.23-3.24] for risk HLA-DRB1 alleles cluster.",
+            "Sentence": "HLA-DRB1*01:01 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*01:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "From MHCcluster (Figure S4) and binding groove analyses of the HLA-DRB1 alleles within the cohort we identified a cluster including both supertype HLA-DR1 and -DR4 alleles (HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10), respectively) that exhibited a secondary association with cutaneous NVP HSR",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]",
+                "A HLA-DRB1 P4 pocket of the peptide binding groove common to the alleles HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10) shows a significant secondary association with cutaneous NVP HSR"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*01:01",
+                "variant_id": "PA165951320",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 34,
+            "Variant/Haplotypes": "HLA-DRB1*01:02",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-DRB1 P4 pocket risk cluster. OR=2.00 [1.23-3.24] for risk HLA-DRB1 alleles cluster.",
+            "Sentence": "HLA-DRB1*01:02 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*01:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "A HLA-DRB1 P4 pocket of the peptide binding groove common to the alleles HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10) shows a significant secondary association with cutaneous NVP HSR.",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*01:02",
+                "variant_id": "PA165951340",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 35,
+            "Variant/Haplotypes": "HLA-DRB1*01:03",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-DRB1 P4 pocket risk cluster. OR=2.00 [1.23-3.24] for risk HLA-DRB1 alleles cluster.",
+            "Sentence": "HLA-DRB1*01:03 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*01:03",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "A HLA-DRB1 P4 pocket of the peptide binding groove common to the alleles HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10) shows a significant secondary association with cutaneous NVP HSR.",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]",
+                "From *MHCcluster* (Figure S4) and binding groove analyses of the *HLA-DRB1* alleles within the cohort we identified a cluster including both supertype HLA-DR1 and -DR4 alleles (HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10), respectively) that exhibited a secondary association with cutaneous NVP HSR"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*01:03",
+                "variant_id": "PA165951348",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 36,
+            "Variant/Haplotypes": "HLA-DRB1*04:04",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-DRB1 P4 pocket risk cluster. OR=2.00 [1.23-3.24] for risk HLA-DRB1 alleles cluster.",
+            "Sentence": "HLA-DRB1*04:04 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:04",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "From MHCcluster (Figure S4) and binding groove analyses of the HLA-DRB1 alleles within the cohort we identified a cluster including both supertype HLA-DR1 and -DR4 alleles (HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10), respectively) that exhibited a secondary association with cutaneous NVP HSR",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]",
+                "An independent association with a group of class II alleles which share the HLA-DRB1-P4 pocket is also observed."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*04:04",
+                "variant_id": "PA165951511",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 37,
+            "Variant/Haplotypes": "HLA-DRB1*04:05",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-DRB1 P4 pocket risk cluster. OR=2.00 [1.23-3.24] for risk HLA-DRB1 alleles cluster.",
+            "Sentence": "HLA-DRB1*04:05 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:05",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "From MHCcluster (Figure S4) and binding groove analyses of the HLA-DRB1 alleles within the cohort we identified a cluster including both supertype HLA-DR1 and -DR4 alleles (HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10), respectively) that exhibited a secondary association with cutaneous NVP HSR",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]",
+                "A HLA-DRB1 P4 pocket of the peptide binding groove common to the alleles HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10) shows a significant secondary association with cutaneous NVP HSR"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*04:05",
+                "variant_id": "PA165951517",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 38,
+            "Variant/Haplotypes": "HLA-DRB1*04:08",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-DRB1 P4 pocket risk cluster. OR=2.00 [1.23-3.24] for risk HLA-DRB1 alleles cluster.",
+            "Sentence": "HLA-DRB1*04:08 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:08",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "From MHCcluster (Figure S4) and binding groove analyses of the HLA-DRB1 alleles within the cohort we identified a cluster including both supertype HLA-DR1 and -DR4 alleles (HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10), respectively) that exhibited a secondary association with cutaneous NVP HSR",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]",
+                "A HLA-DRB1 P4 pocket of the peptide binding groove common to the alleles HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10) shows a significant secondary association with cutaneous NVP HSR"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*04:08",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 39,
+            "Variant/Haplotypes": "HLA-DRB1*04:10",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Part of HLA-DRB1 P4 pocket risk cluster. OR=2.00 [1.23-3.24] for risk HLA-DRB1 alleles cluster.",
+            "Sentence": "HLA-DRB1*04:10 is associated with increased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:10",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "A HLA-DRB1 P4 pocket of the peptide binding groove common to the alleles HLA-*DRB1*01:*(*01*/02/03) and *-DRB1**04*:*(*04*/05/08/10) shows a significant secondary association with cutaneous NVP HSR.",
+                "Risk HLA-DRB1 alleles HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10) | 2.00 [1.23\u20133.24]"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*04:10",
+                "variant_id": "PA165951542",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 40,
+            "Variant/Haplotypes": "HLA-DRB1*04:01",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Protective allele differing from risk group only at position \u03b271 within P4 pocket. 2 cases, 26 controls, P=0.01 in Caucasians.",
+            "Sentence": "HLA-DRB1*04:01 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In contrast, the predominantly Caucasian alleles *HLA-DRB1*04:01* and -*DRB1*04:15* differed from the risk group only at position \u03b271 within the P4 pocket, and yet appeared to be protective in this ancestral group (2 cases, 26 controls, p = 0.01).",
+                "This suggests that \u03b271, which is key in dictating the nature of the peptide amino acid that is accommodated in the P4 pocket of the antigen binding groove, is of particular importance in NVP HSR."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*04:01",
+                "variant_id": "PA165951493",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 41,
+            "Variant/Haplotypes": "HLA-DRB1*04:15",
+            "Gene": "HLA-DRB1",
+            "Drug(s)": "nevirapine",
+            "PMID": 28819312,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Protective allele differing from risk group only at position \u03b271 within P4 pocket.",
+            "Sentence": "HLA-DRB1*04:15 is associated with decreased risk of cutaneous hypersensitivity reaction when treated with nevirapine in people with HIV infection.",
+            "Alleles": "*04:15",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Cutaneous Hypersensitivity Reaction",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:HIV Infection",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In contrast, the predominantly Caucasian alleles *HLA-DRB1*04:01* and -*DRB1*04:15* differed from the risk group only at position \u03b271 within the P4 pocket, and yet appeared to be protective in this ancestral group (2 cases, 26 controls, p = 0.01)."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-DRB1*04:15",
+                "variant_id": "PA165951548",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "nevirapine",
+                "drug_id": "PA450616",
+                "confidence": 1.0
+            }
+        }
+    ],
+    "timestamp": "2025-12-16T11:42:00.672982",
+    "prompts_used": {
+        "var-drug": "var-drug-v2",
+        "var-fa": "improved_v2",
+        "study-parameters": "study-parameters-v4",
+        "summary": "basic",
+        "var-pheno": "var-pheno-v6"
+    },
+    "term_mappings": {
+        "HLA-C*04:01": {
+            "raw_input": "HLA-C*04:01",
+            "id": "PA165957046",
+            "normalized_term": "HLA-C*04:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165957046",
+            "score": 1.0
+        },
+        "nevirapine": {
+            "raw_input": "nevirapine",
+            "id": "PA450616",
+            "normalized_term": "nevirapine",
+            "url": "https://www.clinpgx.org/chemical/PA450616",
+            "score": 1.0
+        },
+        "HLA-C*04:03": {
+            "raw_input": "HLA-C*04:03",
+            "id": "PA165957085",
+            "normalized_term": "HLA-C*04:03",
+            "url": "https://www.clinpgx.org/haplotype/PA165957085",
+            "score": 1.0
+        },
+        "HLA-C*04:06": {
+            "raw_input": "HLA-C*04:06",
+            "id": "PA165957089",
+            "normalized_term": "HLA-C*04:06",
+            "url": "https://www.clinpgx.org/haplotype/PA165957089",
+            "score": 1.0
+        },
+        "HLA-C*05:01": {
+            "raw_input": "HLA-C*05:01",
+            "id": "PA165957192",
+            "normalized_term": "HLA-C*05:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165957192",
+            "score": 1.0
+        },
+        "HLA-C*18:01": {
+            "raw_input": "HLA-C*18:01",
+            "id": "PA165958003",
+            "normalized_term": "HLA-C*18:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165958003",
+            "score": 1.0
+        },
+        "HLA-B*15:01": {
+            "raw_input": "HLA-B*15:01",
+            "id": "PA165954745",
+            "normalized_term": "HLA-B*15:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165954745",
+            "score": 1.0
+        },
+        "HLA-B*15:12": {
+            "raw_input": "HLA-B*15:12",
+            "id": "PA165954792",
+            "normalized_term": "HLA-B*15:12",
+            "url": "https://www.clinpgx.org/haplotype/PA165954792",
+            "score": 1.0
+        },
+        "HLA-B*15:24": {
+            "raw_input": "HLA-B*15:24",
+            "id": "PA165954811",
+            "normalized_term": "HLA-B*15:24",
+            "url": "https://www.clinpgx.org/haplotype/PA165954811",
+            "score": 1.0
+        },
+        "HLA-B*15:25": {
+            "raw_input": "HLA-B*15:25",
+            "id": "PA165954812",
+            "normalized_term": "HLA-B*15:25",
+            "url": "https://www.clinpgx.org/haplotype/PA165954812",
+            "score": 1.0
+        },
+        "HLA-B*15:27": {
+            "raw_input": "HLA-B*15:27",
+            "id": "PA165954816",
+            "normalized_term": "HLA-B*15:27",
+            "url": "https://www.clinpgx.org/haplotype/PA165954816",
+            "score": 1.0
+        },
+        "HLA-B*15:32": {
+            "raw_input": "HLA-B*15:32",
+            "id": "PA165954823",
+            "normalized_term": "HLA-B*15:32",
+            "url": "https://www.clinpgx.org/haplotype/PA165954823",
+            "score": 1.0
+        },
+        "HLA-B*15:35": {
+            "raw_input": "HLA-B*15:35",
+            "id": "PA165954826",
+            "normalized_term": "HLA-B*15:35",
+            "url": "https://www.clinpgx.org/haplotype/PA165954826",
+            "score": 1.0
+        },
+        "HLA-B*52:01": {
+            "raw_input": "HLA-B*52:01",
+            "id": "PA165956366",
+            "normalized_term": "HLA-B*52:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165956366",
+            "score": 1.0
+        },
+        "HLA-B*35:05": {
+            "raw_input": "HLA-B*35:05",
+            "id": "PA165955262",
+            "normalized_term": "HLA-B*35:05",
+            "url": "https://www.clinpgx.org/haplotype/PA165955262",
+            "score": 1.0
+        },
+        "HLA-B*39:10": {
+            "raw_input": "HLA-B*39:10",
+            "id": "PA165955566",
+            "normalized_term": "HLA-B*39:10",
+            "url": "https://www.clinpgx.org/haplotype/PA165955566",
+            "score": 1.0
+        },
+        "HLA-B*51:01": {
+            "raw_input": "HLA-B*51:01",
+            "id": "PA165956201",
+            "normalized_term": "HLA-B*51:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165956201",
+            "score": 1.0
+        },
+        "HLA-B*51:02": {
+            "raw_input": "HLA-B*51:02",
+            "id": "PA165956231",
+            "normalized_term": "HLA-B*51:02",
+            "url": "https://www.clinpgx.org/haplotype/PA165956231",
+            "score": 1.0
+        },
+        "HLA-B*54:01": {
+            "raw_input": "HLA-B*54:01",
+            "id": "PA165956438",
+            "normalized_term": "HLA-B*54:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165956438",
+            "score": 1.0
+        },
+        "HLA-B*55:01": {
+            "raw_input": "HLA-B*55:01",
+            "id": "PA165956463",
+            "normalized_term": "HLA-B*55:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165956463",
+            "score": 1.0
+        },
+        "HLA-B*55:02": {
+            "raw_input": "HLA-B*55:02",
+            "id": "PA165956471",
+            "normalized_term": "HLA-B*55:02",
+            "url": "https://www.clinpgx.org/haplotype/PA165956471",
+            "score": 1.0
+        },
+        "HLA-B*56:01": {
+            "raw_input": "HLA-B*56:01",
+            "id": "PA165956528",
+            "normalized_term": "HLA-B*56:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165956528",
+            "score": 1.0
+        },
+        "HLA-B*56:04": {
+            "raw_input": "HLA-B*56:04",
+            "id": "PA165956534",
+            "normalized_term": "HLA-B*56:04",
+            "url": "https://www.clinpgx.org/haplotype/PA165956534",
+            "score": 1.0
+        },
+        "HLA-B*67:01": {
+            "raw_input": "HLA-B*67:01",
+            "id": "PA165956680",
+            "normalized_term": "HLA-B*67:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165956680",
+            "score": 1.0
+        },
+        "HLA-B*78:01": {
+            "raw_input": "HLA-B*78:01",
+            "id": "PA165956686",
+            "normalized_term": "HLA-B*78:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165956686",
+            "score": 1.0
+        },
+        "HLA-B*13:02": {
+            "raw_input": "HLA-B*13:02",
+            "id": "PA165954649",
+            "normalized_term": "HLA-B*13:02",
+            "url": "https://www.clinpgx.org/haplotype/PA165954649",
+            "score": 1.0
+        },
+        "HLA-B*38:01": {
+            "raw_input": "HLA-B*38:01",
+            "id": "PA165955500",
+            "normalized_term": "HLA-B*38:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165955500",
+            "score": 1.0
+        },
+        "HLA-B*38:02": {
+            "raw_input": "HLA-B*38:02",
+            "id": "PA165955505",
+            "normalized_term": "HLA-B*38:02",
+            "url": "https://www.clinpgx.org/haplotype/PA165955505",
+            "score": 1.0
+        },
+        "HLA-B*39:01": {
+            "raw_input": "HLA-B*39:01",
+            "id": "PA165955543",
+            "normalized_term": "HLA-B*39:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165955543",
+            "score": 1.0
+        },
+        "HLA-B*39:05": {
+            "raw_input": "HLA-B*39:05",
+            "id": "PA165955559",
+            "normalized_term": "HLA-B*39:05",
+            "url": "https://www.clinpgx.org/haplotype/PA165955559",
+            "score": 1.0
+        },
+        "HLA-B*39:06": {
+            "raw_input": "HLA-B*39:06",
+            "id": "PA165955561",
+            "normalized_term": "HLA-B*39:06",
+            "url": "https://www.clinpgx.org/haplotype/PA165955561",
+            "score": 1.0
+        },
+        "HLA-B*39:09": {
+            "raw_input": "HLA-B*39:09",
+            "id": "PA165955565",
+            "normalized_term": "HLA-B*39:09",
+            "url": "https://www.clinpgx.org/haplotype/PA165955565",
+            "score": 1.0
+        },
+        "HLA-DRB1*01:01": {
+            "raw_input": "HLA-DRB1*01:01",
+            "id": "PA165951320",
+            "normalized_term": "HLA-DRB1*01:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165951320",
+            "score": 1.0
+        },
+        "HLA-DRB1*01:02": {
+            "raw_input": "HLA-DRB1*01:02",
+            "id": "PA165951340",
+            "normalized_term": "HLA-DRB1*01:02",
+            "url": "https://www.clinpgx.org/haplotype/PA165951340",
+            "score": 1.0
+        },
+        "HLA-DRB1*01:03": {
+            "raw_input": "HLA-DRB1*01:03",
+            "id": "PA165951348",
+            "normalized_term": "HLA-DRB1*01:03",
+            "url": "https://www.clinpgx.org/haplotype/PA165951348",
+            "score": 1.0
+        },
+        "HLA-DRB1*04:04": {
+            "raw_input": "HLA-DRB1*04:04",
+            "id": "PA165951511",
+            "normalized_term": "HLA-DRB1*04:04",
+            "url": "https://www.clinpgx.org/haplotype/PA165951511",
+            "score": 1.0
+        },
+        "HLA-DRB1*04:05": {
+            "raw_input": "HLA-DRB1*04:05",
+            "id": "PA165951517",
+            "normalized_term": "HLA-DRB1*04:05",
+            "url": "https://www.clinpgx.org/haplotype/PA165951517",
+            "score": 1.0
+        },
+        "HLA-DRB1*04:10": {
+            "raw_input": "HLA-DRB1*04:10",
+            "id": "PA165951542",
+            "normalized_term": "HLA-DRB1*04:10",
+            "url": "https://www.clinpgx.org/haplotype/PA165951542",
+            "score": 1.0
+        },
+        "HLA-DRB1*04:01": {
+            "raw_input": "HLA-DRB1*04:01",
+            "id": "PA165951493",
+            "normalized_term": "HLA-DRB1*04:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165951493",
+            "score": 1.0
+        },
+        "HLA-DRB1*04:15": {
+            "raw_input": "HLA-DRB1*04:15",
+            "id": "PA165951548",
+            "normalized_term": "HLA-DRB1*04:15",
+            "url": "https://www.clinpgx.org/haplotype/PA165951548",
+            "score": 1.0
+        },
+        "CYP2B6*6": {
+            "raw_input": "CYP2B6*6",
+            "id": "PA165818762",
+            "normalized_term": "CYP2B6*6",
+            "url": "https://www.clinpgx.org/haplotype/PA165818762",
+            "score": 1.0
+        }
+    }
+}
