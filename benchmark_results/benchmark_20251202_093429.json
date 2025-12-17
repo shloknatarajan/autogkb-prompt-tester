@@ -1,0 +1,2818 @@
+{
+  "timestamp": "2025-12-02T09:34:29.093994",
+  "pmcid": "PMC10399933",
+  "source_file": "PMC10399933.json",
+  "source_timestamp": "2025-12-02T09:33:37.369882",
+  "prompts_used": {
+    "var-fa": "improved_v2",
+    "study-parameters": "study-parameters-v4",
+    "var-pheno": "var-pheno-v5",
+    "var-drug": "var-drug-v2",
+    "summary": "basic"
+  },
+  "results": {
+    "var-pheno": {
+      "overall_score": 0.724449274795396,
+      "field_scores": {
+        "Variant/Haplotypes": {
+          "mean_score": 0.7142857142857143,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Gene": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Drug(s)": {
+          "mean_score": 0.9832056931086949,
+          "scores": [
+            1.0,
+            1.0,
+            0.9412199258804321,
+            0.9412199258804321,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Phenotype Category": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Alleles": {
+          "mean_score": 0.4939234256744385,
+          "scores": [
+            0.8720006346702576,
+            0.8720006346702576,
+            0.8687657117843628,
+            0.8446969985961914,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Is/Is Not associated": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Direction of effect": {
+          "mean_score": 0.2857142857142857,
+          "scores": [
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Phenotype": {
+          "mean_score": 0.9102075525692531,
+          "scores": [
+            0.913345217704773,
+            0.9008524417877197,
+            0.913345217704773,
+            0.9038743376731873,
+            0.913345217704773,
+            0.913345217704773,
+            0.913345217704773
+          ]
+        },
+        "When treated with/exposed to/when assayed with": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Comparison Allele(s) or Genotype(s)": {
+          "mean_score": 0.37156822851725985,
+          "scores": [
+            0.8669925332069397,
+            0.8669925332069397,
+            0.8669925332069397,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "total_samples": 7,
+      "detailed_results": [
+        {
+          "sample_id": 0,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.8720006346702576,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 1.0,
+            "Phenotype": 0.913345217704773,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.8669925332069397
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "rs4149056",
+              "prediction": "rs4149056"
+            },
+            "Gene": {
+              "ground_truth": "SLCO1B1",
+              "prediction": "SLCO1B1"
+            },
+            "Drug(s)": {
+              "ground_truth": "simvastatin",
+              "prediction": "simvastatin"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "CC",
+              "prediction": "c.521C/C"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "increased",
+              "prediction": "increased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Discontinuation",
+              "prediction": "Side Effect:Statin intolerance (switch to another statin)"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": "TT",
+              "prediction": "c.521T/T"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 1,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.8720006346702576,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 1.0,
+            "Phenotype": 0.9008524417877197,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.8669925332069397
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "rs4149056",
+              "prediction": "rs4149056"
+            },
+            "Gene": {
+              "ground_truth": "SLCO1B1",
+              "prediction": "SLCO1B1"
+            },
+            "Drug(s)": {
+              "ground_truth": "simvastatin",
+              "prediction": "simvastatin"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "CC",
+              "prediction": "c.521C/C"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "increased",
+              "prediction": "increased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Discontinuation",
+              "prediction": "Side Effect:Statin intolerance (switch to another statin with CK measurement)"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": "TT",
+              "prediction": "c.521T/T"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 2,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 0.9412199258804321,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.8687657117843628,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.913345217704773,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.8669925332069397
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "rs4149056",
+              "prediction": "rs4149056"
+            },
+            "Gene": {
+              "ground_truth": "SLCO1B1",
+              "prediction": "SLCO1B1"
+            },
+            "Drug(s)": {
+              "ground_truth": "atorvastatin, fluvastatin, rosuvastatin",
+              "prediction": "atorvastatin"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "CC + CT",
+              "prediction": "c.521T/C, c.521C/C"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Not associated with",
+              "prediction": "Not associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "increased",
+              "prediction": null
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Discontinuation",
+              "prediction": "Side Effect:Statin intolerance (switch to another statin)"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": "TT",
+              "prediction": "c.521T/T"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 3,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 0.9412199258804321,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.8446969985961914,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.9038743376731873,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "rs2231142",
+              "prediction": "rs2231142"
+            },
+            "Gene": {
+              "ground_truth": "ABCG2",
+              "prediction": "ABCG2"
+            },
+            "Drug(s)": {
+              "ground_truth": "atorvastatin, fluvastatin, rosuvastatin",
+              "prediction": "atorvastatin"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "GT + TT",
+              "prediction": "c.421C/A or A/A"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Not associated with",
+              "prediction": "Not associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "increased",
+              "prediction": null
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Discontinuation",
+              "prediction": "Side Effect:Statin intolerance (switch to another statin), Side Effect:Statin intolerance (switch to another statin with CK measurement)"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": "GG",
+              "prediction": null
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 4,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.913345217704773,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "CYP2C9*1",
+              "prediction": "CYP2C9"
+            },
+            "Gene": {
+              "ground_truth": "CYP2C9",
+              "prediction": "CYP2C9"
+            },
+            "Drug(s)": {
+              "ground_truth": "fluvastatin",
+              "prediction": "fluvastatin"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*2/*2 + *2/*3 + *3/*3",
+              "prediction": null
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Not associated with",
+              "prediction": "Not associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "increased",
+              "prediction": null
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Discontinuation",
+              "prediction": "Side Effect:Statin intolerance (switch to another statin)"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": "*1/*1 + *1/*2 + *1/*3",
+              "prediction": null
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 5,
+          "field_scores": {
+            "Variant/Haplotypes": 0.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.913345217704773,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "CYP2C9*1",
+              "prediction": "poor"
+            },
+            "Gene": {
+              "ground_truth": "CYP2C9",
+              "prediction": "CYP2C9"
+            },
+            "Drug(s)": {
+              "ground_truth": "fluvastatin",
+              "prediction": "fluvastatin"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*2/*2 + *2/*3 + *3/*3",
+              "prediction": null
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Not associated with",
+              "prediction": "Not associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "increased",
+              "prediction": null
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Discontinuation",
+              "prediction": "Side Effect:Statin intolerance (switch to another statin)"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": "*1/*1 + *1/*2 + *1/*3",
+              "prediction": null
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 6,
+          "field_scores": {
+            "Variant/Haplotypes": 0.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.913345217704773,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "CYP2C9*1",
+              "prediction": "metabolizer"
+            },
+            "Gene": {
+              "ground_truth": "CYP2C9",
+              "prediction": "CYP2C9"
+            },
+            "Drug(s)": {
+              "ground_truth": "fluvastatin",
+              "prediction": "fluvastatin"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*2/*2 + *2/*3 + *3/*3",
+              "prediction": null
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Not associated with",
+              "prediction": "Not associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "increased",
+              "prediction": null
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Discontinuation",
+              "prediction": "Side Effect:Statin intolerance (switch to another statin)"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": "*1/*1 + *1/*2 + *1/*3",
+              "prediction": null
+            }
+          },
+          "dependency_issues": []
+        }
+      ],
+      "aligned_variants": [
+        "cyp2c9*1",
+        "PA166154579",
+        "PA166156544",
+        "PA166154579",
+        "PA166154579",
+        "cyp2c9+fluvastatin",
+        "cyp2c9+fluvastatin"
+      ],
+      "unmatched_ground_truth": [],
+      "unmatched_predictions": [
+        {
+          "Variant Annotation ID": 4,
+          "Variant/Haplotypes": "rs4149056",
+          "Gene": "SLCO1B1",
+          "Drug(s)": "atorvastatin",
+          "PMID": "37490620",
+          "Phenotype Category": "toxicity",
+          "Significance": "no",
+          "Notes": "In atorvastatin users, SLCO1B1 c.521T/C genotype HR 1.25 (95% CI 0.46\u20133.38, P=0.667) and c.521C/C HR 1.30 (95% CI 0.17\u201310.1, P=0.799) for statin switching plus CK measurement; no significant association.",
+          "Sentence": "rs4149056 is not associated with risk of Statin intolerance (switch to another statin with CK measurement) when treated with atorvastatin in people with Hypercholesterolemia.",
+          "Alleles": "c.521T/C, c.521C/C",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Not associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Statin intolerance (switch to another statin with CK measurement)",
+          "Multiple phenotypes And/or": null,
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:Hypercholesterolemia",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Alleles(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "37490620",
+          "Variant Annotation ID_norm": "4",
+          "Citations": [
+            "No significant association was observed with atorvastatin and rosuvastatin.",
+            "Atorvastatin had median follow-up time of 556.5 days. There were 780 atorvastatin users. Of those, 128 were categorized as statin switchers and 18 had a temporally qualifying CK measurement. Neither the SLCO1B1 or ABCG2 genotypes nor atorvastatin dose were associated with the statin intolerance phenotypes (Table [3](#T3)).",
+            "c.521T/T | 506 | 88 |   |   | 11 |   |   |\nc.521T/C | 238 | 33 | 0.82 (0.55\u20131.23) | 0.339 | 6 | 1.25 (0.46\u20133.38) | 0.667 |\nc.521C/C | 36 | 7 | 1.13 (0.52\u20132.44) | 0.759 | 1 | 1.30 (0.17\u201310.1) | 0.799 |"
+          ]
+        },
+        {
+          "Variant Annotation ID": 6,
+          "Variant/Haplotypes": "rs4149056",
+          "Gene": "SLCO1B1",
+          "Drug(s)": "rosuvastatin",
+          "PMID": "37490620",
+          "Phenotype Category": "toxicity",
+          "Significance": "no",
+          "Notes": "In rosuvastatin users, SLCO1B1 c.521T/C or C/C carriers had HR 0.67 (95% CI 0.32\u20131.43, P=0.301) for statin switching compared with c.521T/T; no significant association.",
+          "Sentence": "rs4149056 is not associated with risk of Statin intolerance (switch to another statin) when treated with rosuvastatin in people with Hypercholesterolemia.",
+          "Alleles": "c.521T/C or C/C",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Not associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Statin intolerance (switch to another statin)",
+          "Multiple phenotypes And/or": null,
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:Hypercholesterolemia",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Alleles(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "37490620",
+          "Variant Annotation ID_norm": "6",
+          "Citations": [
+            "Rosuvastatin median follow-up time was 92.5 days. Rosuvastatin had total of 184 users of whom 32 were categorized as statin switchers. Rosuvastatin dose of 10 mg was associated with increased risk of statin intolerance when compared to 5 mg dose, but the SLCO1B1 or ABCG2 genotypes were not associated with statin intolerance (Table [4](#T4)).",
+            "Table 4 Caption: Associations of SLCO1B1 c.521T>C and ABCG2 c.421C>A single nucleotide variations with intolerance to rosuvastatin",
+            "| c.521T/T | 119 | 22 |   |   |\n| c.521T/C or C/C | 65 | 10 | 0.67 (0.32\u20131.43) | 0.301 |"
+          ]
+        },
+        {
+          "Variant Annotation ID": 7,
+          "Variant/Haplotypes": "rs2231142",
+          "Gene": "ABCG2",
+          "Drug(s)": "rosuvastatin",
+          "PMID": "37490620",
+          "Phenotype Category": "toxicity",
+          "Significance": "no",
+          "Notes": "For rosuvastatin, ABCG2 c.421C/A or A/A carriers had HR 0.81 (95% CI 0.31\u20132.10, P=0.660) for statin switching vs c.421C/C; no significant association.",
+          "Sentence": "rs2231142 is not associated with risk of Statin intolerance (switch to another statin) when treated with rosuvastatin in people with Hypercholesterolemia.",
+          "Alleles": "c.421C/A or A/A",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Not associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Statin intolerance (switch to another statin)",
+          "Multiple phenotypes And/or": null,
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:Hypercholesterolemia",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Alleles(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "37490620",
+          "Variant Annotation ID_norm": "7",
+          "Citations": [
+            "Rosuvastatin median follow-up time was 92.5 days. Rosuvastatin had total of 184 users of whom 32 were categorized as statin switchers. Rosuvastatin dose of 10 mg was associated with increased risk of statin intolerance when compared to 5 mg dose, but the SLCO1B1 or ABCG2 genotypes were not associated with statin intolerance (Table [4](#T4)).",
+            "Table 4. ... ABCG2 ... c.421C/C | 153 | 27 |   |   | c.421C/A or A/A | 31 | 5 | 0.81 (0.31\u20132.10) | 0.660"
+          ]
+        },
+        {
+          "Variant Annotation ID": 8,
+          "Variant/Haplotypes": "rs4149056",
+          "Gene": "SLCO1B1",
+          "Drug(s)": "fluvastatin",
+          "PMID": "37490620",
+          "Phenotype Category": "toxicity",
+          "Significance": "no",
+          "Notes": "For fluvastatin, carriers of SLCO1B1 c.521T/C or C/C had HR 1.42 (95% CI 0.67\u20133.01, P=0.36) for statin switching compared with c.521T/T; no significant association.",
+          "Sentence": "rs4149056 is not associated with risk of Statin intolerance (switch to another statin) when treated with fluvastatin in people with Hypercholesterolemia.",
+          "Alleles": "c.521T/C or C/C",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Not associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Statin intolerance (switch to another statin)",
+          "Multiple phenotypes And/or": null,
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:Hypercholesterolemia",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Alleles(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "37490620",
+          "Variant Annotation ID_norm": "8",
+          "Citations": [
+            "Fluvastatin had 70 users of whom 31 were categorized as statin switchers. No statistically significant association was found for fluvastatin (Table [5](#T5)).",
+            "Table 5 Caption: Associations of SLCO1B1 c.521T>C and ABCG2 c.421C>A single nucleotide variations, as well as CYP2C9 phenotypes with intolerance to fluvastatin",
+            "c.521T/T | 39 | 15 |   |   |\nc.521T/C or C/C | 31 | 16 | 1.42 (0.67\u20133.01) | 0.36 |"
+          ]
+        },
+        {
+          "Variant Annotation ID": 9,
+          "Variant/Haplotypes": "rs2231142",
+          "Gene": "ABCG2",
+          "Drug(s)": "fluvastatin",
+          "PMID": "37490620",
+          "Phenotype Category": "toxicity",
+          "Significance": "no",
+          "Notes": "For fluvastatin, ABCG2 c.421C/A or A/A carriers had HR 2.06 (95% CI 0.84\u20135.05, P=0.113) for statin switching vs c.421C/C; non-significant trend.",
+          "Sentence": "rs2231142 is not associated with risk of Statin intolerance (switch to another statin) when treated with fluvastatin in people with Hypercholesterolemia.",
+          "Alleles": "c.421C/A or A/A",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Not associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Statin intolerance (switch to another statin)",
+          "Multiple phenotypes And/or": null,
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:Hypercholesterolemia",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Alleles(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "37490620",
+          "Variant Annotation ID_norm": "9",
+          "Citations": [
+            "Fluvastatin had 70 users of whom 31 were categorized as statin switchers. No statistically significant association was found for fluvastatin (Table [5](#T5)).",
+            "Table 5 Caption: Associations of SLCO1B1 c.521T>C and ABCG2 c.421C>A single nucleotide variations, as well as CYP2C9 phenotypes with intolerance to fluvastatin",
+            "ABCG2 |  |  |  |  |\n| 20 mg dose | 19 | 7 |   |   |\n| 40 mg dose | 14 | 6 | 0.88 (0.30\u20132.64) | 0.825 |\n| 80 mg dose | 37 | 18 | 1.39 (0.58\u20133.34) | 0.466 |\n| c.421C/C | 61 | 25 |   |   |\n| c.421C/A or A/A | 9 | 6 | 2.06 (0.84\u20135.05) | 0.113 |"
+          ]
+        },
+        {
+          "Variant Annotation ID": 11,
+          "Variant/Haplotypes": "rs4149056",
+          "Gene": "SLCO1B1",
+          "Drug(s)": "pravastatin",
+          "PMID": "37490620",
+          "Phenotype Category": "toxicity",
+          "Significance": "yes",
+          "Notes": "For pravastatin, SLCO1B1 c.521T/C or C/C carriers had an increased risk of statin switching (HR 2.11, 95% CI 1.01\u20134.39, P=0.047) compared with c.521T/T homozygotes.",
+          "Sentence": "rs4149056 is associated with increased risk of Statin intolerance (switch to another statin) when treated with pravastatin in people with Hypercholesterolemia.",
+          "Alleles": "c.521T/C or C/C",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": "increased",
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Statin intolerance (switch to another statin)",
+          "Multiple phenotypes And/or": null,
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:Hypercholesterolemia",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Alleles(s) or Genotype(s)": "c.521T/T",
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "37490620",
+          "Variant Annotation ID_norm": "11",
+          "Citations": [
+            "The sample sizes for fluvastatin and pravastatin were relatively small, but SLCO1B1 c.521T>C carriers had an increased risk of pravastatin intolerance defined by statin switching when compared to homozygous reference T/T genotype (HR 2.11, 95% CI 1.01\u20134.39, P = 0.047).",
+            "Pravastatin had a total of 92 users of which 29 were categorized as statin switchers. SLCO1B1 c.521T/C or C/C genotype was associated with an increased risk of pravastatin switching when compared to homozygous reference T/T genotype (HR 2.11, 95% CI 1.01\u20134.39, P = 0.047; Table [6](#T6)).",
+            "In conclusion, SLCO1B1 c.521T>C genotype was associated with increased switching of simvastatin and pravastatin to other statins in an epidemiological biobank study."
+          ]
+        }
+      ]
+    },
+    "study-parameters": {
+      "overall_score": 0.7403478050231933,
+      "field_scores": {
+        "Study Type": {
+          "mean_score": 0.0,
+          "scores": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Study Cases": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Study Controls": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Characteristics": {
+          "mean_score": 0.9052170753479004,
+          "scores": [
+            0.8890679478645325,
+            0.8880243301391602,
+            0.8805516362190247,
+            0.9189258813858032,
+            0.917689859867096,
+            0.9162267446517944,
+            0.9140612483024597,
+            0.912819504737854,
+            0.9101428985595703,
+            0.904660701751709
+          ]
+        },
+        "Characteristics Type": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Frequency In Cases": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Allele Of Frequency In Cases": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Frequency In Controls": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Allele Of Frequency In Controls": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "P Value": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "Ratio Stat Type": {
+          "mean_score": 0.3,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Ratio Stat": {
+          "mean_score": 0.3,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Confidence Interval Start": {
+          "mean_score": 0.3,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Confidence Interval Stop": {
+          "mean_score": 0.3,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Biogeographical Groups": {
+          "mean_score": 1.0,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "total_samples": 10,
+      "detailed_results": [
+        {
+          "sample_id": 0,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8890679478645325,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 1.0,
+            "Confidence Interval Start": 1.0,
+            "Confidence Interval Stop": 1.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452195945,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452195940,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 916.0,
+              "prediction": 916
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch",
+              "prediction": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521C/C vs T/T; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.025",
+              "prediction": "= 0.025"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "HR",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 1.88,
+              "prediction": 1.88
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.08,
+              "prediction": 1.08
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 3.25,
+              "prediction": 3.25
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 1,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8880243301391602,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 1.0,
+            "Confidence Interval Start": 1.0,
+            "Confidence Interval Stop": 1.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452195960,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452195947,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 92.0,
+              "prediction": 92
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch",
+              "prediction": "Finnish pravastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521T/C or C/C vs T/T; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.047",
+              "prediction": "= 0.047"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "HR",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.11,
+              "prediction": 2.11
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.01,
+              "prediction": 1.01
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 4.39,
+              "prediction": 4.39
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 2,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8805516362190247,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 1.0,
+            "Confidence Interval Start": 1.0,
+            "Confidence Interval Stop": 1.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452195946,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452195940,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 916.0,
+              "prediction": 916
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch",
+              "prediction": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521C/C vs T/T; outcome: statin switch + CK measurement vs no such event"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.011",
+              "prediction": "= 0.011"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "HR",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 5.44,
+              "prediction": 5.44
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.49,
+              "prediction": 1.49
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 19.9,
+              "prediction": 19.9
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 3,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.9189258813858032,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 0.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452196045,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452196040,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 70.0,
+              "prediction": 70
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch, fluvastatin",
+              "prediction": "Finnish fluvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521T/C or C/C vs T/T; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.36",
+              "prediction": "= 0.360"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "Unknown",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": null,
+              "prediction": 1.42
+            },
+            "Confidence Interval Start": {
+              "ground_truth": null,
+              "prediction": 0.67
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": null,
+              "prediction": 3.01
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 4,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.917689859867096,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 0.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452196060,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452196040,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 780.0,
+              "prediction": 780
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch, atorvastatin",
+              "prediction": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521C/C vs T/T; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.759",
+              "prediction": "= 0.759"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "Unknown",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": null,
+              "prediction": 1.13
+            },
+            "Confidence Interval Start": {
+              "ground_truth": null,
+              "prediction": 0.52
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": null,
+              "prediction": 2.44
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 5,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.9162267446517944,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 0.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452196101,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452196080,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 780.0,
+              "prediction": 780
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch, atorvastatin",
+              "prediction": "Finnish atorvastatin initiators; ABCG2 c.421C>A genotype; genotype group c.421C/A or A/A vs C/C; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.877",
+              "prediction": "= 0.877"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "Unknown",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": null,
+              "prediction": 1.04
+            },
+            "Confidence Interval Start": {
+              "ground_truth": null,
+              "prediction": 0.63
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": null,
+              "prediction": 1.71
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 6,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.9140612483024597,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 0.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452196085,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452196080,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 70.0,
+              "prediction": 70
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch, fluvastatin",
+              "prediction": "Finnish fluvastatin initiators; ABCG2 c.421C>A genotype; genotype group c.421C/A or A/A vs C/C; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.113",
+              "prediction": "= 0.113"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "Unknown",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": null,
+              "prediction": 2.06
+            },
+            "Confidence Interval Start": {
+              "ground_truth": null,
+              "prediction": 0.84
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": null,
+              "prediction": 5.05
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 7,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.912819504737854,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 0.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452196130,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452196120,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 70.0,
+              "prediction": 70
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch, fluvastatin",
+              "prediction": "Finnish fluvastatin initiators; CYP2C9 phenotype; PM or IM vs NM; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.394",
+              "prediction": "= 0.394"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "Unknown",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": null,
+              "prediction": 1.36
+            },
+            "Confidence Interval Start": {
+              "ground_truth": null,
+              "prediction": 0.67
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": null,
+              "prediction": 2.78
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 8,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.9101428985595703,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 0.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452196046,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452196040,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 184.0,
+              "prediction": 184
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch, rosuvastatin",
+              "prediction": "Finnish rosuvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521T/C or C/C vs T/T; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.301",
+              "prediction": "= 0.301"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "Unknown",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": null,
+              "prediction": 0.67
+            },
+            "Confidence Interval Start": {
+              "ground_truth": null,
+              "prediction": 0.32
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": null,
+              "prediction": 1.43
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 9,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 0.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.904660701751709,
+            "Characteristics Type": 1.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 0.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1452196100,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1452196080,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": null,
+              "prediction": "cohort"
+            },
+            "Study Cases": {
+              "ground_truth": 184.0,
+              "prediction": 184
+            },
+            "Study Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "Statin switch, rosuvastatin",
+              "prediction": "Finnish rosuvastatin initiators; ABCG2 c.421C>A genotype; genotype group c.421C/A or A/A vs C/C; outcome: statin switch vs no switch"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "Study Cohort"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 0.660",
+              "prediction": "= 0.660"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "Unknown",
+              "prediction": "HR"
+            },
+            "Ratio Stat": {
+              "ground_truth": null,
+              "prediction": 0.81
+            },
+            "Confidence Interval Start": {
+              "ground_truth": null,
+              "prediction": 0.31
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": null,
+              "prediction": 2.1
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "European",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        }
+      ],
+      "aligned_variants": [
+        "None:Statin switch",
+        "None:Statin switch",
+        "None:Statin switch",
+        "None:Statin switch, fluva",
+        "None:Statin switch, atorv",
+        "None:Statin switch, atorv",
+        "None:Statin switch, fluva",
+        "None:Statin switch, fluva",
+        "None:Statin switch, rosuv",
+        "None:Statin switch, rosuv"
+      ],
+      "unmatched_ground_truth": [],
+      "unmatched_predictions": [
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 916,
+          "Study Controls": null,
+          "Characteristics": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; dose-adjusted Cox model",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.498",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.13,
+          "Confidence Interval Start": 0.8,
+          "Confidence Interval Stop": 1.6,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 916,
+          "Study Controls": null,
+          "Characteristics": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 40 or 80 mg vs 10 mg dose, Cox model",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.035",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.48,
+          "Confidence Interval Start": 1.03,
+          "Confidence Interval Stop": 2.12,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 916,
+          "Study Controls": null,
+          "Characteristics": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521T/C vs T/T; outcome: statin switch vs no switch",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.640",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.94,
+          "Confidence Interval Start": 0.7,
+          "Confidence Interval Stop": 1.24,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 916,
+          "Study Controls": null,
+          "Characteristics": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch + CK measurement vs no such event; 20 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.284",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 2.0,
+          "Confidence Interval Start": 0.56,
+          "Confidence Interval Stop": 7.14,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 916,
+          "Study Controls": null,
+          "Characteristics": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch + CK measurement vs no such event; 40 or 80 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.379",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.84,
+          "Confidence Interval Start": 0.47,
+          "Confidence Interval Stop": 7.12,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 916,
+          "Study Controls": null,
+          "Characteristics": "Finnish simvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521T/C vs T/T; outcome: statin switch + CK measurement vs no such event",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.226",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.75,
+          "Confidence Interval Start": 0.71,
+          "Confidence Interval Stop": 4.31,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 20 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.463",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.86,
+          "Confidence Interval Start": 0.58,
+          "Confidence Interval Stop": 1.28,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 40 or 80 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.907",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.03,
+          "Confidence Interval Start": 0.65,
+          "Confidence Interval Stop": 1.62,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521T/C vs T/T; outcome: statin switch vs no switch",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.339",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.82,
+          "Confidence Interval Start": 0.55,
+          "Confidence Interval Stop": 1.23,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch + CK measurement vs no such event; 20 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.745",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.85,
+          "Confidence Interval Start": 0.32,
+          "Confidence Interval Stop": 2.24,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch + CK measurement vs no such event; 40 or 80 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.151",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.22,
+          "Confidence Interval Start": 0.03,
+          "Confidence Interval Stop": 1.73,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521T/C vs T/T; outcome: statin switch + CK measurement vs no such event",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.667",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.25,
+          "Confidence Interval Start": 0.46,
+          "Confidence Interval Stop": 3.38,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; SLCO1B1 c.521T>C genotype; genotype group c.521C/C vs T/T; outcome: statin switch + CK measurement vs no such event",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.799",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.3,
+          "Confidence Interval Start": 0.17,
+          "Confidence Interval Stop": 10.1,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch vs no switch; 20 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.428",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.85,
+          "Confidence Interval Start": 0.57,
+          "Confidence Interval Stop": 1.27,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch vs no switch; 40 or 80 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.955",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.01,
+          "Confidence Interval Start": 0.64,
+          "Confidence Interval Stop": 1.6,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch + CK measurement vs no such event; 20 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.759",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.86,
+          "Confidence Interval Start": 0.33,
+          "Confidence Interval Stop": 2.26,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch + CK measurement vs no such event; 40 or 80 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.154",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.22,
+          "Confidence Interval Start": 0.03,
+          "Confidence Interval Stop": 1.75,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "Study Controls": null,
+          "Characteristics": "Finnish atorvastatin initiators; ABCG2 c.421C>A genotype; genotype group c.421C/A or A/A vs C/C; outcome: statin switch + CK measurement vs no such event",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.706",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.27,
+          "Confidence Interval Start": 0.37,
+          "Confidence Interval Stop": 4.39,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "StudyControls": null,
+          "Characteristics": "Finnish atorvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles (0\u20131 vs 2\u20134); outcome: statin switch vs no switch; 20 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.430",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.85,
+          "Confidence Interval Start": 0.57,
+          "Confidence Interval Stop": 1.27,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "StudyControls": null,
+          "Characteristics": "Finnish atorvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles (0\u20131 vs 2\u20134); outcome: statin switch vs no switch; 40 or 80 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.949",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.02,
+          "Confidence Interval Start": 0.64,
+          "Confidence Interval Stop": 1.6,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "StudyControls": null,
+          "Characteristics": "Finnish atorvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles; genotype group 2\u20134 risk alleles vs 0\u20131; outcome: statin switch vs no switch",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.843",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.94,
+          "Confidence Interval Start": 0.51,
+          "Confidence Interval Stop": 1.74,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "StudyControls": null,
+          "Characteristics": "Finnish atorvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles; outcome: statin switch + CK measurement vs no such event; 20 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.762",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.86,
+          "Confidence Interval Start": 0.33,
+          "Confidence Interval Stop": 2.27,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "StudyControls": null,
+          "Characteristics": "Finnish atorvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles; outcome: statin switch + CK measurement vs no such event; 40 or 80 mg vs 10 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.157",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.23,
+          "Confidence Interval Start": 0.03,
+          "Confidence Interval Stop": 1.77,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 780,
+          "StudyControls": null,
+          "Characteristics": "Finnish atorvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles; genotype group 2\u20134 risk alleles vs 0\u20131; outcome: statin switch + CK measurement vs no such event",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.600",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.58,
+          "Confidence Interval Start": 0.08,
+          "Confidence Interval Stop": 4.39,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 184,
+          "StudyControls": null,
+          "Characteristics": "Finnish rosuvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 10 mg vs 5 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.038",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 3.55,
+          "Confidence Interval Start": 1.07,
+          "Confidence Interval Stop": 11.8,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 184,
+          "StudyControls": null,
+          "Characteristics": "Finnish rosuvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 20 or 40 mg vs 5 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.681",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.45,
+          "Confidence Interval Start": 0.24,
+          "Confidence Interval Stop": 8.78,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 184,
+          "StudyControls": null,
+          "Characteristics": "Finnish rosuvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch vs no switch; 10 mg vs 5 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.038",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 3.56,
+          "Confidence Interval Start": 1.07,
+          "Confidence Interval Stop": 11.8,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 184,
+          "StudyControls": null,
+          "Characteristics": "Finnish rosuvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch vs no switch; 20 or 40 mg vs 5 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.644",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.53,
+          "Confidence Interval Start": 0.25,
+          "Confidence Interval Stop": 9.34,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 184,
+          "StudyControls": null,
+          "Characteristics": "Finnish rosuvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles; outcome: statin switch vs no switch; 10 mg vs 5 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.036",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 3.61,
+          "Confidence Interval Start": 1.09,
+          "Confidence Interval Stop": 12.0,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 184,
+          "StudyControls": null,
+          "Characteristics": "Finnish rosuvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles; outcome: statin switch vs no switch; 20 or 40 mg vs 5 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.700",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.43,
+          "Confidence Interval Start": 0.23,
+          "Confidence Interval Stop": 8.68,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 184,
+          "StudyControls": null,
+          "Characteristics": "Finnish rosuvastatin initiators; combined SLCO1B1 and ABCG2 risk alleles; genotype group 2\u20134 risk alleles vs 0\u20131; outcome: statin switch vs no switch",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.149",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.23,
+          "Confidence Interval Start": 0.03,
+          "Confidence Interval Stop": 1.69,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 40 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.868",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.91,
+          "Confidence Interval Start": 0.31,
+          "Confidence Interval Stop": 2.73,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 80 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.303",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.62,
+          "Confidence Interval Start": 0.65,
+          "Confidence Interval Stop": 4.05,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch vs no switch; 40 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.825",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.88,
+          "Confidence Interval Start": 0.3,
+          "Confidence Interval Stop": 2.64,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; ABCG2 c.421C>A genotype; outcome: statin switch vs no switch; 80 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.466",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.39,
+          "Confidence Interval Start": 0.58,
+          "Confidence Interval Stop": 3.34,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; CYP2C9 phenotype (PM or IM vs NM); outcome: statin switch vs no switch; 40 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.832",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.89,
+          "Confidence Interval Start": 0.3,
+          "Confidence Interval Stop": 2.65,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; CYP2C9 phenotype (PM or IM vs NM); outcome: statin switch vs no switch; 80 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.465",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.39,
+          "Confidence Interval Start": 0.58,
+          "Confidence Interval Stop": 3.34,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; combined SLCO1B1, ABCG2, CYP2C9 risk alleles; outcome: statin switch vs no switch; 40 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.928",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 0.95,
+          "Confidence Interval Start": 0.32,
+          "Confidence Interval Stop": 2.85,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; combined SLCO1B1, ABCG2, CYP2C9 risk alleles; outcome: statin switch vs no switch; 80 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.273",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.65,
+          "Confidence Interval Start": 0.67,
+          "Confidence Interval Stop": 4.04,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 70,
+          "StudyControls": null,
+          "Characteristics": "Finnish fluvastatin initiators; combined SLCO1B1, ABCG2, CYP2C9 risk alleles; genotype group 2\u20134 risk alleles vs 0\u20131; outcome: statin switch vs no switch",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.094",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.88,
+          "Confidence Interval Start": 0.9,
+          "Confidence Interval Stop": 3.96,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        },
+        {
+          "Study Parameters ID": null,
+          "Variant Annotation ID": null,
+          "Study Type": "cohort",
+          "Study Cases": 92,
+          "StudyControls": null,
+          "Characteristics": "Finnish pravastatin initiators; SLCO1B1 c.521T>C genotype; outcome: statin switch vs no switch; 40 mg vs 20 mg dose",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": "= 0.376",
+          "Ratio Stat Type": "HR",
+          "Ratio Stat": 1.43,
+          "Confidence Interval Start": 0.65,
+          "Confidence Interval Stop": 3.17,
+          "Biogeographical Groups": "European",
+          "Variant Annotation ID_norm": null
+        }
+      ]
+    }
+  },
+  "metadata": {
+    "ground_truth_file": "persistent_data/benchmark_annotations.json",
+    "total_tasks": 2,
+    "average_score": 0.7338013513999826,
+    "tasks_with_errors": 0
+  }
+}
