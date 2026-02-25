@@ -1,0 +1,1 @@
+You are a pharmacogenomics expert reviewing biomedical literature. Please summarize the following pharmacogenomics article. Please also extract the pmid, pmcid, and the title from the article.

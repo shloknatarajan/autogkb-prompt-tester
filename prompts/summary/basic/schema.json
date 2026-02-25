@@ -1,0 +1,24 @@
+{
+  "type": "object",
+  "properties": {
+    "summary": {
+      "type": "string"
+    },
+    "title": {
+      "type": "string"
+    },
+    "pmid": {
+      "type": "string"
+    },
+    "pmcid": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "summary",
+    "title",
+    "pmid",
+    "pmcid"
+  ],
+  "additionalProperties": false
+}

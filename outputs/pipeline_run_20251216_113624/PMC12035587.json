@@ -1,0 +1,253 @@
+{
+    "pmcid": "PMC12035587",
+    "var_drug_ann": [
+        {
+            "Variant Annotation ID": 1,
+            "Variant/Haplotypes": "NUDT15*3",
+            "Gene": "NUDT15",
+            "Drug(s)": "mercaptopurine",
+            "PMID": 40099566,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Patient with homozygous *3/*3 loss-of-function alleles in NUDT15 gene developed severe myelosuppression (pancytopenia with Hb 60 g/L, WBC 0.9 \u00d7 10^9/L, plt 4 \u00d7 10^9/L, ANC 0 \u00d7 10^9/L), hepatotoxicity (ALT 82 U/L), and alopecia after mercaptopurine initiation. Complete loss of NUDT15 protein function.",
+            "Sentence": "Genotype *3/*3 is associated with increased toxicity of mercaptopurine in patients with acute promyelocytic leukaemia as compared to wildtype.",
+            "Alleles": "*3/*3",
+            "Specialty Population": null,
+            "Metabolizer types": "poor metabolizer",
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "toxicity of",
+            "Multiple drugs And/or": null,
+            "Population types": "in patients with",
+            "Population Phenotypes or diseases": "Disease:Acute Promyelocytic Leukemia",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "wildtype",
+            "Comparison Metabolizer types": "normal metabolizer",
+            "Citations": [
+                "We present a case of thiopurine toxicity resulting in severe myelosuppression, hepatotoxicity and alopecia in an individual with homozygous *3/*3 loss\u2010of\u2010function alleles in the NUDT15 gene.",
+                "On bloodwork, she was found to have severe pancytopenia (Hb 60 g/L, WBC 0.9 \u00d7 10^9^/L, plt 4 \u00d7 10^9^/L, ANC 0 \u00d7 10^9^/L) and elevated liver enzymes (alanine transaminase 82 U/L [reference: 7\u201340 U/L], alkaline phosphatase 122 U/L [reference: 40\u2013150 U/L], total bilirubin 14 \u03bcmol/L [reference: <22 \u03bcmol/L]).",
+                "The patient underwent genetic testing and was found to have wildtype alleles in the thiopurine\u2010S\u2010methyltransferase (*TPMT*) gene, but homozygous loss\u2010of\u2010function alleles in the *NUDT15* gene (c.415C > T; *3/*3), resulting in complete loss of NUDT15 protein function. She was diagnosed with severe mercaptopurine toxicity secondary to an inherited NUDT15 protein deficiency, resulting in myelosuppression, hepatotoxicity and alopecia."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "NUDT15*3",
+                "variant_id": "PA166131621",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "mercaptopurine",
+                "drug_id": "PA450379",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 2,
+            "Variant/Haplotypes": "NUDT15*3",
+            "Gene": "NUDT15",
+            "Drug(s)": "thiopurines",
+            "PMID": 40099566,
+            "Phenotype Category": "dosage",
+            "Significance": "yes",
+            "Notes": "A 2014 study showed that individuals homozygous for the *3 NUDT15 mutation tolerated only 8% of the standard mercaptopurine dose prior to significant toxicity, similar to individuals who are homozygous for TPMT gene mutations.",
+            "Sentence": "Genotype *3/*3 is associated with decreased dose tolerance of thiopurines as compared to wildtype.",
+            "Alleles": "*3/*3",
+            "Specialty Population": null,
+            "Metabolizer types": "poor metabolizer",
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "decreased",
+            "PD/PK terms": "dose tolerance of",
+            "Multiple drugs And/or": null,
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "wildtype",
+            "Comparison Metabolizer types": "normal metabolizer",
+            "Citations": [
+                "We present a case of thiopurine toxicity resulting in severe myelosuppression, hepatotoxicity and alopecia in an individual with homozygous *3/*3 loss\u2010of\u2010function alleles in the NUDT15 gene.",
+                "For example, a 2014 study showed that individuals homozygous for the *3 *NUDT15* mutation tolerated only 8% of the standard mercaptopurine dose prior to significant toxicity, similar to individuals who are homozygous for *TPMT* gene mutations.",
+                "Poor metabolizers almost universally develop severe thiopurine toxicity even at 10\u2010fold dose reductions."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "NUDT15*3",
+                "variant_id": "PA166131621",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "thiopurines",
+                "drug_id": null,
+                "confidence": 0.0
+            }
+        },
+        {
+            "Variant Annotation ID": 3,
+            "Variant/Haplotypes": "TPMT*2, TPMT*3A, TPMT*3B, TPMT*3C",
+            "Gene": "TPMT",
+            "Drug(s)": "thiopurines",
+            "PMID": 40099566,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Poor metabolizers (2 loss-of-function alleles) almost universally develop severe thiopurine toxicity even at 10-fold dose reductions. Three polymorphisms (*2, *3A and *3C) account for over 90% of all intermediate and poor metabolizers.",
+            "Sentence": "TPMT poor metabolizer is associated with increased toxicity of thiopurines as compared to normal metabolizer.",
+            "Alleles": null,
+            "Specialty Population": null,
+            "Metabolizer types": "poor metabolizer",
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "toxicity of",
+            "Multiple drugs And/or": null,
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": null,
+            "Comparison Metabolizer types": "normal metabolizer",
+            "Citations": [
+                "Poor metabolizers almost universally develop severe thiopurine toxicity even at 10\u2010fold dose reductions. Three polymorphisms (*2, *3A and *3C) account for over 90% of all intermediate and poor metabolizers in the general population, and this increases to over 95% with inclusion of a fourth variant (*3B), highlighting both the practicality and potential yield of genetic screening",
+                "Mutations in the *TPMT* gene are commonly implicated in cases of severe thiopurine toxicity. These mutations are inherited in an autosomal codominant pattern, and individuals who possess 1 loss\u2010of\u2010function allele are considered intermediate metabolizers whereas individuals who possess 2 loss\u2010of\u2010function alleles are considered poor metabolizers."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "TPMT*2, TPMT*3A, TPMT*3B, TPMT*3C",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "thiopurines",
+                "drug_id": null,
+                "confidence": 0.0
+            }
+        },
+        {
+            "Variant Annotation ID": 4,
+            "Variant/Haplotypes": "TPMT*2, TPMT*3A, TPMT*3B, TPMT*3C",
+            "Gene": "TPMT",
+            "Drug(s)": "thiopurines",
+            "PMID": 40099566,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Pretreatment TPMT screening compared to weight-based dosing alone reduced the rate of adverse haematological events by 10-fold in at-risk individuals in a study of 783 individuals with inflammatory bowel disease.",
+            "Sentence": "TPMT intermediate metabolizer is associated with increased risk of adverse haematological events from thiopurines in people with inflammatory bowel disease as compared to normal metabolizer.",
+            "Alleles": null,
+            "Specialty Population": null,
+            "Metabolizer types": "intermediate metabolizer",
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of adverse haematological events from",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:Inflammatory Bowel Disease",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": null,
+            "Comparison Metabolizer types": "normal metabolizer",
+            "Citations": [
+                "Three polymorphisms (*2, *3A and *3C) account for over 90% of all intermediate and poor metabolizers in the general population, and this increases to over 95% with inclusion of a fourth variant (*3B), highlighting both the practicality and potential yield of genetic screening",
+                "Pretreatment *TPMT* screening is supported by randomized control data; 1 study consisting of 783 individuals with inflammatory bowel disease (IBD) showed that pretreatment *TPMT* screening compared to weight\u2010based dosing alone reduced the rate of adverse haematological events by 10\u2010fold in at\u2010risk individuals."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "TPMT*2, TPMT*3A, TPMT*3B, TPMT*3C",
+                "variant_id": null,
+                "confidence": 0.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "thiopurines",
+                "drug_id": null,
+                "confidence": 0.0
+            }
+        }
+    ],
+    "var_fa_ann": [],
+    "study_parameters": [
+        {
+            "Study Parameters ID": null,
+            "Variant Annotation ID": null,
+            "Study Type": "case series",
+            "Study Cases": 1,
+            "Study Controls": null,
+            "Characteristics": "41-year-old South Asian female with acute promyelocytic leukaemia treated with mercaptopurine, homozygous NUDT15 *3/*3 loss-of-function alleles",
+            "Characteristics Type": "drug",
+            "Frequency In Cases": null,
+            "Allele Of Frequency In Cases": "*3/*3",
+            "Frequency In Controls": null,
+            "Allele Of Frequency In Controls": null,
+            "P Value": "",
+            "Ratio Stat Type": "Unknown",
+            "Ratio Stat": null,
+            "Confidence Interval Start": null,
+            "Confidence Interval Stop": null,
+            "Biogeographical Groups": "Central/South Asian",
+            "Variant Annotation ID_norm": null
+        }
+    ],
+    "summary": "This case report describes a 41-year-old South Asian female with acute promyelocytic leukemia who developed severe thiopurine toxicity after starting maintenance therapy with mercaptopurine. Seven weeks after initiation, she presented with severe pancytopenia, hepatotoxicity, and extensive alopecia. Genetic testing revealed wildtype TPMT alleles but homozygous loss-of-function NUDT15 *3/*3 alleles (c.415C>T), resulting in complete loss of NUDT15 protein function. The patient required supportive care including transfusions and filgrastim, and mercaptopurine was permanently discontinued. The authors highlight that NUDT15 and TPMT are key enzymes in thiopurine metabolism that convert active thioguanine nucleotides into non-cytotoxic byproducts. Loss-of-function mutations lead to accumulation of toxic metabolites. Importantly, NUDT15 mutations are more prevalent in Asian and Hispanic populations (21% heterozygous, 2% homozygous) compared to TPMT mutations in European and African populations (10% heterozygous, 0.3% homozygous). Despite this, clinical guidelines inconsistently recommend NUDT15 testing, particularly in gastroenterology. The case emphasizes that alopecia may be an early warning sign of thiopurine toxicity and underscores the need for race-informed pharmacogenomic testing strategies.",
+    "title": "Severe myelosuppression and alopecia after thiopurine initiation in a patient with NUDT15 deficiency",
+    "pmid": "40099566",
+    "var_pheno_ann": [
+        {
+            "Variant Annotation ID": 1,
+            "Variant/Haplotypes": "NUDT15*3",
+            "Gene": "NUDT15",
+            "Drug(s)": "mercaptopurine",
+            "PMID": 40099566,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "Case report of a 41-year-old South Asian female with homozygous *3/*3 loss-of-function alleles in NUDT15 gene (c.415C > T) who developed severe myelosuppression, hepatotoxicity, and alopecia after mercaptopurine initiation. Complete loss of NUDT15 protein function resulted in severe toxicity.",
+            "Sentence": "NUDT15*3 is associated with increased risk of Side Effect:Myelosuppression, Side Effect:Hepatotoxicity, Side Effect:Alopecia when treated with mercaptopurine in people with Disease:Acute Promyelocytic Leukemia.",
+            "Alleles": "*3/*3",
+            "Specialty Population": null,
+            "Metabolizer types": "poor metabolizer",
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Myelosuppression, Side Effect:Hepatotoxicity, Side Effect:Alopecia",
+            "Multiple phenotypes And/or": "and",
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:Acute Promyelocytic Leukemia",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": null,
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "We present a case of thiopurine toxicity resulting in severe myelosuppression, hepatotoxicity and alopecia in an individual with homozygous *3/*3 loss\u2010of\u2010function alleles in the NUDT15 gene.",
+                "The patient underwent genetic testing and was found to have wildtype alleles in the thiopurine\u2010S\u2010methyltransferase (*TPMT*) gene, but homozygous loss\u2010of\u2010function alleles in the *NUDT15* gene (c.415C > T; *3/*3), resulting in complete loss of NUDT15 protein function. She was diagnosed with severe mercaptopurine toxicity secondary to an inherited NUDT15 protein deficiency, resulting in myelosuppression, hepatotoxicity and alopecia.",
+                "A 41\u2010year\u2010old South Asian female initially presented with menorrhagia and was diagnosed with high\u2010risk acute promyelocytic leukaemia (APL; PML\u2010RARA positive)."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "NUDT15*3",
+                "variant_id": "PA166131621",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "mercaptopurine",
+                "drug_id": "PA450379",
+                "confidence": 1.0
+            }
+        }
+    ],
+    "timestamp": "2025-12-16T11:45:58.285333",
+    "prompts_used": {
+        "var-drug": "var-drug-v2",
+        "var-fa": "improved_v2",
+        "study-parameters": "study-parameters-v4",
+        "summary": "basic",
+        "var-pheno": "var-pheno-v6"
+    },
+    "term_mappings": {
+        "NUDT15*3": {
+            "raw_input": "NUDT15*3",
+            "id": "PA166131621",
+            "normalized_term": "NUDT15*3",
+            "url": "https://www.clinpgx.org/haplotype/PA166131621",
+            "score": 1.0
+        },
+        "mercaptopurine": {
+            "raw_input": "mercaptopurine",
+            "id": "PA450379",
+            "normalized_term": "mercaptopurine",
+            "url": "https://www.clinpgx.org/chemical/PA450379",
+            "score": 1.0
+        }
+    }
+}

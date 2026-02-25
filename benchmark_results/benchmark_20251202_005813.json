@@ -1,0 +1,4892 @@
+{
+  "timestamp": "2025-12-02T00:58:13.423009",
+  "pmcid": "PMC5561238",
+  "source_file": "PMC5561238.json",
+  "source_timestamp": "2025-12-02T00:57:38.805693",
+  "prompts_used": {
+    "var-fa": "improved_v2",
+    "study-parameters": "study-parameters-v2",
+    "var-pheno": "var-pheno-v5",
+    "var-drug": "improved_v1",
+    "summary": "basic"
+  },
+  "results": {
+    "var-pheno": {
+      "overall_score": 0.1466504037957783,
+      "field_scores": {
+        "Variant/Haplotypes": {
+          "mean_score": 0.16279069767441862,
+          "scores": [
+            1.0,
+            1.0,
+            0.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Gene": {
+          "mean_score": 0.18528694191644357,
+          "scores": [
+            1.0,
+            1.0,
+            0.967338502407074,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Drug(s)": {
+          "mean_score": 0.18604651162790697,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Phenotype Category": {
+          "mean_score": 0.18604651162790697,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Alleles": {
+          "mean_score": 0.18540432425432427,
+          "scores": [
+            1.0,
+            1.0,
+            0.9723859429359436,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Is/Is Not associated": {
+          "mean_score": 0.18604651162790697,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Direction of effect": {
+          "mean_score": 0.06976744186046512,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Phenotype": {
+          "mean_score": 0.17146152257919312,
+          "scores": [
+            0.9217570424079895,
+            0.9205461740493774,
+            0.9217570424079895,
+            0.9217570424079895,
+            0.9217570424079895,
+            0.9217570424079895,
+            0.9217570424079895,
+            0.9217570424079895,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "When treated with/exposed to/when assayed with": {
+          "mean_score": 0.18604651162790697,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Comparison Allele(s) or Genotype(s)": {
+          "mean_score": 0.0,
+          "scores": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "total_samples": 43,
+      "detailed_results": [
+        {
+          "sample_id": 0,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 1.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 1.0,
+            "Phenotype": 0.9217570424079895,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-B*15:01",
+              "prediction": "HLA-B*15:01"
+            },
+            "Gene": {
+              "ground_truth": "HLA-B",
+              "prediction": "HLA-B"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*15:01",
+              "prediction": "*15:01"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "decreased",
+              "prediction": "decreased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 1,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 1.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 1.0,
+            "Phenotype": 0.9205461740493774,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-B*52:01",
+              "prediction": "HLA-B*52:01"
+            },
+            "Gene": {
+              "ground_truth": "HLA-B",
+              "prediction": "HLA-B"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*52:01",
+              "prediction": "*52:01"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "decreased",
+              "prediction": "decreased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Severe Cutaneous Adverse Reactions, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 2,
+          "field_scores": {
+            "Variant/Haplotypes": 0.0,
+            "Gene": 0.967338502407074,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 0.9723859429359436,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 1.0,
+            "Phenotype": 0.9217570424079895,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-B*15:01",
+              "prediction": "HLA-DRB1*04:01"
+            },
+            "Gene": {
+              "ground_truth": "HLA-B",
+              "prediction": "HLA-DRB1"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*15:01",
+              "prediction": "*04:01"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": "decreased",
+              "prediction": "decreased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 3,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 1.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.9217570424079895,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-C*05:01",
+              "prediction": "HLA-C*05:01"
+            },
+            "Gene": {
+              "ground_truth": "HLA-C",
+              "prediction": "HLA-C"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*05:01",
+              "prediction": "*05:01"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": null,
+              "prediction": "increased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 4,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 1.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.9217570424079895,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-B*35:05",
+              "prediction": "HLA-B*35:05"
+            },
+            "Gene": {
+              "ground_truth": "HLA-B",
+              "prediction": "HLA-B"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*35:05",
+              "prediction": "*35:05"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": null,
+              "prediction": "increased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 5,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 1.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.9217570424079895,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-DRB1*01:01",
+              "prediction": "HLA-DRB1*01:01"
+            },
+            "Gene": {
+              "ground_truth": "HLA-DRB1",
+              "prediction": "HLA-DRB1"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*01:01",
+              "prediction": "*01:01"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": null,
+              "prediction": "increased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 6,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 1.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.9217570424079895,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-C*04:01",
+              "prediction": "HLA-C*04:01"
+            },
+            "Gene": {
+              "ground_truth": "HLA-C",
+              "prediction": "HLA-C"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*04:01",
+              "prediction": "*04:01"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": null,
+              "prediction": "increased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        },
+        {
+          "sample_id": 7,
+          "field_scores": {
+            "Variant/Haplotypes": 1.0,
+            "Gene": 1.0,
+            "Drug(s)": 1.0,
+            "Phenotype Category": 1.0,
+            "Alleles": 1.0,
+            "Is/Is Not associated": 1.0,
+            "Direction of effect": 0.0,
+            "Phenotype": 0.9217570424079895,
+            "When treated with/exposed to/when assayed with": 1.0,
+            "Comparison Allele(s) or Genotype(s)": 0.0
+          },
+          "field_values": {
+            "Variant/Haplotypes": {
+              "ground_truth": "HLA-C*18:01",
+              "prediction": "HLA-C*18:01"
+            },
+            "Gene": {
+              "ground_truth": "HLA-C",
+              "prediction": "HLA-C"
+            },
+            "Drug(s)": {
+              "ground_truth": "nevirapine",
+              "prediction": "nevirapine"
+            },
+            "Phenotype Category": {
+              "ground_truth": "Toxicity",
+              "prediction": "toxicity"
+            },
+            "Alleles": {
+              "ground_truth": "*18:01",
+              "prediction": "*18:01"
+            },
+            "Is/Is Not associated": {
+              "ground_truth": "Associated with",
+              "prediction": "Associated with"
+            },
+            "Direction of effect": {
+              "ground_truth": null,
+              "prediction": "increased"
+            },
+            "Phenotype": {
+              "ground_truth": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+              "prediction": "Side Effect:Cutaneous Nevirapine Hypersensitivity"
+            },
+            "When treated with/exposed to/when assayed with": {
+              "ground_truth": "when treated with",
+              "prediction": "when treated with"
+            },
+            "Comparison Allele(s) or Genotype(s)": {
+              "ground_truth": null,
+              "prediction": "non-carriers"
+            }
+          },
+          "dependency_issues": []
+        }
+      ],
+      "aligned_variants": [
+        "PA165957192",
+        "PA165955262",
+        "PA165954745",
+        "PA165951320",
+        "PA165956366",
+        "PA165957046",
+        "PA165958003",
+        "hla-drb1+nevirapine"
+      ],
+      "unmatched_ground_truth": [
+        {
+          "Variant Annotation ID": 1448926055,
+          "Variant/Haplotypes": "HLA-B*67:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *67:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*67:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926055",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*67:01",
+            "variant_id": "PA165956680",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926065,
+          "Variant/Haplotypes": "HLA-B*78:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *78:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*78:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926065",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*78:01",
+            "variant_id": "PA165956686",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448925992,
+          "Variant/Haplotypes": "HLA-B*51:02",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *51:02 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*51:02",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448925992",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*51:02",
+            "variant_id": "PA165956231",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926045,
+          "Variant/Haplotypes": "HLA-B*56:06",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *56:06 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*56:06",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926045",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*56:06",
+            "variant_id": "PA165956537",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926109,
+          "Variant/Haplotypes": "HLA-B*39:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *39:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*39:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926109",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*39:01",
+            "variant_id": "PA165955543",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448925913,
+          "Variant/Haplotypes": "HLA-C*05:09",
+          "Gene": "HLA-C",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Primary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-C alleles that share a common \"binding groove F pocket\" with HLA-C*04:01. The authors do not distinguish between the following HLA-C alleles, which is why the OR is the same: HLA-C*04:03/06/07, HLA-C*05:01/09, HLA-C*18:0.",
+          "Sentence": "HLA-C *05:09 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*05:09",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448925913",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-C*05:09",
+            "variant_id": "PA165957217",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926229,
+          "Variant/Haplotypes": "HLA-B*15:32",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk protection to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-B*15:01/12/24/25/27/32/35, HLA-B*52:01",
+          "Sentence": "HLA-B *15:32 is associated with decreased risk of Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*15:32",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": "decreased",
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926229",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*15:32",
+            "variant_id": "PA165954823",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448925982,
+          "Variant/Haplotypes": "HLA-B*51:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *51:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*51:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448925982",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*51:01",
+            "variant_id": "PA165956201",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926239,
+          "Variant/Haplotypes": "HLA-B*15:35",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk protection to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-B*15:01/12/24/25/27/32/35, HLA-B*52:01",
+          "Sentence": "HLA-B *15:35 is associated with decreased risk of Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*15:35",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": "decreased",
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926239",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*15:35",
+            "variant_id": "PA165954826",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926169,
+          "Variant/Haplotypes": "HLA-B*15:12",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk protection to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-B*15:01/12/24/25/27/32/35, HLA-B*52:01",
+          "Sentence": "HLA-B *15:12 is associated with decreased risk of Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*15:12",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": "decreased",
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926169",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*15:12",
+            "variant_id": "PA165954792",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448925972,
+          "Variant/Haplotypes": "HLA-B*39:10",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *39:10 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*39:10",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448925972",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*39:10",
+            "variant_id": "PA165955566",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926099,
+          "Variant/Haplotypes": "HLA-B*38:02",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *38:02 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*38:02",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926099",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*38:02",
+            "variant_id": "PA165955505",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926089,
+          "Variant/Haplotypes": "HLA-B*38:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *38:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*38:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926089",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*38:01",
+            "variant_id": "PA165955500",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926289,
+          "Variant/Haplotypes": "HLA-DRB1*04:04",
+          "Gene": "HLA-DRB1",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk of severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-DRB1*01:01/02/03, HLA-DRB1*04:04/05/08/10",
+          "Sentence": "HLA-DRB1 *04:04 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*04:04",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926289",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-DRB1*04:04",
+            "variant_id": "PA165951511",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926035,
+          "Variant/Haplotypes": "HLA-B*56:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *56:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*56:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926035",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*56:01",
+            "variant_id": "PA165956528",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926269,
+          "Variant/Haplotypes": "HLA-DRB1*01:02",
+          "Gene": "HLA-DRB1",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk of severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-DRB1*01:01/02/03, HLA-DRB1*04:04/05/08/10",
+          "Sentence": "HLA-DRB1 *01:02 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*01:02",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926269",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-DRB1*01:02",
+            "variant_id": "PA165951340",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926139,
+          "Variant/Haplotypes": "HLA-B*39:09",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *39:09 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*39:09",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926139",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*39:09",
+            "variant_id": "PA165955565",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926209,
+          "Variant/Haplotypes": "HLA-B*15:27",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk protection to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-B*15:01/12/24/25/27/32/35, HLA-B*52:01",
+          "Sentence": "HLA-B *15:27 is associated with decreased risk of Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*15:27",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": "decreased",
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926209",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*15:27",
+            "variant_id": "PA165954816",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448998275,
+          "Variant/Haplotypes": "HLA-B*35:10",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-B*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *35:10 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Severe Cutaneous Adverse Reactions and Drug Reaction with Eosinophilia and Systemic Symptoms when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*35:10",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Severe Cutaneous Adverse Reactions, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+          "Multiple phenotypes And/or": "and",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448998275",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*35:10",
+            "variant_id": "PA165955274",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448925883,
+          "Variant/Haplotypes": "HLA-C*04:06",
+          "Gene": "HLA-C",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Primary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-C alleles that share a common \"binding groove F pocket\" with HLA-C*04:01. The authors do not distinguish between the following HLA-C alleles, which is why the OR is the same: HLA-C*04:03/06/07, HLA-C*05:01/09, HLA-C*18:0.",
+          "Sentence": "HLA-C *04:06 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*04:06",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448925883",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-C*04:06",
+            "variant_id": "PA165957089",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926149,
+          "Variant/Haplotypes": "HLA-B*57:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *57:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*57:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926149",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*57:01",
+            "variant_id": "PA165987830",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448925893,
+          "Variant/Haplotypes": "HLA-C*04:07",
+          "Gene": "HLA-C",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Primary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-C alleles that share a common \"binding groove F pocket\" with HLA-C*04:01. The authors do not distinguish between the following HLA-C alleles, which is why the OR is the same: HLA-C*04:03/06/07, HLA-C*05:01/09, HLA-C*18:0.",
+          "Sentence": "HLA-C *04:07 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Severe Cutaneous Adverse Reactions or Drug Reaction with Eosinophilia and Systemic Symptoms when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*04:07",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Severe Cutaneous Adverse Reactions, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448925893",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-C*04:07",
+            "variant_id": "PA165957090",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926022,
+          "Variant/Haplotypes": "HLA-B*55:02",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *55:02 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*55:02",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926022",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*55:02",
+            "variant_id": "PA165956471",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926279,
+          "Variant/Haplotypes": "HLA-DRB1*01:03",
+          "Gene": "HLA-DRB1",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk of severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-DRB1*01:01/02/03, HLA-DRB1*04:04/05/08/10",
+          "Sentence": "HLA-DRB1 *01:03 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*01:03",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926279",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-DRB1*01:03",
+            "variant_id": "PA165951348",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926012,
+          "Variant/Haplotypes": "HLA-B*55:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *55:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*55:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926012",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*55:01",
+            "variant_id": "PA165956463",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926075,
+          "Variant/Haplotypes": "HLA-B*13:02",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *13:02 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*13:02",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926075",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*13:02",
+            "variant_id": "PA165954649",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926199,
+          "Variant/Haplotypes": "HLA-B*15:25",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk protection to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-B*15:01/12/24/25/27/32/35, HLA-B*52:01",
+          "Sentence": "HLA-B *15:25 is associated with decreased risk of Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*15:25",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": "decreased",
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926199",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*15:25",
+            "variant_id": "PA165954812",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926129,
+          "Variant/Haplotypes": "HLA-B*39:06",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *39:06 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*39:06",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926129",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*39:06",
+            "variant_id": "PA165955561",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448925873,
+          "Variant/Haplotypes": "HLA-C*04:03",
+          "Gene": "HLA-C",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Primary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-C alleles that share a common \"binding groove F pocket\" with HLA-C*04:01. The authors do not distinguish between the following HLA-C alleles, which is why the OR is the same: HLA-C*04:03/06/07, HLA-C*05:01/09, HLA-C*18:0.",
+          "Sentence": "HLA-C *04:03 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*04:03",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448925873",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-C*04:03",
+            "variant_id": "PA165957085",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926002,
+          "Variant/Haplotypes": "HLA-B*54:01",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles that share a common \"E pocket sequence\". The authors do not distinguish between the following HLA-B alleles, which is why the OR is the same: HLA-N*35:05, HLA-B*39:10, HLA-B*51:01/02, HLA-B*54:01, HLA-B*55:01/02, HLA-B*56:01/06, HLA-B*67:01, HLA-B*78:01.",
+          "Sentence": "HLA-B *54:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*54:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926002",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*54:01",
+            "variant_id": "PA165956438",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926309,
+          "Variant/Haplotypes": "HLA-DRB1*10:01",
+          "Gene": "HLA-DRB1",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk of severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-DRB1*01:01/02/03, HLA-DRB1*04:04/05/08/10",
+          "Sentence": "HLA-DRB1 *10:01 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms and Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*10:01",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "and",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926309",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-DRB1*10:01",
+            "variant_id": "PA165951757",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926119,
+          "Variant/Haplotypes": "HLA-B*39:05",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary predisposition to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine is attributed to a cluster of HLA-B alleles which the authors do not distinguish between and is why the OR is the same for the following: HLA-B*13:02, HLA-B*38:01/02, HLA-B*39:01/05/06/09, HLA-B*51:07.",
+          "Sentence": "HLA-B *39:05 is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*39:05",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926119",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*39:05",
+            "variant_id": "PA165955559",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1448926179,
+          "Variant/Haplotypes": "HLA-B*15:24",
+          "Gene": "HLA-B",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "Secondary risk protection to severe adverse cutaneous reactions/hypersensitivity (SACR/H) to nevirapine are attributed to several alleles and does not distinguish between them which is why ORs are the same: HLA-B*15:01/12/24/25/27/32/35, HLA-B*52:01",
+          "Sentence": "HLA-B *15:24 is associated with decreased risk of Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms or Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections.",
+          "Alleles": "*15:24",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": "decreased",
+          "Side effect/efficacy/other": "risk of",
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "or",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": null,
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1448926179",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "HLA-B*15:24",
+            "variant_id": "PA165954811",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1449155757,
+          "Variant/Haplotypes": "rs28399499",
+          "Gene": "CYP2B6",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "The authors analyze rs28399499 T>C and rs3745274 G>A/T together as \"slow metabolizer\" genotypes.",
+          "Sentence": "Allele C is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome, Drug Reaction with Eosinophilia and Systemic Symptoms and Severe Cutaneous Adverse Reactions when treated with nevirapine in people with HIV Infections as compared to allele T.",
+          "Alleles": "C",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms, Side Effect:Severe Cutaneous Adverse Reactions",
+          "Multiple phenotypes And/or": "and",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": "T",
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1449155757",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "rs28399499",
+            "variant_id": "PA166155478",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        },
+        {
+          "Variant Annotation ID": 1449155771,
+          "Variant/Haplotypes": "rs3745274",
+          "Gene": "CYP2B6",
+          "Drug(s)": "nevirapine",
+          "PMID": 28819312,
+          "Phenotype Category": "Toxicity",
+          "Significance": "not stated",
+          "Notes": "The authors analyze rs28399499 T>C and rs3745274 G>A/T together as \"slow metabolizer\" genotypes.",
+          "Sentence": "Allele T is associated with Epidermal Necrolysis, Toxic, Stevens-Johnson Syndrome and Drug Reaction with Eosinophilia and Systemic Symptoms when treated with nevirapine in people with HIV Infections as compared to allele G.",
+          "Alleles": "T",
+          "Specialty Population": null,
+          "Metabolizer types": null,
+          "isPlural": "Is",
+          "Is/Is Not associated": "Associated with",
+          "Direction of effect": null,
+          "Side effect/efficacy/other": null,
+          "Phenotype": "Side Effect:Toxic Epidermal Necrolysis, Side Effect:Stevens-Johnson Syndrome, Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+          "Multiple phenotypes And/or": "and",
+          "When treated with/exposed to/when assayed with": "when treated with",
+          "Multiple drugs And/or": null,
+          "Population types": "in people with",
+          "Population Phenotypes or diseases": "Disease:HIV infectious disease",
+          "Multiple phenotypes or diseases And/or": null,
+          "Comparison Allele(s) or Genotype(s)": "G",
+          "Comparison Metabolizer types": null,
+          "PMID_norm": "28819312",
+          "Variant Annotation ID_norm": "1449155771",
+          "Variant/Haplotypes_normalized": {
+            "normalized": "rs3745274",
+            "variant_id": "PA166155409",
+            "confidence": 1.0
+          },
+          "Drug(s)_normalized": {
+            "normalized": "nevirapine",
+            "drug_id": "PA450616",
+            "confidence": 1.0
+          }
+        }
+      ],
+      "unmatched_predictions": []
+    },
+    "study-parameters": {
+      "overall_score": 0.18830331652663473,
+      "field_scores": {
+        "Study Type": {
+          "mean_score": 0.27906976744186046,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Study Cases": {
+          "mean_score": 0.13953488372093023,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Study Controls": {
+          "mean_score": 0.13953488372093023,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Characteristics": {
+          "mean_score": 0.2408288176669631,
+          "scores": [
+            0.8719868063926697,
+            0.8619092702865601,
+            0.8563389182090759,
+            0.8571669459342957,
+            0.84229975938797,
+            0.8723993301391602,
+            0.8657593131065369,
+            0.8593794703483582,
+            0.8674772381782532,
+            0.871196985244751,
+            0.8681959509849548,
+            0.8615291714668274,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Characteristics Type": {
+          "mean_score": 0.0,
+          "scores": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Frequency In Cases": {
+          "mean_score": 0.27906976744186046,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Allele Of Frequency In Cases": {
+          "mean_score": 0.27906976744186046,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Frequency In Controls": {
+          "mean_score": 0.27906976744186046,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Allele Of Frequency In Controls": {
+          "mean_score": 0.27906976744186046,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "P Value": {
+          "mean_score": 0.09302325581395349,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Ratio Stat Type": {
+          "mean_score": 0.27906976744186046,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Ratio Stat": {
+          "mean_score": 0.1930232558139535,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.9,
+            0.8,
+            0.9,
+            0.9,
+            0.8,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Confidence Interval Start": {
+          "mean_score": 0.11162790697674418,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.8,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Confidence Interval Stop": {
+          "mean_score": 0.09302325581395349,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "Biogeographical Groups": {
+          "mean_score": 0.13953488372093023,
+          "scores": [
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            1.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ]
+        }
+      },
+      "total_samples": 43,
+      "detailed_results": [
+        {
+          "sample_id": 0,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8719868063926697,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 1.0,
+            "Confidence Interval Start": 1.0,
+            "Confidence Interval Stop": 1.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448926231,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448926229,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": 151.0
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": 413.0
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of protective HLA-B alleles (HLA-B*15:(01/12/24/25/27/32/35), -B*52:01) among HIV-1-infected adults initiating nevirapine-containing therapy (multivariate model)"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": ""
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 0.18,
+              "prediction": 0.18
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 0.07,
+              "prediction": 0.07
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 0.46,
+              "prediction": 0.46
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "Multiple Groups"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 1,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8619092702865601,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 1.0,
+            "Confidence Interval Start": 1.0,
+            "Confidence Interval Stop": 1.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448925915,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448925913,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": 151.0
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": 413.0
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of other risk F pocket HLA-C alleles (HLA-C*04:03/06/07, -C*05:01/09, -C*18:01) among HIV-1-infected adults initiating nevirapine-containing therapy (multivariate model)"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": ""
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.91,
+              "prediction": 2.91
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.62,
+              "prediction": 1.62
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 5.23,
+              "prediction": 5.23
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "Multiple Groups"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 2,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8563389182090759,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 1.0,
+            "Confidence Interval Start": 1.0,
+            "Confidence Interval Stop": 1.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448926301,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448926299,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": 151.0
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": 413.0
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843",
+              "prediction": "Carriage of risk HLA-DRB1 alleles (HLA-DRB1*01:(01/02/03), -DRB1*04:(04/05/08/10)) among HIV-1-infected adults initiating nevirapine-containing therapy (multivariate model)"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": ""
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.0,
+              "prediction": 2.0
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.23,
+              "prediction": 1.23
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 3.24,
+              "prediction": 3.24
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "Multiple Groups"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 3,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8571669459342957,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 1.0,
+            "Confidence Interval Start": 1.0,
+            "Confidence Interval Stop": 1.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448925872,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448925862,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": 151.0
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": 413.0
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843",
+              "prediction": "Carriage of HLA-C*04:01 among HIV-1-infected adults initiating nevirapine-containing therapy (multivariate logistic regression, adjusted for ancestry and other factors)"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": "= 1.0E-4",
+              "prediction": ""
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 4.06,
+              "prediction": 4.06
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 2.39,
+              "prediction": 2.39
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 6.88,
+              "prediction": 6.88
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "Multiple Groups"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 4,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.84229975938797,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 1.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.9,
+            "Confidence Interval Start": 0.8,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448926291,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448926289,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": 151.0
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": 413.0
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843",
+              "prediction": "Slow CYP2B6 metabolizer genotype (516G\u2192T and 983T\u2192C) among HIV-1-infected adults initiating nevirapine-containing therapy (multivariate model)"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": ""
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.0,
+              "prediction": 2.07
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.23,
+              "prediction": 1.12
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 3.24,
+              "prediction": 3.82
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "Multiple Groups"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 5,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 1.0,
+            "Study Controls": 1.0,
+            "Characteristics": 0.8723993301391602,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.8,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 1.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448925905,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448925903,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": 151.0
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": 413.0
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of HLA-C*04:01 vs non-carriage among HIV-1-infected adults initiating nevirapine-containing therapy; cases with severe cutaneous hypersensitivity reaction (grade 3/4)"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": "= 0.0001"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.91,
+              "prediction": 3.06
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.62,
+              "prediction": null
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 5.23,
+              "prediction": null
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "Multiple Groups"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 6,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 0.0,
+            "Study Controls": 0.0,
+            "Characteristics": 0.8657593131065369,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.9,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 0.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448925885,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448925883,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": null
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of HLA-C*05:01 vs non-carriage among Caucasian (European/Hispanic) HIV-1-infected adults initiating nevirapine-containing therapy; cutaneous HSR"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": "= 0.002"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.91,
+              "prediction": 2.84
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.62,
+              "prediction": null
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 5.23,
+              "prediction": null
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 7,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 0.0,
+            "Study Controls": 0.0,
+            "Characteristics": 0.8593794703483582,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.9,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 0.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448926271,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448926269,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": null
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843",
+              "prediction": "Carriage of HLA-C*04:01 vs non-carriage among Caucasian (European/Hispanic) HIV-1-infected adults initiating nevirapine-containing therapy; cutaneous HSR"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": "= 0.02"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.0,
+              "prediction": 2.08
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.23,
+              "prediction": null
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 3.24,
+              "prediction": null
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "European"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 8,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 0.0,
+            "Study Controls": 0.0,
+            "Characteristics": 0.8674772381782532,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.8,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 0.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448925895,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448925893,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": null
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of HLA-C*18:01 vs non-carriage among African-ancestry HIV-1-infected adults initiating nevirapine-containing therapy; cutaneous HSR"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": "= 0.2"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.91,
+              "prediction": 2.67
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.62,
+              "prediction": null
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 5.23,
+              "prediction": null
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "African America/Afro-Caribbean"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 9,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 0.0,
+            "Study Controls": 0.0,
+            "Characteristics": 0.871196985244751,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 0.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448926057,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448926055,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": null
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of HLA-C*04:01 vs non-carriage among African American HIV-1-infected adults initiating nevirapine-containing therapy; cutaneous HSR"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": "= 0.04"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.32,
+              "prediction": 3.84
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.42,
+              "prediction": null
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 3.79,
+              "prediction": null
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "African America/Afro-Caribbean"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 10,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 0.0,
+            "Study Controls": 0.0,
+            "Characteristics": 0.8681959509849548,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 0.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448926067,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448926065,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": null
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of HLA-C*18:01 compared to non-HLA-C*04:01/*-C*18:01 carriers among African-ancestry HIV-1-infected adults initiating nevirapine-containing therapy; cutaneous HSR"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": "= 0.06"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.32,
+              "prediction": 4.71
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.42,
+              "prediction": null
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 3.79,
+              "prediction": null
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "African America/Afro-Caribbean"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        },
+        {
+          "sample_id": 11,
+          "field_scores": {
+            "Study Parameters ID": 0.0,
+            "Variant Annotation ID": 0.0,
+            "Study Type": 1.0,
+            "Study Cases": 0.0,
+            "Study Controls": 0.0,
+            "Characteristics": 0.8615291714668274,
+            "Characteristics Type": 0.0,
+            "Frequency In Cases": 1.0,
+            "Allele Of Frequency In Cases": 1.0,
+            "Frequency In Controls": 1.0,
+            "Allele Of Frequency In Controls": 1.0,
+            "P Value": 0.0,
+            "Ratio Stat Type": 1.0,
+            "Ratio Stat": 0.0,
+            "Confidence Interval Start": 0.0,
+            "Confidence Interval Stop": 0.0,
+            "Biogeographical Groups": 0.0
+          },
+          "field_values": {
+            "Study Parameters ID": {
+              "ground_truth": 1448925994,
+              "prediction": null
+            },
+            "Variant Annotation ID": {
+              "ground_truth": 1448925992,
+              "prediction": null
+            },
+            "Study Type": {
+              "ground_truth": "case/control",
+              "prediction": "case/control"
+            },
+            "Study Cases": {
+              "ground_truth": 151.0,
+              "prediction": null
+            },
+            "Study Controls": {
+              "ground_truth": 413.0,
+              "prediction": null
+            },
+            "Characteristics": {
+              "ground_truth": "NCT00310843)",
+              "prediction": "Carriage of HLA-C*04:01 vs non-carriage among Asian (East Asian) HIV-1-infected adults initiating nevirapine-containing therapy; cutaneous HSR"
+            },
+            "Characteristics Type": {
+              "ground_truth": "Study Cohort",
+              "prediction": "drug"
+            },
+            "Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Cases": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "Allele Of Frequency In Controls": {
+              "ground_truth": null,
+              "prediction": null
+            },
+            "P Value": {
+              "ground_truth": null,
+              "prediction": "= 0.0001"
+            },
+            "Ratio Stat Type": {
+              "ground_truth": "OR",
+              "prediction": "OR"
+            },
+            "Ratio Stat": {
+              "ground_truth": 2.32,
+              "prediction": 5.49
+            },
+            "Confidence Interval Start": {
+              "ground_truth": 1.42,
+              "prediction": null
+            },
+            "Confidence Interval Stop": {
+              "ground_truth": 3.79,
+              "prediction": null
+            },
+            "Biogeographical Groups": {
+              "ground_truth": "Multiple groups",
+              "prediction": "East Asian"
+            }
+          },
+          "dependency_issues": [],
+          "penalty_info": {
+            "total_penalty": 0.0,
+            "penalized_fields": {},
+            "issues_by_field": {}
+          }
+        }
+      ],
+      "aligned_variants": [
+        "case/control:NCT00310843)",
+        "case/control:NCT00310843)",
+        "case/control:NCT00310843",
+        "case/control:NCT00310843",
+        "case/control:NCT00310843",
+        "case/control:NCT00310843)",
+        "case/control:NCT00310843)",
+        "case/control:NCT00310843",
+        "case/control:NCT00310843)",
+        "case/control:NCT00310843)",
+        "case/control:NCT00310843)",
+        "case/control:NCT00310843)"
+      ],
+      "unmatched_ground_truth": [
+        {
+          "Study Parameters ID": 1448926047,
+          "Variant Annotation ID": 1448926045,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926045"
+        },
+        {
+          "Study Parameters ID": 1448926111,
+          "Variant Annotation ID": 1448926109,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926109"
+        },
+        {
+          "Study Parameters ID": 1448925984,
+          "Variant Annotation ID": 1448925982,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448925982"
+        },
+        {
+          "Study Parameters ID": 1448926241,
+          "Variant Annotation ID": 1448926239,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 0.18,
+          "Confidence Interval Start": 0.07,
+          "Confidence Interval Stop": 0.46,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926239"
+        },
+        {
+          "Study Parameters ID": 1448926171,
+          "Variant Annotation ID": 1448926169,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 0.18,
+          "Confidence Interval Start": 0.07,
+          "Confidence Interval Stop": 0.46,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926169"
+        },
+        {
+          "Study Parameters ID": 1448925974,
+          "Variant Annotation ID": 1448925972,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448925972"
+        },
+        {
+          "Study Parameters ID": 1448926101,
+          "Variant Annotation ID": 1448926099,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926099"
+        },
+        {
+          "Study Parameters ID": 1448926091,
+          "Variant Annotation ID": 1448926089,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926089"
+        },
+        {
+          "Study Parameters ID": 1448926037,
+          "Variant Annotation ID": 1448926035,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926035"
+        },
+        {
+          "Study Parameters ID": 1448925960,
+          "Variant Annotation ID": 1448925958,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448925958"
+        },
+        {
+          "Study Parameters ID": 1448926141,
+          "Variant Annotation ID": 1448926139,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926139"
+        },
+        {
+          "Study Parameters ID": 1448926161,
+          "Variant Annotation ID": 1448926159,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 0.18,
+          "Confidence Interval Start": 0.07,
+          "Confidence Interval Stop": 0.46,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926159"
+        },
+        {
+          "Study Parameters ID": 1448926211,
+          "Variant Annotation ID": 1448926209,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 0.18,
+          "Confidence Interval Start": 0.07,
+          "Confidence Interval Stop": 0.46,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926209"
+        },
+        {
+          "Study Parameters ID": 1448998277,
+          "Variant Annotation ID": 1448998275,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448998275"
+        },
+        {
+          "Study Parameters ID": 1448926151,
+          "Variant Annotation ID": 1448926149,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926149"
+        },
+        {
+          "Study Parameters ID": 1448926024,
+          "Variant Annotation ID": 1448926022,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926022"
+        },
+        {
+          "Study Parameters ID": 1448926281,
+          "Variant Annotation ID": 1448926279,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.0,
+          "Confidence Interval Start": 1.23,
+          "Confidence Interval Stop": 3.24,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926279"
+        },
+        {
+          "Study Parameters ID": 1448926014,
+          "Variant Annotation ID": 1448926012,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926012"
+        },
+        {
+          "Study Parameters ID": 1448926077,
+          "Variant Annotation ID": 1448926075,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926075"
+        },
+        {
+          "Study Parameters ID": 1448926201,
+          "Variant Annotation ID": 1448926199,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 0.18,
+          "Confidence Interval Start": 0.07,
+          "Confidence Interval Stop": 0.46,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926199"
+        },
+        {
+          "Study Parameters ID": 1448926131,
+          "Variant Annotation ID": 1448926129,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926129"
+        },
+        {
+          "Study Parameters ID": 1448925875,
+          "Variant Annotation ID": 1448925873,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.91,
+          "Confidence Interval Start": 1.62,
+          "Confidence Interval Stop": 5.23,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448925873"
+        },
+        {
+          "Study Parameters ID": 1448926004,
+          "Variant Annotation ID": 1448926002,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.32,
+          "Confidence Interval Start": 1.42,
+          "Confidence Interval Stop": 3.79,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926002"
+        },
+        {
+          "Study Parameters ID": 1448926261,
+          "Variant Annotation ID": 1448926259,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.0,
+          "Confidence Interval Start": 1.23,
+          "Confidence Interval Stop": 3.24,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926259"
+        },
+        {
+          "Study Parameters ID": 1448926251,
+          "Variant Annotation ID": 1448926249,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 0.18,
+          "Confidence Interval Start": 0.07,
+          "Confidence Interval Stop": 0.46,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926249"
+        },
+        {
+          "Study Parameters ID": 1448926311,
+          "Variant Annotation ID": 1448926309,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.0,
+          "Confidence Interval Start": 1.23,
+          "Confidence Interval Stop": 3.24,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926309"
+        },
+        {
+          "Study Parameters ID": 1448926121,
+          "Variant Annotation ID": 1448926119,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 1.76,
+          "Confidence Interval Start": 1.02,
+          "Confidence Interval Stop": 3.02,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926119"
+        },
+        {
+          "Study Parameters ID": 1448925925,
+          "Variant Annotation ID": 1448925923,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.91,
+          "Confidence Interval Start": 1.62,
+          "Confidence Interval Stop": 5.23,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448925923"
+        },
+        {
+          "Study Parameters ID": 1448926181,
+          "Variant Annotation ID": 1448926179,
+          "Study Type": "case/control",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "NCT00310843)",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 0.18,
+          "Confidence Interval Start": 0.07,
+          "Confidence Interval Stop": 0.46,
+          "Biogeographical Groups": "Multiple groups",
+          "Variant Annotation ID_norm": "1448926179"
+        },
+        {
+          "Study Parameters ID": 1449155766,
+          "Variant Annotation ID": 1449155757,
+          "Study Type": "case/control, clinical trial",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "Study Cohort: NCT00310843",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.07,
+          "Confidence Interval Start": 1.12,
+          "Confidence Interval Stop": 3.82,
+          "Biogeographical Groups": "Unknown",
+          "Variant Annotation ID_norm": "1449155757"
+        },
+        {
+          "Study Parameters ID": 1449155773,
+          "Variant Annotation ID": 1449155771,
+          "Study Type": "case/control, clinical trial",
+          "Study Cases": 151.0,
+          "Study Controls": 413.0,
+          "Characteristics": "Study Cohort: NCT00310843",
+          "Characteristics Type": "Study Cohort",
+          "Frequency In Cases": null,
+          "Allele Of Frequency In Cases": null,
+          "Frequency In Controls": null,
+          "Allele Of Frequency In Controls": null,
+          "P Value": null,
+          "Ratio Stat Type": "OR",
+          "Ratio Stat": 2.07,
+          "Confidence Interval Start": 1.12,
+          "Confidence Interval Stop": 3.82,
+          "Biogeographical Groups": "Unknown",
+          "Variant Annotation ID_norm": "1449155771"
+        }
+      ],
+      "unmatched_predictions": []
+    }
+  },
+  "metadata": {
+    "ground_truth_file": "persistent_data/benchmark_annotations.json",
+    "total_tasks": 2,
+    "average_score": 0.16692879552001103,
+    "tasks_with_errors": 0
+  }
+}

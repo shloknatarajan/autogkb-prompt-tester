@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Prompt, BestPrompts } from '../types';
-import { randomInt } from 'crypto';
 
 const DEFAULT_CITATION_PROMPT = `You are analyzing a genetic variant annotation. Your task is to find direct quotes from the article text that support this specific annotation.
 
@@ -65,7 +64,7 @@ export function usePrompts() {
             task: savedPrompt.task || 'Default',
             name: savedPrompt.name || `Prompt ${index + 1}`,
             prompt: savedPrompt.prompt || '',
-            model: savedPrompt.model || 'gpt-4o-mini',
+            model: savedPrompt.model || 'openai/gpt-4o-mini',
             responseFormat: savedPrompt.response_format
               ? JSON.stringify(savedPrompt.response_format, null, 2)
               : '',
@@ -139,7 +138,7 @@ export function usePrompts() {
       task: selectedTask,
       name: `Prompt ${taskPrompts.length + 1}`,
       prompt: '',
-      model: 'gpt-4o-mini',
+      model: 'openai/gpt-4o-mini',
       responseFormat: '',
       output: null,
       loading: false,
@@ -149,9 +148,11 @@ export function usePrompts() {
   };
 
   const updatePrompt = (index: number, field: keyof Prompt, value: any) => {
-    const updated = [...prompts];
-    updated[index] = { ...updated[index], [field]: value };
-    setPrompts(updated);
+    setPrompts(currentPrompts => {
+      const updated = [...currentPrompts];
+      updated[index] = { ...updated[index], [field]: value };
+      return updated;
+    });
   };
 
   const deletePrompt = (index: number) => {
@@ -167,7 +168,7 @@ export function usePrompts() {
   const runPrompt = async (
     index: number,
     text: string,
-    model: string = 'gpt-4o-mini',
+    model: string = 'openai/gpt-4o-mini',
   ) => {
     const prompt = prompts[index];
     updatePrompt(index, 'loading', true);
@@ -213,7 +214,7 @@ export function usePrompts() {
     }
   };
 
-  const runAllPrompts = async (text: string, model: string = 'gpt-4o-mini') => {
+  const runAllPrompts = async (text: string, model: string = 'openai/gpt-4o-mini') => {
     setLoading(true);
     // Only run prompts for the selected task
     const taskPromptIndices = prompts
@@ -345,16 +346,50 @@ export function usePrompts() {
     }
   };
 
-  const setBestPrompt = (task: string, promptId: number) => {
-    setBestPrompts((prev) => ({
-      ...prev,
+  const setBestPrompt = async (task: string, promptId: number) => {
+    // Update local state
+    const updatedBest = {
+      ...bestPrompts,
       [task]: promptId,
-    }));
+    };
+    setBestPrompts(updatedBest);
+
+    try {
+      // Build best prompts config for backend (task -> name mapping)
+      const bestPromptsConfig: { [task: string]: string } = {};
+
+      for (const [taskName, pId] of Object.entries(updatedBest)) {
+        const prompt = prompts.find((p) => p.id === pId);
+        if (prompt) {
+          bestPromptsConfig[taskName] = prompt.name;
+        }
+      }
+
+      // Persist to backend
+      const response = await fetch('http://localhost:8000/best-prompts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          best_prompts: bestPromptsConfig,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Error: ${response.statusText}`);
+      }
+
+      console.log('Best prompts updated successfully');
+    } catch (err) {
+      console.error('Failed to save best prompts:', err);
+      // Don't show alert to user - this is a background save
+    }
   };
 
   const runBestPrompts = async (
     text: string,
-    model: string = 'gpt-4o-mini',
+    model: string = 'openai/gpt-4o-mini',
   ) => {
     setLoading(true);
     setError('');
@@ -434,14 +469,11 @@ export function usePrompts() {
       }
       setPrompts(updatedPrompts);
 
-      let benchmarkResult = Math.random() * (0.8 - 0.4) + 0.4; // Simulated benchmark score between 0.4 and 0.8
-
       // Show citation stats in success message if citations were generated
       if (data.citations_generated > 0) {
         alert(
           `Success! Output saved to ${data.output_file}\n\n` +
-            `Generated citations for ${data.citations_generated} annotation(s).\n\n` +
-            `Benchmark score: ${benchmarkResult.toFixed(4)}`,
+            `Generated citations for ${data.citations_generated} annotation(s).\n\n`,
         );
       } else {
         alert(`Success! Output saved to ${data.output_file}`);

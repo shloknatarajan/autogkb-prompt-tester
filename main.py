@@ -1,14 +1,37 @@
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from pydantic import BaseModel
-from llm import Model, generate_response
+from llm import Model, generate_response, normalize_model
 import asyncio
 import json
 import os
+import re
+import uuid
 from datetime import datetime
 from pathlib import Path
-from typing import Any, Dict, List, Tuple
-from benchmarks.fa_benchmark import evaluate_functional_analysis, expand_annotations_by_variant, normalize_variant
+from typing import Literal, Optional
+
+# Import utility modules
+from utils.config import (
+    PROMPTS_FILE,
+    BEST_PROMPTS_FILE,
+    OUTPUT_DIR,
+    BENCHMARK_RESULTS_DIR,
+    GROUND_TRUTH_FILE,
+    GROUND_TRUTH_NORMALIZED_FILE,
+    MARKDOWN_DIR,
+)
+from utils.benchmark_runner import BenchmarkRunner
+from utils.prompt_manager import PromptManager
+from utils.citation_generator import generate_citations
+from utils.output_manager import save_output, combine_outputs
+from utils.normalization import (
+    normalize_outputs_in_directory,
+    normalize_outputs_in_directory_async,
+    normalize_single_file_async,
+)
+from utils.cost import CostTracker, UsageInfo
 
 app = FastAPI()
 
@@ -20,20 +43,76 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# File paths
-PROMPTS_FILE = "stored_prompts.json"
-BENCHMARK_OUTPUT_FILE = "benchmark_output.json"
-OUTPUT_DIR = "outputs"
-BENCHMARK_ANNOTATIONS_FILE = "persistent_data/benchmark_annotations.json"
-BENCHMARK_RESULTS_DIR = "benchmark_results"
-BENCHMARK_HISTORY_FILE = f"{BENCHMARK_RESULTS_DIR}/history.json"
+
+# Pipeline job management
+class PipelineJob:
+    def __init__(self, job_id: str, config: dict):
+        self.id = job_id
+        self.status: Literal[
+            "pending", "running", "completed", "failed", "cancelled"
+        ] = "pending"
+        self.current_stage: str = "initializing"
+        self.progress: float = 0.0
+        self.pmcids_processed: int = 0
+        self.pmcids_total: int = 0
+        self.current_pmcid: Optional[str] = None
+        self.messages: list[str] = []
+        self.result: Optional[dict] = None
+        self.error: Optional[str] = None
+        self.config = config
+        self.created_at = datetime.now().isoformat()
+        self.updated_at = datetime.now().isoformat()
+        self.cancelled: bool = False
+        # Cost tracking
+        self.total_cost_usd: float = 0.0
+        self.cost_by_pmcid: dict[str, float] = {}
+
+    def add_message(self, message: str):
+        timestamp = datetime.now().strftime("%H:%M:%S")
+        self.messages.append(f"[{timestamp}] {message}")
+        self.updated_at = datetime.now().isoformat()
+
+    def cancel(self):
+        self.cancelled = True
+        self.status = "cancelled"
+        self.add_message("Pipeline cancelled by user")
+
+    def to_dict(self) -> dict:
+        return {
+            "id": self.id,
+            "status": self.status,
+            "current_stage": self.current_stage,
+            "progress": self.progress,
+            "pmcids_processed": self.pmcids_processed,
+            "pmcids_total": self.pmcids_total,
+            "current_pmcid": self.current_pmcid,
+            "messages": self.messages[-50:],  # Last 50 messages
+            "result": self.result,
+            "error": self.error,
+            "created_at": self.created_at,
+            "updated_at": self.updated_at,
+            "total_cost_usd": round(self.total_cost_usd, 6),
+            "cost_by_pmcid": {k: round(v, 6) for k, v in self.cost_by_pmcid.items()},
+        }
+
+
+# In-memory job store
+pipeline_jobs: dict[str, PipelineJob] = {}
+
+
+class PipelineStartRequest(BaseModel):
+    data_dir: str = MARKDOWN_DIR
+    model: str = "gpt-4o-mini"
+    concurrency: int = 3
+    temperature: float = 0.0
 
 
 class PromptRequest(BaseModel):
     prompt: str
     text: str
-    model: Model
+    model: str  # Provider-prefixed format: "openai/gpt-4o", "anthropic/claude-3-5-sonnet"
     response_format: dict | None = None
+    temperature: float = 0.0
 
 
 class PromptResponse(BaseModel):
@@ -45,9 +124,10 @@ class SavePromptRequest(BaseModel):
     name: str
     prompt: str
     text: str
-    model: Model
+    model: str  # Provider-prefixed format: "openai/gpt-4o", "anthropic/claude-3-5-sonnet"
     response_format: dict | None = None
     output: str
+    temperature: float = 0.0
 
 
 class SaveAllPromptsRequest(BaseModel):
@@ -55,12 +135,21 @@ class SaveAllPromptsRequest(BaseModel):
     text: str
 
 
+class RenamePromptRequest(BaseModel):
+    new_name: str
+
+
+class UpdateBestPromptsRequest(BaseModel):
+    best_prompts: dict[str, str]
+
+
 class BestPrompt(BaseModel):
     task: str
     prompt: str
-    model: Model
+    model: str  # Provider-prefixed format: "openai/gpt-4o", "anthropic/claude-3-5-sonnet"
     response_format: dict | None = None
     name: str
+    temperature: float = 0.0
 
 
 class RunBestPromptsRequest(BaseModel):
@@ -68,106 +157,6 @@ class RunBestPromptsRequest(BaseModel):
     best_prompts: list[BestPrompt]
     pmcid: str | None = None
     citation_prompt: str | None = None
-
-
-class RunBenchmarkRequest(BaseModel):
-    pmcid: str
-    predictions: Dict[str, Any]  # Full output with var_fa_ann
-
-
-class BenchmarkWithPromptsRequest(BaseModel):
-    pmcid: str
-    text: str  # Article text
-    prompts: List[Dict[str, Any]]  # List of prompts to run
-    citation_prompt: str | None = None
-
-
-def align_annotations_for_evaluation(
-    gt_annotations: List[Dict[str, Any]],
-    pred_annotations: List[Dict[str, Any]]
-) -> Tuple[List[Dict[str, Any]], List[Dict[str, Any]]]:
-    """
-    Align ground truth and prediction annotations.
-    Since LLM predictions may use different variant nomenclature (rsID vs HGVS vs star alleles),
-    we use a permissive matching strategy and rely on the evaluation function's
-    variant_coverage scoring to handle nomenclature differences.
-
-    Strategy: Match by gene only, then use a greedy pairing algorithm.
-    The evaluation function will then properly score variant similarity.
-
-    Returns:
-        Tuple of (aligned_gt, aligned_pred) with equal lengths
-    """
-    # Don't expand yet - match at annotation level first
-    print(f"Alignment: GT has {len(gt_annotations)} annotations, Pred has {len(pred_annotations)} annotations")
-
-    # Group by gene
-    def group_by_gene(annotations: List[Dict[str, Any]]) -> Dict[str, List[Dict[str, Any]]]:
-        groups = {}
-        for ann in annotations:
-            gene = ann.get("Gene", "")
-            gene_norm = gene.strip().upper() if gene else "UNKNOWN"
-            if gene_norm not in groups:
-                groups[gene_norm] = []
-            groups[gene_norm].append(ann)
-        return groups
-
-    gt_by_gene = group_by_gene(gt_annotations)
-    pred_by_gene = group_by_gene(pred_annotations)
-
-    print(f"GT genes: {list(gt_by_gene.keys())}")
-    print(f"Pred genes: {list(pred_by_gene.keys())}")
-
-    # For each gene, pair GT and Pred annotations
-    aligned_gt = []
-    aligned_pred = []
-
-    for gene, gt_anns in gt_by_gene.items():
-        pred_anns = pred_by_gene.get(gene, [])
-
-        if not pred_anns:
-            print(f"Warning: No predictions found for gene {gene} (GT has {len(gt_anns)} annotations)")
-            continue
-
-        # Greedy pairing: pair each GT annotation with a pred annotation
-        # Use simple strategy: pair in order
-        num_pairs = min(len(gt_anns), len(pred_anns))
-
-        for i in range(num_pairs):
-            aligned_gt.append(gt_anns[i])
-            aligned_pred.append(pred_anns[i])
-
-        if len(gt_anns) != len(pred_anns):
-            print(f"Note: For gene {gene}, GT has {len(gt_anns)} annotations but Pred has {len(pred_anns)} annotations. Using {num_pairs} pairs.")
-
-    print(f"Matched {len(aligned_gt)} annotation pairs")
-
-    if len(aligned_gt) == 0:
-        print("No matches found! Genes don't match between GT and predictions.")
-    else:
-        print(f"Example GT variant: {aligned_gt[0].get('Variant/Haplotypes', 'N/A')}")
-        print(f"Example Pred variant: {aligned_pred[0].get('Variant/Haplotypes', 'N/A')}")
-
-    # Normalize field names and handle None values
-    def normalize_annotation(ann: Dict[str, Any]) -> Dict[str, Any]:
-        """Fix common field name issues and convert None to empty string."""
-        normalized = {}
-        for key, value in ann.items():
-            # Fix typo in field name
-            if key == "Comparison Allele(s) or Genotype(s":
-                key = "Comparison Allele(s) or Genotype(s)"
-
-            # Convert None to empty string to prevent subscript errors
-            if value is None:
-                value = ""
-
-            normalized[key] = value
-        return normalized
-
-    aligned_gt = [normalize_annotation(ann) for ann in aligned_gt]
-    aligned_pred = [normalize_annotation(ann) for ann in aligned_pred]
-
-    return aligned_gt, aligned_pred
 
 
 @app.get("/healthcheck")
@@ -189,6 +178,7 @@ async def test_prompt(request: PromptRequest):
             text=request.text,
             model=request.model,
             response_format=response_format,
+            temperature=request.temperature,
         )
         return {"output": output}
     except Exception as e:
@@ -199,36 +189,35 @@ async def test_prompt(request: PromptRequest):
 @app.post("/save-prompt")
 async def save_prompt(request: SavePromptRequest):
     try:
-        # Read existing prompts
-        if os.path.exists(PROMPTS_FILE):
-            with open(PROMPTS_FILE, "r") as f:
-                prompts = json.load(f)
-        else:
-            prompts = []
+        # Use PromptManager to save to folder structure
+        prompt_manager = PromptManager()
+        prompt_manager.save_prompt(
+            task=request.task,
+            name=request.name,
+            prompt=request.prompt,
+            response_format=request.response_format or {},
+            model=request.model,
+            temperature=request.temperature,
+        )
 
-        # Try to parse output as JSON if possible
-        try:
-            parsed_output = json.loads(request.output)
-        except:
-            parsed_output = request.output
+        # Also save output to outputs/ folder if provided
+        if request.output:
+            try:
+                parsed_output = json.loads(request.output)
+            except:
+                parsed_output = request.output
 
-        # Create new prompt entry
-        new_prompt = {
-            "task": request.task,
-            "name": request.name,
-            "prompt": request.prompt,
-            "model": request.model,
-            "response_format": request.response_format,
-            "output": parsed_output,
-            "timestamp": datetime.now().isoformat(),
-        }
+            # Create output filename
+            timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+            output_filename = f"{request.task}_{request.name}_{timestamp}.json"
+            output_path = os.path.join("outputs", output_filename)
 
-        # Append new prompt
-        prompts.append(new_prompt)
+            # Ensure outputs directory exists
+            os.makedirs("outputs", exist_ok=True)
 
-        # Save back to file
-        with open(PROMPTS_FILE, "w") as f:
-            json.dump(prompts, f, indent=2)
+            # Save output
+            with open(output_path, "w") as f:
+                json.dump(parsed_output, f, indent=2)
 
         return {"status": "success", "message": "Prompt saved successfully"}
     except Exception as e:
@@ -238,12 +227,10 @@ async def save_prompt(request: SavePromptRequest):
 @app.get("/prompts")
 async def get_prompts():
     try:
-        if os.path.exists(PROMPTS_FILE):
-            with open(PROMPTS_FILE, "r") as f:
-                prompts = json.load(f)
-            return {"prompts": prompts}
-        else:
-            return {"prompts": []}
+        # Use PromptManager to load from folder structure
+        prompt_manager = PromptManager()
+        prompts = prompt_manager.load_prompts()
+        return {"prompts": prompts}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
@@ -261,21 +248,47 @@ async def get_best_prompts():
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@app.post("/best-prompts")
+async def update_best_prompts(request: UpdateBestPromptsRequest):
+    """Update the best prompts configuration."""
+    try:
+        prompt_manager = PromptManager()
+        success = prompt_manager.update_best_prompts(request.best_prompts)
+
+        if success:
+            return {
+                "status": "success",
+                "message": "Best prompts configuration updated",
+            }
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail="Failed to update best prompts (one or more prompts not found)",
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/save-all-prompts")
 async def save_all_prompts(request: SaveAllPromptsRequest):
     try:
-        saved_prompts = []
+        # Use PromptManager to save each prompt to folder structure
+        prompt_manager = PromptManager()
+
+        # Get existing prompts from disk to detect deletions
+        existing_prompts = prompt_manager.load_prompts(force_reload=True)
+        existing_set = {(p["task"], p["name"]) for p in existing_prompts}
+
+        # Build set of prompts being saved
+        saved_set = set()
+        saved_count = 0
 
         for prompt_data in request.prompts:
-            # Try to parse output as JSON if possible
-            try:
-                parsed_output = (
-                    json.loads(prompt_data["output"])
-                    if prompt_data.get("output")
-                    else None
-                )
-            except:
-                parsed_output = prompt_data.get("output")
+            task = prompt_data.get("task", "Default")
+            name = prompt_data.get("name", "Untitled Prompt")
+            saved_set.add((task, name))
 
             # Try to parse response format if it's a string
             response_format = prompt_data.get("responseFormat")
@@ -283,80 +296,119 @@ async def save_all_prompts(request: SaveAllPromptsRequest):
                 try:
                     response_format = json.loads(response_format)
                 except:
-                    response_format = None
+                    response_format = {}
+            elif not response_format:
+                response_format = {}
 
-            saved_prompt = {
-                "task": prompt_data.get("task", "Default"),
-                "name": prompt_data.get("name", "Untitled Prompt"),
-                "prompt": prompt_data.get("prompt", ""),
-                "model": prompt_data.get("model", "gpt-4o-mini"),
-                "response_format": response_format,
-                "output": parsed_output,
-                "timestamp": datetime.now().isoformat(),
-            }
-            saved_prompts.append(saved_prompt)
+            # Save using PromptManager
+            prompt_manager.save_prompt(
+                task=task,
+                name=name,
+                prompt=prompt_data.get("prompt", ""),
+                response_format=response_format,
+                model=prompt_data.get("model", "gpt-4o-mini"),
+                temperature=prompt_data.get("temperature", 0.0),
+            )
+            saved_count += 1
 
-        # Overwrite the file with current prompts
-        with open(PROMPTS_FILE, "w") as f:
-            json.dump(saved_prompts, f, indent=2)
+        # Delete prompts that existed but are not in the saved list
+        deleted_count = 0
+        for task, name in existing_set:
+            if (task, name) not in saved_set:
+                if prompt_manager.delete_prompt(task, name):
+                    deleted_count += 1
+
+        message = f"Saved {saved_count} prompts successfully"
+        if deleted_count > 0:
+            message += f", deleted {deleted_count} prompts"
 
         return {
             "status": "success",
-            "message": f"Saved {len(saved_prompts)} prompts successfully",
+            "message": message,
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-async def generate_citations_for_annotation(
-    annotation: dict, full_text: str, citation_prompt_template: str, model: Model
-) -> list[str]:
-    """Generate citations for a single annotation by finding supporting quotes in the text."""
+@app.delete("/prompts/{task}/{name}")
+async def delete_prompt(task: str, name: str):
+    """Delete a prompt from the folder structure."""
     try:
-        # Format prompt with annotation details
-        formatted_prompt = citation_prompt_template.format(
-            variant=annotation.get("Variant/Haplotypes", ""),
-            gene=annotation.get("Gene", ""),
-            drug=annotation.get("Drug(s)", annotation.get("Drug(s", "")),  # Handle typo
-            sentence=annotation.get("Sentence", ""),
-            notes=annotation.get("Notes", ""),
-            full_text=full_text,
-        )
+        prompt_manager = PromptManager()
+        success = prompt_manager.delete_prompt(task, name)
 
-        # Call LLM with JSON output format
-        response = await generate_response(
-            prompt=formatted_prompt,
-            text="",
-            model=model,
-            response_format={
-                "type": "object",
-                "properties": {
-                    "citations": {
-                        "type": "array",
-                        "items": {"type": "string"},
-                    }
-                },
-                "required": ["citations"],
-            },
-        )
-
-        # Parse and return citations
-        citations_data = json.loads(response)
-        return citations_data.get("citations", [])
+        if success:
+            return {"status": "success", "message": f"Deleted prompt: {task}/{name}"}
+        else:
+            raise HTTPException(
+                status_code=404, detail=f"Prompt not found: {task}/{name}"
+            )
+    except HTTPException:
+        raise
     except Exception as e:
-        print(f"Error generating citations: {e}")
-        return []
+        raise HTTPException(status_code=500, detail=str(e))
 
 
-async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
-    """Run a single task and return (task_name, prompt_name, output, error)."""
+@app.put("/prompts/{task}/{old_name}/rename")
+async def rename_prompt(task: str, old_name: str, request: RenamePromptRequest):
+    """Rename a prompt in the folder structure."""
     try:
-        output = await generate_response(
+        prompt_manager = PromptManager()
+        success = prompt_manager.rename_prompt(task, old_name, request.new_name)
+
+        if success:
+            return {
+                "status": "success",
+                "message": f"Renamed prompt: {task}/{old_name} -> {task}/{request.new_name}",
+            }
+        else:
+            raise HTTPException(
+                status_code=400,
+                detail=f"Could not rename prompt (not found or destination exists)",
+            )
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+async def generate_citations_for_annotation(
+    annotation: dict,
+    full_text: str,
+    citation_prompt_template: str,
+    model: str,
+    return_usage: bool = False,
+):
+    """Generate citations for a single annotation by finding supporting quotes in the text."""
+    # Use the shared utility function
+    return await generate_citations(
+        annotation,
+        full_text,
+        model,
+        citation_prompt_template,
+        return_usage=return_usage,
+    )
+
+
+async def run_single_task(
+    best_prompt: BestPrompt, text: str, track_cost: bool = False
+) -> tuple:
+    """Run a single task and return (task_name, prompt_name, output, error, usage_info)."""
+    try:
+        result = await generate_response(
             prompt=best_prompt.prompt,
             text=text,
             model=best_prompt.model,
             response_format=best_prompt.response_format,
+            temperature=best_prompt.temperature,
+            return_usage=track_cost,
         )
+
+        if track_cost:
+            output, usage_info = result
+        else:
+            output = result
+            usage_info = None
 
         # Parse output as JSON
         try:
@@ -364,9 +416,9 @@ async def run_single_task(best_prompt: BestPrompt, text: str) -> tuple:
         except:
             parsed_output = {best_prompt.name: output}
 
-        return (best_prompt.task, best_prompt.name, parsed_output, None)
+        return (best_prompt.task, best_prompt.name, parsed_output, None, usage_info)
     except Exception as e:
-        return (best_prompt.task, best_prompt.name, None, str(e))
+        return (best_prompt.task, best_prompt.name, None, str(e), None)
 
 
 async def generate_single_citation(
@@ -375,16 +427,22 @@ async def generate_single_citation(
     annotation: dict,
     text: str,
     citation_prompt: str,
-    model: Model,
+    model: str,
+    track_cost: bool = False,
 ) -> tuple:
-    """Generate citation for one annotation and return (ann_type, index, citations, error)."""
+    """Generate citation for one annotation and return (ann_type, index, citations, error, usage_info)."""
     try:
-        citations = await generate_citations_for_annotation(
-            annotation, text, citation_prompt, model
+        result = await generate_citations_for_annotation(
+            annotation, text, citation_prompt, model, return_usage=track_cost
         )
-        return (ann_type, index, citations, None)
+        if track_cost:
+            citations, usage_info = result
+        else:
+            citations = result
+            usage_info = None
+        return (ann_type, index, citations, None, usage_info)
     except Exception as e:
-        return (ann_type, index, [], str(e))
+        return (ann_type, index, [], str(e), None)
 
 
 @app.get("/outputs")
@@ -436,22 +494,162 @@ async def get_output(filename: str):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+# Pipeline output directory pattern
+PIPELINE_RUN_PATTERN = re.compile(r"^pipeline_run_(\d{8})_(\d{6})$")
+
+
+@app.get("/pipeline-outputs")
+async def list_pipeline_outputs():
+    """List all pipeline run directories with metadata."""
+    try:
+        if not os.path.exists(OUTPUT_DIR):
+            return {"runs": []}
+
+        runs = []
+        for dirname in os.listdir(OUTPUT_DIR):
+            dirpath = os.path.join(OUTPUT_DIR, dirname)
+            if not os.path.isdir(dirpath):
+                continue
+
+            match = PIPELINE_RUN_PATTERN.match(dirname)
+            if not match:
+                continue
+
+            # Parse timestamp from directory name
+            date_str, time_str = match.groups()
+            timestamp = datetime.strptime(f"{date_str}_{time_str}", "%Y%m%d_%H%M%S")
+
+            # Count files and check for combined
+            pmcid_count = 0
+            has_combined = False
+
+            for filename in os.listdir(dirpath):
+                if filename.endswith(".json"):
+                    if filename.startswith("combined_"):
+                        has_combined = True
+                    else:
+                        pmcid_count += 1
+
+            runs.append(
+                {
+                    "directory": dirname,
+                    "timestamp": timestamp.isoformat(),
+                    "display_date": timestamp.strftime("%b %d, %Y %I:%M %p"),
+                    "pmcid_count": pmcid_count,
+                    "has_combined": has_combined,
+                }
+            )
+
+        # Sort by timestamp descending (newest first)
+        runs.sort(key=lambda x: x["timestamp"], reverse=True)
+        return {"runs": runs}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/pipeline-outputs/{run_directory}")
+async def list_pipeline_run_files(run_directory: str):
+    """List all files in a specific pipeline run directory."""
+    try:
+        # Validate directory name matches expected pattern (security)
+        if not PIPELINE_RUN_PATTERN.match(run_directory):
+            raise HTTPException(
+                status_code=400, detail="Invalid pipeline run directory name"
+            )
+
+        dirpath = os.path.join(OUTPUT_DIR, run_directory)
+        if not os.path.exists(dirpath) or not os.path.isdir(dirpath):
+            raise HTTPException(
+                status_code=404, detail="Pipeline run directory not found"
+            )
+
+        files = []
+        for filename in os.listdir(dirpath):
+            if not filename.endswith(".json"):
+                continue
+
+            filepath = os.path.join(dirpath, filename)
+            stat = os.stat(filepath)
+
+            if filename.startswith("combined_"):
+                file_type = "combined"
+                pmcid = None
+            else:
+                file_type = "pmcid"
+                pmcid = filename.replace(".json", "")
+
+            files.append(
+                {
+                    "filename": filename,
+                    "pmcid": pmcid,
+                    "type": file_type,
+                    "modified": datetime.fromtimestamp(stat.st_mtime).isoformat(),
+                    "size": stat.st_size,
+                }
+            )
+
+        # Sort: PMCID files first (alphabetically), then combined files
+        files.sort(key=lambda x: (x["type"] == "combined", x["filename"]))
+
+        return {
+            "directory": run_directory,
+            "files": files,
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/pipeline-outputs/{run_directory}/{filename}")
+async def get_pipeline_output_file(run_directory: str, filename: str):
+    """Get the contents of a specific file from a pipeline run."""
+    try:
+        # Validate directory name matches expected pattern (security)
+        if not PIPELINE_RUN_PATTERN.match(run_directory):
+            raise HTTPException(
+                status_code=400, detail="Invalid pipeline run directory name"
+            )
+
+        # Sanitize filename to prevent directory traversal
+        filename = os.path.basename(filename)
+        filepath = os.path.join(OUTPUT_DIR, run_directory, filename)
+
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="File not found")
+
+        with open(filepath, "r") as f:
+            content = json.load(f)
+
+        return content
+
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid JSON file")
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @app.post("/run-best-prompts")
 async def run_best_prompts(request: RunBestPromptsRequest):
     try:
         task_results = {}
         prompts_used = {}
+        cost_tracker = CostTracker()
 
-        # Run all tasks in parallel
+        # Run all tasks in parallel with cost tracking
         print(f"Running {len(request.best_prompts)} tasks in parallel...")
         task_coroutines = [
-            run_single_task(best_prompt, request.text)
+            run_single_task(best_prompt, request.text, track_cost=True)
             for best_prompt in request.best_prompts
         ]
         task_execution_results = await asyncio.gather(*task_coroutines)
 
-        # Process results
-        for task_name, prompt_name, output, error in task_execution_results:
+        # Process results and accumulate costs
+        for task_name, prompt_name, output, error, usage_info in task_execution_results:
             if error:
                 task_results[task_name] = {"error": error}
                 print(f"✗ Task '{task_name}' failed: {error}")
@@ -459,6 +657,8 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                 task_results.update(output)
                 print(f"✓ Completed task: {task_name} using prompt: {prompt_name}")
             prompts_used[task_name] = prompt_name
+            if usage_info:
+                cost_tracker.add_usage(task_name, usage_info)
 
         # Generate citations if citation prompt is provided
         total_annotations = 0
@@ -482,6 +682,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                             request.text,
                             request.citation_prompt,
                             request.best_prompts[0].model,
+                            track_cost=True,
                         )
                     )
 
@@ -497,6 +698,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                             request.text,
                             request.citation_prompt,
                             request.best_prompts[0].model,
+                            track_cost=True,
                         )
                     )
 
@@ -512,6 +714,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                             request.text,
                             request.citation_prompt,
                             request.best_prompts[0].model,
+                            track_cost=True,
                         )
                     )
 
@@ -519,27 +722,30 @@ async def run_best_prompts(request: RunBestPromptsRequest):
                 print(f"Generating {len(citation_tasks)} citations in parallel...")
                 citation_results = await asyncio.gather(*citation_tasks)
 
-                # Apply results
+                # Apply results and accumulate citation costs
                 successful = 0
                 failed = 0
-                for ann_type, index, citations, error in citation_results:
+                for ann_type, index, citations, error, usage_info in citation_results:
                     task_results[ann_type][index]["Citations"] = citations
                     if error:
                         task_results[ann_type][index]["Citation_Error"] = error
                         failed += 1
                     else:
                         successful += 1
+                    if usage_info:
+                        cost_tracker.add_usage("citations", usage_info)
 
                 citations_generated = len(citation_results)
                 total_annotations = len(citation_results)
                 print(f"✓ Citations complete: {successful} successful, {failed} failed")
 
-        # Combine outputs
+        # Combine outputs with usage information
         combined_output = {
             **task_results,
             "input_text": request.text,
             "timestamp": datetime.now().isoformat(),
             "prompts_used": prompts_used,
+            "usage": cost_tracker.get_summary(),
         }
 
         # Save to file
@@ -571,6 +777,7 @@ async def run_best_prompts(request: RunBestPromptsRequest):
             "output_file": filename,
             "total_annotations": total_annotations,
             "citations_generated": citations_generated,
+            "usage": cost_tracker.get_summary(),
             "results": combined_output,
         }
     except Exception as e:
@@ -578,310 +785,778 @@ async def run_best_prompts(request: RunBestPromptsRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/benchmark-articles")
-async def get_benchmark_articles():
-    """Get list of available benchmark articles (PMCIDs) from benchmark_annotations.json."""
+class BenchmarkFromOutputRequest(BaseModel):
+    """Request to benchmark an existing output file."""
+
+    filename: str
+
+
+@app.post("/benchmark-from-output")
+async def benchmark_from_output(request: BenchmarkFromOutputRequest):
+    """
+    Benchmark an existing output file against ground truth.
+
+    This endpoint:
+    1. Loads the output file from /outputs/
+    2. Extracts PMCID and predictions from the file
+    3. Compares predictions to ground truth
+    4. Saves results to /benchmark_results/
+    """
     try:
-        if not os.path.exists(BENCHMARK_ANNOTATIONS_FILE):
-            return {"articles": []}
+        # Load the output file
+        filename = os.path.basename(request.filename)  # Sanitize
+        filepath = os.path.join(OUTPUT_DIR, filename)
 
-        with open(BENCHMARK_ANNOTATIONS_FILE, "r") as f:
-            benchmark_data = json.load(f)
-
-        articles = []
-        for pmcid, data in benchmark_data.items():
-            # Count annotations
-            var_fa_count = len(data.get("var_fa_ann", []))
-            var_pheno_count = len(data.get("var_pheno_ann", []))
-            var_drug_count = len(data.get("var_drug_ann", []))
-
-            articles.append({
-                "pmcid": pmcid,
-                "title": data.get("title", "Unknown"),
-                "pmid": data.get("pmid", ""),
-                "annotation_counts": {
-                    "var_fa_ann": var_fa_count,
-                    "var_pheno_ann": var_pheno_count,
-                    "var_drug_ann": var_drug_count,
-                },
-            })
-
-        return {"articles": articles}
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
-
-
-@app.post("/run-benchmark")
-async def run_benchmark(request: RunBenchmarkRequest):
-    """Evaluate predictions against ground truth for a specific PMCID."""
-    try:
-        # Load ground truth
-        if not os.path.exists(BENCHMARK_ANNOTATIONS_FILE):
+        if not os.path.exists(filepath):
             raise HTTPException(
-                status_code=404, detail="Benchmark annotations file not found"
+                status_code=404, detail=f"Output file not found: {filename}"
             )
 
-        with open(BENCHMARK_ANNOTATIONS_FILE, "r") as f:
-            ground_truth_data = json.load(f)
+        with open(filepath, "r") as f:
+            output_data = json.load(f)
 
-        # Get ground truth for this PMCID
-        if request.pmcid not in ground_truth_data:
+        # Extract PMCID from the output file
+        pmcid = output_data.get("pmcid")
+        if not pmcid:
             raise HTTPException(
-                status_code=404,
-                detail=f"PMCID {request.pmcid} not found in benchmark data",
+                status_code=400, detail="Output file does not contain PMCID"
             )
 
-        gt_article = ground_truth_data[request.pmcid]
-        gt_var_fa = gt_article.get("var_fa_ann", [])
-
-        if not gt_var_fa:
-            raise HTTPException(
-                status_code=400,
-                detail=f"No var_fa_ann annotations in ground truth for {request.pmcid}",
-            )
-
-        # Get predictions
-        pred_var_fa = request.predictions.get("var_fa_ann", [])
-
-        if not pred_var_fa:
-            raise HTTPException(
-                status_code=400,
-                detail="No var_fa_ann annotations in predictions",
-            )
+        print(f"\n=== Benchmarking from Output File ===")
+        print(f"File: {filename}")
+        print(f"PMCID: {pmcid}")
+        print(f"Timestamp: {output_data.get('timestamp', 'unknown')}")
 
         # Debug logging
-        print(f"Ground truth count: {len(gt_var_fa)}")
-        print(f"Predictions count: {len(pred_var_fa)}")
-        print(f"Ground truth first item keys: {list(gt_var_fa[0].keys()) if gt_var_fa else 'empty'}")
-        print(f"Predictions first item keys: {list(pred_var_fa[0].keys()) if pred_var_fa else 'empty'}")
+        print(f"\n=== Predictions from File ===")
+        print(f"  var-pheno: {len(output_data.get('var_pheno_ann', []))} annotations")
+        print(f"  var-drug: {len(output_data.get('var_drug_ann', []))} annotations")
+        print(f"  var-fa: {len(output_data.get('var_fa_ann', []))} annotations")
+        print(f"=== End Predictions ===\n")
 
-        # Align annotations by Variant Annotation ID
-        aligned_gt, aligned_pred = align_annotations_for_evaluation(gt_var_fa, pred_var_fa)
-
-        if not aligned_gt or not aligned_pred:
-            raise HTTPException(
-                status_code=400,
-                detail=f"No matching annotations found. GT has {len(gt_var_fa)} annotations, predictions have {len(pred_var_fa)} annotations, but none matched by Variant Annotation ID."
-            )
-
-        # Run evaluation
+        # Use BenchmarkRunner utility
         try:
-            # Print first annotation pair for debugging
-            if aligned_gt and aligned_pred:
-                print("\nFirst GT annotation:")
-                for key, value in aligned_gt[0].items():
-                    print(f"  {key}: {repr(value)[:100]}")
-                print("\nFirst Pred annotation:")
-                for key, value in aligned_pred[0].items():
-                    print(f"  {key}: {repr(value)[:100]}")
+            runner = BenchmarkRunner()
+        except FileNotFoundError as e:
+            raise HTTPException(status_code=404, detail=str(e))
 
-            results = evaluate_functional_analysis(aligned_gt, aligned_pred)
-        except Exception as e:
-            print(f"\n!!! Error in evaluate_functional_analysis: {e}")
-            import traceback
-            traceback.print_exc()
+        # Check if ground truth exists for this PMCID
+        if not runner.has_ground_truth(pmcid):
             raise HTTPException(
-                status_code=500,
-                detail=f"Evaluation failed: {str(e)}"
+                status_code=404, detail=f"No ground truth found for PMCID: {pmcid}"
             )
 
-        # Save results
-        os.makedirs(BENCHMARK_RESULTS_DIR, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        result_filename = f"{BENCHMARK_RESULTS_DIR}/{timestamp}_{request.pmcid}_eval.json"
+        # Run benchmark
+        benchmark_results = runner.benchmark_pmcid(pmcid, output_data, verbose=True)
 
-        result_data = {
-            "timestamp": datetime.now().isoformat(),
-            "pmcid": request.pmcid,
-            "evaluation_results": results,
-            "ground_truth_count": len(gt_var_fa),
-            "predictions_count": len(pred_var_fa),
+        # Calculate average score
+        task_scores, sample_counts = runner.calculate_task_averages(
+            {pmcid: benchmark_results}
+        )
+        average_score = runner.calculate_overall_score(task_scores, sample_counts)
+
+        # Calculate successful tasks
+        successful = sum(1 for r in benchmark_results.values() if "error" not in r)
+        failed = len(benchmark_results) - successful
+
+        print(f"\n=== Benchmark Summary ===")
+        print(f"Total tasks: {len(benchmark_results)}")
+        print(f"Successful: {successful}")
+        print(f"Failed/Skipped: {failed}")
+        print(f"Average score: {average_score:.2%}")
+        print(f"=========================\n")
+
+        # Create benchmark result document
+        timestamp = datetime.now().isoformat()
+        benchmark_result = {
+            "timestamp": timestamp,
+            "pmcid": pmcid,
+            "source_file": filename,
+            "source_timestamp": output_data.get("timestamp"),
+            "prompts_used": output_data.get("prompts_used", {}),
+            "results": benchmark_results,
+            "metadata": {
+                "ground_truth_file": GROUND_TRUTH_FILE,
+                "total_tasks": len(benchmark_results),
+                "average_score": average_score,
+                "tasks_with_errors": sum(
+                    1 for r in benchmark_results.values() if "error" in r
+                ),
+            },
         }
 
+        # Save to benchmark_results directory
+        os.makedirs(BENCHMARK_RESULTS_DIR, exist_ok=True)
+        result_filename = f"{BENCHMARK_RESULTS_DIR}/benchmark_{datetime.now().strftime('%Y%m%d_%H%M%S')}.json"
+
         with open(result_filename, "w") as f:
-            json.dump(result_data, f, indent=2)
+            json.dump(benchmark_result, f, indent=2)
 
-        # Update history
-        history = []
-        if os.path.exists(BENCHMARK_HISTORY_FILE):
-            with open(BENCHMARK_HISTORY_FILE, "r") as f:
-                history = json.load(f)
-
-        history.append({
-            "timestamp": datetime.now().isoformat(),
-            "pmcid": request.pmcid,
-            "overall_score": results["overall_score"],
-            "result_file": result_filename,
-        })
-
-        with open(BENCHMARK_HISTORY_FILE, "w") as f:
-            json.dump(history, f, indent=2)
+        print(f"✓ Benchmark results saved to {result_filename}")
 
         return {
             "status": "success",
-            "pmcid": request.pmcid,
-            "results": results,
-            "result_file": result_filename,
+            "message": f"Benchmarked output file {filename}",
+            "filename": result_filename,
+            "results": benchmark_result,
         }
+
     except HTTPException:
         raise
     except Exception as e:
-        print(e)
+        print(f"Benchmark from output error: {e}")
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.get("/benchmark-history")
-async def get_benchmark_history():
-    """Get historical benchmark results."""
+@app.get("/benchmark-results")
+async def list_benchmark_results():
+    """List all benchmark result files."""
     try:
-        if not os.path.exists(BENCHMARK_HISTORY_FILE):
-            return {"history": []}
+        if not os.path.exists(BENCHMARK_RESULTS_DIR):
+            return {"files": []}
 
-        with open(BENCHMARK_HISTORY_FILE, "r") as f:
-            history = json.load(f)
+        files = []
+        for filename in os.listdir(BENCHMARK_RESULTS_DIR):
+            # Skip pipeline benchmark files - they have a different format
+            if filename.startswith("pipeline_benchmark_"):
+                continue
+            if filename.endswith(".json"):
+                filepath = os.path.join(BENCHMARK_RESULTS_DIR, filename)
+
+                # Read file to get metadata
+                try:
+                    with open(filepath, "r") as f:
+                        data = json.load(f)
+
+                    files.append(
+                        {
+                            "filename": filename,
+                            "timestamp": data.get("timestamp"),
+                            "pmcid": data.get("pmcid"),
+                            "average_score": data.get("metadata", {}).get(
+                                "average_score", 0
+                            ),
+                            "total_tasks": data.get("metadata", {}).get(
+                                "total_tasks", 0
+                            ),
+                            "prompts_used": data.get("prompts_used", {}),
+                        }
+                    )
+                except:
+                    # If file can't be read, just include basic info
+                    stat = os.stat(filepath)
+                    files.append(
+                        {
+                            "filename": filename,
+                            "timestamp": datetime.fromtimestamp(
+                                stat.st_mtime
+                            ).isoformat(),
+                            "pmcid": None,
+                            "average_score": 0,
+                            "total_tasks": 0,
+                            "prompts_used": {},
+                        }
+                    )
 
         # Sort by timestamp, newest first
-        history.sort(key=lambda x: x["timestamp"], reverse=True)
+        files.sort(key=lambda x: x.get("timestamp") or "", reverse=True)
+        return {"files": files}
 
-        return {"history": history}
+    except Exception as e:
+        print("error:", e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/benchmark-results/{filename}")
+async def get_benchmark_result(filename: str):
+    """Get the contents of a specific benchmark result file."""
+    try:
+        # Sanitize filename to prevent directory traversal
+        filename = os.path.basename(filename)
+        filepath = os.path.join(BENCHMARK_RESULTS_DIR, filename)
+
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="File not found")
+
+        with open(filepath, "r") as f:
+            content = json.load(f)
+
+        return content
+
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid JSON file")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@app.post("/benchmark-with-prompts")
-async def benchmark_with_prompts(request: BenchmarkWithPromptsRequest):
-    """Run prompts on benchmark article text and evaluate against ground truth."""
-    try:
-        # Load ground truth
-        if not os.path.exists(BENCHMARK_ANNOTATIONS_FILE):
-            raise HTTPException(
-                status_code=404, detail="Benchmark annotations file not found"
-            )
+# Pipeline endpoints
+async def process_single_pmcid(
+    pmcid: str,
+    data_dir: str,
+    output_dir: str,
+    prompt_details_map: dict,
+    semaphore: asyncio.Semaphore,
+    override_model: str | None = None,
+    override_temperature: float | None = None,
+) -> tuple[str, dict, CostTracker]:
+    """
+    Process a single PMCID with all prompts.
+    Returns (pmcid, results_dict, cost_tracker)
+    """
+    async with semaphore:
+        cost_tracker = CostTracker()
 
-        with open(BENCHMARK_ANNOTATIONS_FILE, "r") as f:
-            ground_truth_data = json.load(f)
+        # Load markdown file
+        md_path = os.path.join(data_dir, f"{pmcid}.md")
+        with open(md_path, "r") as f:
+            text = f.read()
 
-        # Get ground truth for this PMCID
-        if request.pmcid not in ground_truth_data:
-            raise HTTPException(
-                status_code=404,
-                detail=f"PMCID {request.pmcid} not found in benchmark data",
-            )
-
-        gt_article = ground_truth_data[request.pmcid]
-        gt_var_fa = gt_article.get("var_fa_ann", [])
-
-        if not gt_var_fa:
-            raise HTTPException(
-                status_code=400,
-                detail=f"No var_fa_ann annotations in ground truth for {request.pmcid}",
-            )
-
-        # Run prompts to generate predictions
-        predictions = {}
-        prompts_used = {}
-
-        for prompt_config in request.prompts:
-            task = prompt_config.get("task")
-            prompt = prompt_config.get("prompt")
-            model = prompt_config.get("model", "gpt-4o-mini")
-            response_format = prompt_config.get("response_format")
-            name = prompt_config.get("name", "unnamed")
-
-            print(f"Running prompt for task: {task}")
-
+        # Run all prompts in parallel for this PMCID
+        async def run_prompt(
+            task: str, prompt_data: dict
+        ) -> tuple[str, dict, UsageInfo | None]:
             try:
-                output = await generate_response(
-                    prompt=prompt,
-                    text=request.text,
-                    model=model,
-                    response_format=response_format,
+                # Use override model if provided, otherwise fall back to prompt's model
+                if override_model:
+                    model = override_model
+                else:
+                    # Use model string directly (normalize_model handles prefixing)
+                    model = prompt_data.get("model", "gpt-4o-mini")
+
+                # Use override temperature if provided, otherwise fall back to prompt's temperature
+                temperature = (
+                    override_temperature
+                    if override_temperature is not None
+                    else prompt_data.get("temperature", 0.0)
                 )
 
-                # Parse output
+                result = await generate_response(
+                    prompt=prompt_data["prompt"],
+                    text=text,
+                    model=model,
+                    response_format=prompt_data.get("response_format"),
+                    temperature=temperature,
+                    return_usage=True,
+                )
+                output, usage_info = result
+
                 try:
                     parsed_output = json.loads(output)
-                except:
-                    parsed_output = {task: output}
-
-                # Store in predictions
-                if task in parsed_output:
-                    predictions[task] = parsed_output[task]
-                else:
-                    predictions[task] = parsed_output
-
-                prompts_used[task] = name
+                    return (task, parsed_output, usage_info)
+                except json.JSONDecodeError:
+                    return (task, {"error": "JSON parse failed"}, usage_info)
 
             except Exception as e:
-                print(f"Error running prompt for {task}: {e}")
-                predictions[task] = []
+                return (task, {"error": str(e)}, None)
 
-        # Get var_fa_ann from predictions
-        pred_var_fa = predictions.get("var_fa_ann", [])
+        # Run all tasks in parallel
+        prompt_tasks = [
+            run_prompt(task, prompt_data)
+            for task, prompt_data in prompt_details_map.items()
+        ]
+        task_results = await asyncio.gather(*prompt_tasks)
 
-        if not pred_var_fa:
-            raise HTTPException(
-                status_code=400,
-                detail="No var_fa_ann annotations generated by prompts",
+        # Combine results and accumulate costs
+        pmcid_results = {"pmcid": pmcid}
+        prompts_used = {}
+
+        for task, result, usage_info in task_results:
+            if isinstance(result, dict) and "error" in result:
+                pmcid_results[task] = result
+            else:
+                pmcid_results.update(result)
+            prompts_used[task] = prompt_details_map[task].get("name", "unknown")
+            if usage_info:
+                cost_tracker.add_usage(task, usage_info)
+
+        # Generate citations for annotations
+        from utils.citation_generator import CITATION_PROMPT_TEMPLATE
+
+        # Always use Claude Haiku 4.5 for citations (cost-optimized)
+        citation_model = "anthropic/claude-haiku-4-5-20251001"
+
+        citation_tasks = []
+        for ann_type in ["var_pheno_ann", "var_drug_ann", "var_fa_ann"]:
+            if ann_type in pmcid_results and isinstance(pmcid_results[ann_type], list):
+                for i, annotation in enumerate(pmcid_results[ann_type]):
+                    citation_tasks.append(
+                        generate_single_citation(
+                            ann_type,
+                            i,
+                            annotation,
+                            text,
+                            CITATION_PROMPT_TEMPLATE,
+                            citation_model,
+                            track_cost=True,
+                        )
+                    )
+
+        if citation_tasks:
+            citation_results = await asyncio.gather(*citation_tasks)
+            for ann_type, index, citations, error, usage_info in citation_results:
+                pmcid_results[ann_type][index]["Citations"] = citations
+                if error:
+                    pmcid_results[ann_type][index]["Citation_Error"] = error
+                if usage_info:
+                    cost_tracker.add_usage("citations", usage_info)
+
+        # Add metadata and usage
+        pmcid_results["timestamp"] = datetime.now().isoformat()
+        pmcid_results["prompts_used"] = prompts_used
+        pmcid_results["usage"] = cost_tracker.get_summary()
+
+        # Save individual output
+        output_file = os.path.join(output_dir, f"{pmcid}.json")
+        with open(output_file, "w") as f:
+            json.dump(pmcid_results, f, indent=2)
+
+        return (pmcid, pmcid_results, cost_tracker)
+
+
+async def run_pipeline_task(job: PipelineJob):
+    """Background task to run the full benchmark pipeline."""
+    try:
+        job.status = "running"
+        job.current_stage = "loading_configuration"
+        job.add_message("Starting pipeline...")
+
+        # Load best prompts using PromptManager utility
+        try:
+            prompt_manager = PromptManager()
+            prompt_details_map = prompt_manager.get_best_prompts()
+            job.add_message(f"Loaded {len(prompt_details_map)} prompts")
+        except Exception as e:
+            raise Exception(f"Failed to load prompts: {e}")
+
+        # Get list of PMCIDs to process
+        data_dir = job.config.get("data_dir", MARKDOWN_DIR)
+        if not os.path.exists(data_dir):
+            raise Exception(f"Data directory not found: {data_dir}")
+
+        markdown_files = [f for f in os.listdir(data_dir) if f.endswith(".md")]
+        pmcids = [os.path.splitext(f)[0] for f in markdown_files]
+
+        if not pmcids:
+            raise Exception(f"No markdown files found in {data_dir}")
+
+        job.pmcids_total = len(pmcids)
+        job.add_message(f"Found {len(pmcids)} PMCIDs to process")
+
+        # Create output directory for this run
+        run_timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        output_dir = f"outputs/pipeline_run_{run_timestamp}"
+        os.makedirs(output_dir, exist_ok=True)
+        job.add_message(f"Output directory: {output_dir}")
+
+        # Stage 1: Process PMCIDs with overlapped normalization
+        # As each PMCID completes LLM generation, immediately kick off normalization
+        job.current_stage = "processing_pmcids"
+        concurrency = job.config.get("concurrency", 3)
+        semaphore = asyncio.Semaphore(concurrency)
+
+        # Get model from config (supports provider-prefixed format like "anthropic/claude-3-5-sonnet")
+        override_model = job.config.get("model", "gpt-4o-mini")
+        # normalize_model will auto-prefix unprefixed models with "openai/"
+        override_model = normalize_model(override_model)
+
+        override_temperature = job.config.get("temperature", 0.0)
+
+        job.add_message(f"Processing with concurrency: {concurrency}")
+        job.add_message(
+            f"Using model: {override_model}, temperature: {override_temperature}"
+        )
+        job.add_message("Normalization will run concurrently with LLM generation")
+
+        # Shared state for tracking
+        all_outputs = {}
+        normalization_tasks = []  # List of (pmcid, task) tuples
+        completed_llm = 0
+        completed_norm = 0
+        total = len(pmcids)
+
+        async def process_and_kick_off_normalization(pmcid):
+            """Process PMCID then immediately kick off normalization task."""
+            nonlocal completed_llm
+
+            # Step 1: LLM generation (uses semaphore for concurrency)
+            result_pmcid, results, pmcid_cost_tracker = await process_single_pmcid(
+                pmcid,
+                data_dir,
+                output_dir,
+                prompt_details_map,
+                semaphore,
+                override_model=override_model,
+                override_temperature=override_temperature,
             )
 
-        # Align annotations by Variant Annotation ID
-        aligned_gt, aligned_pred = align_annotations_for_evaluation(gt_var_fa, pred_var_fa)
+            # Accumulate costs
+            pmcid_cost = pmcid_cost_tracker.total_cost_usd
+            job.cost_by_pmcid[result_pmcid] = pmcid_cost
+            job.total_cost_usd += pmcid_cost
 
-        if not aligned_gt or not aligned_pred:
-            raise HTTPException(
-                status_code=400,
-                detail=f"No matching annotations found. GT has {len(gt_var_fa)} annotations, predictions have {len(pred_var_fa)} annotations, but none matched by Variant Annotation ID."
+            completed_llm += 1
+            job.pmcids_processed = completed_llm
+            job.current_pmcid = result_pmcid
+            cost_str = f"${pmcid_cost:.4f}"
+            job.add_message(
+                f"Generated {result_pmcid} ({completed_llm}/{total}) - Cost: {cost_str}"
             )
 
-        # Run evaluation
-        results = evaluate_functional_analysis(aligned_gt, aligned_pred)
+            # Step 2: Kick off normalization immediately (don't await)
+            output_file = Path(output_dir) / f"{result_pmcid}.json"
+            norm_task = asyncio.create_task(normalize_single_file_async(output_file))
+            normalization_tasks.append((result_pmcid, norm_task))
 
-        # Save results
+            return result_pmcid, results
+
+        # Create combined tasks
+        combined_tasks = [process_and_kick_off_normalization(pmcid) for pmcid in pmcids]
+
+        # Process LLM generation with progress tracking
+        for coro in asyncio.as_completed(combined_tasks):
+            # Check for cancellation
+            if job.cancelled:
+                job.add_message("Pipeline cancelled during processing")
+                return
+
+            pmcid, results = await coro
+            all_outputs[pmcid] = results
+            # Progress: 0-50% for LLM generation
+            job.progress = (completed_llm / total) * 0.5
+
+        job.add_message(f"All LLM generation complete ({completed_llm}/{total})")
+
+        # Check for cancellation before waiting for normalization
+        if job.cancelled:
+            job.add_message("Pipeline cancelled")
+            return
+
+        # Wait for all normalization tasks to complete
+        job.current_stage = "normalizing_terms"
+        job.add_message("Waiting for remaining normalization tasks...")
+
+        normalized_count = 0
+        failed_count = 0
+
+        for pmcid, norm_task in normalization_tasks:
+            if job.cancelled:
+                job.add_message("Pipeline cancelled during normalization")
+                return
+
+            try:
+                filename, success, error = await norm_task
+                completed_norm += 1
+                if success:
+                    normalized_count += 1
+                    job.add_message(f"Normalized {pmcid} ({completed_norm}/{total})")
+                else:
+                    failed_count += 1
+                    job.add_message(f"Normalization failed for {pmcid}: {error}")
+                # Progress: 50-85% for normalization
+                job.progress = 0.5 + (completed_norm / total) * 0.35
+            except Exception as e:
+                failed_count += 1
+                completed_norm += 1
+                job.add_message(f"Normalization error for {pmcid}: {e}")
+                job.progress = 0.5 + (completed_norm / total) * 0.35
+
+        # Reload normalized data
+        for pmcid in pmcids:
+            output_file = Path(output_dir) / f"{pmcid}.json"
+            if output_file.exists():
+                with open(output_file, "r") as f:
+                    all_outputs[pmcid] = json.load(f)
+
+        job.add_message(
+            f"Term normalization complete: {normalized_count} successful, {failed_count} failed"
+        )
+
+        # Check for cancellation before combining
+        if job.cancelled:
+            job.add_message("Pipeline cancelled before combining outputs")
+            return
+
+        # Stage 2: Combine outputs using utility
+        job.current_stage = "combining_outputs"
+        job.progress = 0.85
+        job.add_message("Combining outputs...")
+
+        combined_file = os.path.join(output_dir, f"combined_{run_timestamp}.json")
+        combine_outputs(output_dir, combined_file, pmcids=pmcids)
+
+        job.add_message(f"Saved combined output to {combined_file}")
+
+        # Stage 3: Run benchmarks using BenchmarkRunner utility
+        job.current_stage = "running_benchmarks"
+        job.progress = 0.9
+        job.add_message("Running benchmarks...")
+
+        try:
+            runner = BenchmarkRunner()
+            job.add_message(
+                f"Using ground truth: {os.path.basename(runner.ground_truth_source)}"
+            )
+
+            # Benchmark all PMCIDs
+            (
+                all_benchmark_results,
+                average_scores,
+                overall_score,
+            ) = runner.benchmark_multiple(all_outputs, verbose=False)
+
+            # Add messages for missing ground truth
+            for pmcid, result in all_benchmark_results.items():
+                if result is None:
+                    job.add_message(f"Warning: No ground truth for {pmcid}, skipped")
+
+            job.add_message(f"Benchmark complete. Overall score: {overall_score:.2%}")
+
+        except Exception as e:
+            raise Exception(f"Benchmark failed: {e}")
+
+        # Stage 4: Save results
+        job.current_stage = "saving_results"
+        job.progress = 0.95
+        job.add_message("Saving benchmark results...")
+
         os.makedirs(BENCHMARK_RESULTS_DIR, exist_ok=True)
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        prompt_names = "_".join([p.get("name", "unnamed")[:10] for p in request.prompts])
-        result_filename = f"{BENCHMARK_RESULTS_DIR}/{timestamp}_{request.pmcid}_{prompt_names}.json"
+        results_file = (
+            f"{BENCHMARK_RESULTS_DIR}/pipeline_benchmark_{run_timestamp}.json"
+        )
 
-        result_data = {
+        pipeline_result = {
             "timestamp": datetime.now().isoformat(),
-            "pmcid": request.pmcid,
-            "prompts_used": prompts_used,
-            "evaluation_results": results,
-            "ground_truth_count": len(gt_var_fa),
-            "predictions_count": len(pred_var_fa),
-            "predictions": predictions,
+            "config": job.config,
+            "output_directory": output_dir,
+            "combined_file": combined_file,
+            "summary": {
+                "total_pmcids": len(pmcids),
+                "benchmarked_pmcids": len(all_benchmark_results),
+                "scores": average_scores,
+                "overall": overall_score,
+                "timestamp": datetime.now().isoformat(),
+            },
+            "pmcid_results": all_benchmark_results,
         }
 
-        with open(result_filename, "w") as f:
-            json.dump(result_data, f, indent=2)
+        with open(results_file, "w") as f:
+            json.dump(pipeline_result, f, indent=2)
 
-        # Update history
-        history = []
-        if os.path.exists(BENCHMARK_HISTORY_FILE):
-            with open(BENCHMARK_HISTORY_FILE, "r") as f:
-                history = json.load(f)
+        job.add_message(f"Results saved to {results_file}")
 
-        history.append({
-            "timestamp": datetime.now().isoformat(),
-            "pmcid": request.pmcid,
-            "prompts_used": prompts_used,
-            "overall_score": results["overall_score"],
-            "result_file": result_filename,
-        })
+        # Complete
+        job.status = "completed"
+        job.current_stage = "completed"
+        job.progress = 1.0
+        job.result = {
+            "output_directory": output_dir,
+            "combined_file": combined_file,
+            "results_file": results_file,
+            "total_pmcids": len(pmcids),
+            "overall_score": overall_score,
+            "task_scores": average_scores,
+            "usage": {
+                "total_cost_usd": round(job.total_cost_usd, 6),
+                "by_pmcid": {k: round(v, 6) for k, v in job.cost_by_pmcid.items()},
+            },
+        }
+        job.add_message(
+            f"Pipeline completed successfully! Overall score: {overall_score:.2%}, Total cost: ${job.total_cost_usd:.4f}"
+        )
 
-        with open(BENCHMARK_HISTORY_FILE, "w") as f:
-            json.dump(history, f, indent=2)
+    except Exception as e:
+        job.status = "failed"
+        job.error = str(e)
+        job.add_message(f"Pipeline failed: {str(e)}")
+
+
+@app.post("/pipeline/start")
+async def start_pipeline(request: PipelineStartRequest):
+    """Start a new pipeline job."""
+    try:
+        # Create new job
+        job_id = str(uuid.uuid4())
+        config = {
+            "data_dir": request.data_dir,
+            "model": request.model,
+            "concurrency": request.concurrency,
+            "temperature": request.temperature,
+        }
+
+        job = PipelineJob(job_id, config)
+        pipeline_jobs[job_id] = job
+
+        # Start background task
+        asyncio.create_task(run_pipeline_task(job))
 
         return {
-            "status": "success",
-            "pmcid": request.pmcid,
-            "results": results,
-            "predictions": predictions,
-            "result_file": result_filename,
+            "status": "started",
+            "job_id": job_id,
+            "message": "Pipeline job started",
         }
-    except HTTPException:
-        raise
     except Exception as e:
-        print(e)
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/pipeline/status/{job_id}")
+async def get_pipeline_status(job_id: str):
+    """Get the current status of a pipeline job."""
+    if job_id not in pipeline_jobs:
+        raise HTTPException(status_code=404, detail=f"Job not found: {job_id}")
+
+    job = pipeline_jobs[job_id]
+    return job.to_dict()
+
+
+@app.post("/pipeline/cancel/{job_id}")
+async def cancel_pipeline_job(job_id: str):
+    """Cancel a running pipeline job."""
+    if job_id not in pipeline_jobs:
+        raise HTTPException(status_code=404, detail=f"Job not found: {job_id}")
+
+    job = pipeline_jobs[job_id]
+
+    if job.status not in ["pending", "running"]:
+        raise HTTPException(
+            status_code=400, detail=f"Cannot cancel job with status: {job.status}"
+        )
+
+    job.cancel()
+    return {"message": f"Job {job_id} cancelled", "status": job.status}
+
+
+@app.get("/pipeline/events/{job_id}")
+async def pipeline_events(job_id: str):
+    """
+    Server-Sent Events endpoint for real-time pipeline progress.
+
+    Returns SSE stream with job status updates every second.
+    """
+    if job_id not in pipeline_jobs:
+        raise HTTPException(status_code=404, detail=f"Job not found: {job_id}")
+
+    async def event_generator():
+        last_message_count = 0
+
+        while True:
+            if job_id not in pipeline_jobs:
+                yield f"data: {json.dumps({'error': 'Job not found'})}\n\n"
+                break
+
+            job = pipeline_jobs[job_id]
+            job_data = job.to_dict()
+
+            # Only send updates if there are new messages or status changed
+            current_message_count = len(job.messages)
+
+            yield f"data: {json.dumps(job_data)}\n\n"
+
+            # Stop streaming if job is done
+            if job.status in ["completed", "failed"]:
+                break
+
+            last_message_count = current_message_count
+            await asyncio.sleep(1)
+
+    return StreamingResponse(
+        event_generator(),
+        media_type="text/event-stream",
+        headers={
+            "Cache-Control": "no-cache",
+            "Connection": "keep-alive",
+        },
+    )
+
+
+@app.get("/pipeline/jobs")
+async def list_pipeline_jobs():
+    """List all pipeline jobs."""
+    jobs = []
+    for job_id, job in pipeline_jobs.items():
+        jobs.append(
+            {
+                "id": job.id,
+                "status": job.status,
+                "current_stage": job.current_stage,
+                "progress": job.progress,
+                "pmcids_processed": job.pmcids_processed,
+                "pmcids_total": job.pmcids_total,
+                "created_at": job.created_at,
+                "updated_at": job.updated_at,
+            }
+        )
+
+    # Sort by creation time, newest first
+    jobs.sort(key=lambda x: x["created_at"], reverse=True)
+    return {"jobs": jobs}
+
+
+@app.get("/pipeline/results")
+async def list_pipeline_results():
+    """List all pipeline benchmark result files."""
+    try:
+        if not os.path.exists(BENCHMARK_RESULTS_DIR):
+            return {"files": []}
+
+        files = []
+        for filename in os.listdir(BENCHMARK_RESULTS_DIR):
+            if filename.startswith("pipeline_benchmark_") and filename.endswith(
+                ".json"
+            ):
+                filepath = os.path.join(BENCHMARK_RESULTS_DIR, filename)
+
+                try:
+                    with open(filepath, "r") as f:
+                        data = json.load(f)
+
+                    files.append(
+                        {
+                            "filename": filename,
+                            "timestamp": data.get("timestamp", ""),
+                            "total_pmcids": data.get("summary", {}).get(
+                                "total_pmcids", 0
+                            ),
+                            "overall_score": data.get("summary", {}).get("overall", 0),
+                            "config": data.get("config", {}),
+                        }
+                    )
+                except Exception:
+                    stat = os.stat(filepath)
+                    files.append(
+                        {
+                            "filename": filename,
+                            "timestamp": datetime.fromtimestamp(
+                                stat.st_mtime
+                            ).isoformat(),
+                            "total_pmcids": 0,
+                            "overall_score": 0,
+                            "config": {},
+                        }
+                    )
+
+        files.sort(key=lambda x: x.get("timestamp") or "", reverse=True)
+        return {"files": files}
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
+@app.get("/pipeline/results/{filename}")
+async def get_pipeline_result(filename: str):
+    """Get the contents of a specific pipeline benchmark result file."""
+    try:
+        filename = os.path.basename(filename)
+        filepath = os.path.join(BENCHMARK_RESULTS_DIR, filename)
+
+        if not os.path.exists(filepath):
+            raise HTTPException(status_code=404, detail="File not found")
+
+        with open(filepath, "r") as f:
+            content = json.load(f)
+
+        return content
+
+    except json.JSONDecodeError:
+        raise HTTPException(status_code=500, detail="Invalid JSON file")
+    except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))

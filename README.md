@@ -2,31 +2,16 @@
 
 A multi-prompt testing application that allows you to test and compare multiple LLM prompts simultaneously. Built with FastAPI (backend) and React (frontend).
 
-## Features
-
-- 🚀 **Multi-Prompt Testing**: Create and test multiple prompts against the same input text
-- 📊 **Side-by-Side Comparison**: View all prompt outputs in a dedicated sidebar for easy comparison
-- 💾 **Persistent Storage**: Save prompts and outputs to JSON for later analysis
-- 🎯 **Structured Output Support**: Configure custom JSON schemas for structured responses
-- 🔄 **Batch Execution**: Run all prompts sequentially with a single click
-- 🎨 **Clean UI**: Three-panel layout with prompts list, configuration, and outputs
-
 ## Architecture
 
 ### Frontend (`/frontend`)
 - **React** with functional components and hooks
 - **Vite** for fast development and building
-- **Component-based architecture**:
-  - `PromptsSidebar`: Manage prompt list
-  - `OutputsSidebar`: View all outputs
-  - `PromptDetails`: Configure individual prompts
-  - `usePrompts` hook: All prompt logic and API calls
 
 ### Backend (`/`)
 - **FastAPI** for API endpoints
 - **OpenAI API** for LLM interactions
 - **Pydantic** for data validation
-- **JSON file storage** for persistence
 
 ## Prerequisites
 
@@ -39,7 +24,6 @@ A multi-prompt testing application that allows you to test and compare multiple 
 
 ### 1. Clone the repository
 ```bash
-git clone <repository-url>
 cd autogkb-prompt-tester
 ```
 
@@ -73,21 +57,15 @@ ANTHROPIC_API_KEY=your_anthropic_api_key_here  # Optional
 
 ### Option 1: Using pixi (Recommended)
 
-Run both frontend and backend:
-```bash
-pixi run dev
-# or
-pixi run start
-```
 
-Run only backend:
+Run backend:
 ```bash
 pixi run backend
 # or
 pixi run be
 ```
 
-Run only frontend:
+Run frontend:
 ```bash
 pixi run frontend
 # or
@@ -166,129 +144,6 @@ To use structured output with JSON schemas:
 
 2. The API will enforce this schema in the response
 
-## API Endpoints
-
-### `GET /healthcheck`
-Health check endpoint.
-
-**Response:**
-```json
-{"status": "ok"}
-```
-
-### `POST /test-prompt`
-Test a single prompt against input text.
-
-**Request:**
-```json
-{
-  "prompt": "Extract entities from this text",
-  "text": "Input text here",
-  "model": "gpt-4o-mini",
-  "response_format": {"type": "json_object"}
-}
-```
-
-**Response:**
-```json
-{
-  "output": "LLM response here"
-}
-```
-
-### `POST /save-prompt`
-Save a single prompt with its output.
-
-**Request:**
-```json
-{
-  "prompt": "Extract entities",
-  "text": "Input text",
-  "model": "gpt-4o-mini",
-  "response_format": null,
-  "output": "Result"
-}
-```
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Prompt saved successfully"
-}
-```
-
-### `POST /save-all-prompts`
-Save all current prompts (overwrites stored_prompts.json).
-
-**Request:**
-```json
-{
-  "prompts": [
-    {
-      "name": "Prompt 1",
-      "prompt": "Extract entities",
-      "model": "gpt-4o-mini",
-      "responseFormat": "",
-      "output": "Result"
-    }
-  ],
-  "text": "Input text"
-}
-```
-
-**Response:**
-```json
-{
-  "status": "success",
-  "message": "Saved 1 prompts successfully"
-}
-```
-
-### `GET /prompts`
-Retrieve all saved prompts.
-
-**Response:**
-```json
-{
-  "prompts": [
-    {
-      "prompt": "Extract entities",
-      "text": "Input text",
-      "model": "gpt-4o-mini",
-      "response_format": null,
-      "output": "Result",
-      "timestamp": "2025-01-15T10:30:00"
-    }
-  ]
-}
-```
-
-## File Structure
-
-```
-autogkb-prompt-tester/
-├── frontend/
-│   ├── src/
-│   │   ├── components/
-│   │   │   ├── PromptsSidebar.jsx    # Left sidebar - prompt list
-│   │   │   ├── OutputsSidebar.jsx    # Right sidebar - outputs
-│   │   │   └── PromptDetails.jsx     # Main content - prompt config
-│   │   ├── hooks/
-│   │   │   └── usePrompts.js         # Custom hook for prompt logic
-│   │   ├── App.jsx                   # Main app component
-│   │   ├── App.css                   # Styles
-│   │   └── main.jsx                  # Entry point
-│   ├── package.json
-│   └── vite.config.js
-├── main.py                           # FastAPI backend
-├── llm.py                            # LLM API integration
-├── stored_prompts.json              # Saved prompts (auto-generated)
-├── pixi.toml                        # Pixi configuration
-├── .env                             # Environment variables (create this)
-└── README.md                        # This file
-```
-
 ## Data Storage
 
 Prompts are stored in `stored_prompts.json` with the following structure:
@@ -316,27 +171,58 @@ Prompts are stored in `stored_prompts.json` with the following structure:
 - `gpt-4`
 - `gpt-3.5-turbo`
 
+## Code Organization
+
+### Shared Utilities Architecture
+
+The project follows a **shared utilities pattern** to eliminate code duplication:
+
+**Utility Modules:**
+- `utils/benchmark_runner.py` - Benchmark execution with automatic ground truth fallback
+- `utils/prompt_manager.py` - Prompt loading and selection
+- `utils/citation_generator.py` - Citation generation with shared template
+- `utils/output_manager.py` - File I/O with validation
+- `utils/normalization.py` - Term normalization helpers
+- `utils/config.py` - Centralized configuration constants
+
+Both `main.py` and CLI scripts import from these utilities, ensuring identical behavior.
+
+See `CLAUDE.md` for detailed documentation of all components.
+
 ## Development
 
 ### Adding New Components
 
 1. Create component in `frontend/src/components/`
-2. Import and use in `App.jsx`
+2. Import and use in `App.tsx`
 3. Add props and callbacks as needed
 
 ### Adding New API Endpoints
 
 1. Define Pydantic model in `main.py`
 2. Create endpoint function with `@app.post()` or `@app.get()`
-3. Add corresponding function in `usePrompts.js` hook
-4. Update documentation
+3. Consider adding corresponding utility in `utils/` if logic is reusable
+4. Add corresponding function in `usePrompts.ts` hook
+5. Update documentation
+
+### Using Shared Utilities
+
+When adding new features, check if utilities already exist:
+
+```python
+# Good: Use shared utility
+from utils.benchmark_runner import BenchmarkRunner
+runner = BenchmarkRunner()
+
+# Bad: Duplicate benchmarking logic
+# Don't copy-paste code from main.py or scripts
+```
 
 ### Styling
 
-All styles are in `frontend/src/App.css`. The app uses a three-column layout:
-- Left sidebar: 250px fixed
-- Main content: Flexible width
-- Right sidebar: 350px fixed
+All styles are in `frontend/src/index.css`. The app uses Tailwind CSS with a two-tab interface:
+- Prompt Testing Tab: Three-column layout (prompts | config | outputs)
+- Benchmarks Tab: Two sub-tabs (single | pipeline)
 
 ## Troubleshooting
 
@@ -374,9 +260,6 @@ MIT License
 
 ## Authors
 
+- Avi Udash <udashavi@gmail.com>
 - Shlok Natarajan <shlok.natarajan@gmail.com>
-- Built with Claude Code
 
----
-
-**Note**: This is a development tool. Do not expose to production without proper authentication and rate limiting.

@@ -1,34 +1,15 @@
-# combine outputs from individual json files into a single json file
-import json
-import os
+"""
+Script to combine individual PMCID output files into a single JSON file.
+
+This is a thin CLI wrapper around the combine_outputs utility.
+"""
+
 import argparse
 
-
-def combine_json_files(input_folder, output_file):
-    combined_data = {}
-
-    # Iterate through all files in the input folder
-    for filename in os.listdir(input_folder):
-        if filename.endswith(".json"):
-            file_path = os.path.join(input_folder, filename)
-            with open(file_path, "r") as f:
-                data = json.load(f)
-
-                # check if pmcid is part of the data
-                pmcid = ""
-                if data.get("pmcid"):
-                    pmcid = data["pmcid"]
-                else:
-                    pmcid = filename.replace(".json", "")
-
-                combined_data[pmcid] = data
-
-    # Write the combined data to the output file
-    with open(output_file, "w") as f:
-        json.dump(combined_data, f, indent=4)
+from utils.output_manager import combine_outputs
 
 
-if __name__ == "__main__":
+def main():
     parser = argparse.ArgumentParser(
         description="Combine JSON files from a folder into a single JSON file."
     )
@@ -36,15 +17,27 @@ if __name__ == "__main__":
         "--input_folder",
         type=str,
         help="Path to the folder containing JSON files.",
-        default="./outputs",
+        default="outputs",  # Fixed: was absolute path /outputs
     )
     parser.add_argument(
         "--output_file",
         type=str,
         help="Path to the output combined JSON file.",
-        default="/outputs/combined_output.json",
+        default="outputs/combined_output.json",  # Fixed: was absolute path
     )
 
     args = parser.parse_args()
 
-    combine_json_files(args.input_folder, args.output_file)
+    print(f"Combining outputs from: {args.input_folder}")
+    print(f"Output file: {args.output_file}")
+
+    # Use utility function
+    combined = combine_outputs(args.input_folder, args.output_file)
+
+    print(f"Successfully combined {len(combined)} output files")
+
+    return 0
+
+
+if __name__ == "__main__":
+    exit(main())

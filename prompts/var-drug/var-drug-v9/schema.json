@@ -1,0 +1,189 @@
+{
+  "type": "object",
+  "properties": {
+    "var_drug_ann": {
+      "type": "array",
+      "description": "Array of variant/drug annotation records",
+      "items": {
+        "type": "object",
+        "properties": {
+          "Variant Annotation ID": {
+            "type": "integer",
+            "description": "Unique ID number for each variant/drug annotation"
+          },
+          "Variant/Haplotypes": {
+            "type": "string",
+            "description": "rsID (preferred), star alleles with gene prefix, or metabolizer phenotype"
+          },
+          "Gene": {
+            "type": "string",
+            "description": "HGNC gene symbol"
+          },
+          "Drug(s)": {
+            "type": "string",
+            "description": "Exact drug name or metabolite as mentioned in article"
+          },
+          "PMID": {
+            "type": [
+              "integer",
+              "string"
+            ],
+            "description": "PubMed identifier - REQUIRED"
+          },
+          "Phenotype Category": {
+            "type": "string",
+            "enum": [
+              "Efficacy",
+              "Toxicity",
+              "Dosage",
+              "Metabolism/PK",
+              "PD",
+              "Other"
+            ]
+          },
+          "Significance": {
+            "type": "string",
+            "enum": [
+              "yes",
+              "no",
+              "not stated"
+            ]
+          },
+          "Notes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "Sentence": {
+            "type": "string",
+            "description": "Standardized sentence including comparison genotype"
+          },
+          "Alleles": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Exact genotypes studied (e.g., 'CC + CT', '*2 + *3 + *8') - NO gene prefix"
+          },
+          "Specialty Population": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "Pediatric",
+              "Geriatric",
+              null
+            ]
+          },
+          "Metabolizer types": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "isPlural": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "Is",
+              "Are",
+              null
+            ]
+          },
+          "Is/Is Not associated": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "Associated with",
+              "Not associated with",
+              null
+            ]
+          },
+          "Direction of effect": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "increased",
+              "decreased",
+              null
+            ]
+          },
+          "PD/PK terms": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "Multiple drugs And/or": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "and",
+              "or",
+              null
+            ]
+          },
+          "Population types": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "Population Phenotypes or diseases": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "Multiple phenotypes or diseases And/or": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "and",
+              "or",
+              null
+            ]
+          },
+          "Comparison Allele(s) or Genotype(s)": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "Reference genotype - NO gene prefix"
+          },
+          "Comparison Metabolizer types": {
+            "type": [
+              "string",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "Variant Annotation ID",
+          "Variant/Haplotypes",
+          "Gene",
+          "Drug(s)",
+          "PMID",
+          "Phenotype Category",
+          "Significance",
+          "Sentence"
+        ]
+      }
+    }
+  },
+  "required": [
+    "var_drug_ann"
+  ]
+}

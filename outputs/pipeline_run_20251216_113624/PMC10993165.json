@@ -1,0 +1,1541 @@
+{
+    "pmcid": "PMC10993165",
+    "var_drug_ann": [
+        {
+            "Variant Annotation ID": 1,
+            "Variant/Haplotypes": "HLA-A*11:01",
+            "Gene": "HLA-A",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.10 (95% CI 1.11-4.00) compared with tolerant controls; OR 2.16 (95% CI 1.26-3.69) compared with healthy controls",
+            "Sentence": "HLA-A*11:01 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-A*11:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "significant associations were identified between the HLA-A*11:01, HLA-B*13:01, HLA-B*15:02, HLA-B*38:02, and HLA-C*08:01 genotypes and SMX/CTX-induced SCARs"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-A*11:01",
+                "variant_id": "PA165953358",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 2,
+            "Variant/Haplotypes": "HLA-B*13:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 5.96 (95% CI 1.58-22.56) compared with tolerant controls; OR 5.35 (95% CI 3.36-8.50) compared with healthy controls",
+            "Sentence": "HLA-B*13:01 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*13:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "The *HLA-B*13:01* allele showed an association with SMX/CTX-induced SJS/TEN and DRESS, as evidenced by 3 studies involving Thai, Malaysian, and Taiwanese populations."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*13:01",
+                "variant_id": "PA165954643",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 3,
+            "Variant/Haplotypes": "HLA-B*15:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.23 (95% CI 1.20-4.14) compared with tolerant controls; OR 1.87 (95% CI 1.39-2.52) compared with healthy controls",
+            "Sentence": "HLA-B*15:02 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*15:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "In this systematic review and meta-analysis of 6 studies involving 322 patients with SCARs, significant associations were identified between the *HLA-A*11:01*, *HLA-B*13:01*,* HLA-B*15:02, HLA-B*38:02*, and *HLA-C*08:01* genotypes and SMX/CTX-induced SCARs."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:02",
+                "variant_id": "PA165954769",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 4,
+            "Variant/Haplotypes": "HLA-B*38:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.47 (95% CI 1.42-8.48) compared with tolerant controls; OR 3.21 (95% CI 1.81-5.68) compared with healthy controls",
+            "Sentence": "HLA-B*38:02 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*38:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "In the SJS/TEN group, significant associations were found in *HLA-B*07:05* (OR, 2.80; 95% CI, 1.41-5.58), *HLA-B*13:01* (OR, 2.49; 95% CI, 1.74-3.58), *HLA-B*15:02* (OR, 3.09; 95% CI, 1.90-5.02), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 4.56; 95% CI, 2.65-7.85), *HLA-C*04:06* (OR, 3.37; 95% CI, 1.16-9.78), *HLA-C*07:27* (OR, 9.25; 95% CI, 1.22-70.20), and *HLA-C*08:01* (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:02",
+                "variant_id": "PA165955505",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 5,
+            "Variant/Haplotypes": "HLA-C*08:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.63 (95% CI 1.07-6.44) compared with tolerant controls; OR 1.47 (95% CI 1.02-2.11) compared with healthy controls",
+            "Sentence": "HLA-C*08:01 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-C*08:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in HLA-A*11:01 (OR, 2.10; 95% CI, 1.11-4.00), HLA-B*13:01 (OR, 5.96; 95% CI, 1.58-22.56), HLA-B*15:02 (OR, 2.23; 95% CI, 1.20-4.14), HLA-B*38:02 (OR, 3.47; 95% CI, 1.42-8.48), and HLA-C*08:01 (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the HLA-A*11:01 (OR, 2.16; 95% CI, 1.26-3.69), HLA-B*07:05 (OR, 2.86; 95% CI, 1.49-5.52), HLA-B*13:01 (OR, 5.35; 95% CI, 3.36-8.50), HLA-B*15:02 (OR, 1.87; 95% CI, 1.39-2.52), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 3.21; 95% CI, 1.81-5.68), HLA-C*03:04 (OR, 3.33; 95% CI, 2.27-4.89), HLA-C*04:06 (OR, 3.28; 95% CI, 1.22-8.81), HLA-C*07:27 (OR, 11.38; 95% CI, 1.98-65.37), and HLA-C*08:01 (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "In this systematic review and meta-analysis of 6 studies involving 322 patients with SCARs, significant associations were identified between the HLA-A*11:01, HLA-B*13:01, HLA-B*15:02, HLA-B*38:02, and HLA-C*08:01 genotypes and SMX/CTX-induced SCARs."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*08:01",
+                "variant_id": "PA166123426",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 6,
+            "Variant/Haplotypes": "HLA-B*15:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.01 (95% CI 1.56-5.80) compared with tolerant controls for SJS/TEN subgroup",
+            "Sentence": "HLA-B*15:02 is associated with increased risk of Stevens-Johnson syndrome/toxic epidermal necrolysis to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*15:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of Stevens-Johnson syndrome/toxic epidermal necrolysis to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the Stevens-Johnson syndrome/toxic epidermal necrolysis subgroup, significant associations were found in *HLA-B*15:02* (OR, 3.01; 95% CI, 1.56-5.80) and *HLA-B*38:02* (OR, 5.13; 95% CI, 1.96-13.47).",
+                "The *HLA-B*15:02* and *HLA-B*38:02* genotypes were significantly associated with SMX/CTX-induced Stevens-Johnson syndrome/toxic epidermal necrolysis (SJS/TEN), while the *HLA-A*68:01* and *HLA-B*39:01* genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms; the *HLA-B*13:01* allele showed an association with SMX/CTX-induced SJS/TEN and drug reaction with eosinophilia and systemic symptoms.",
+                "As for tolerant controls, significant associations were found in *HLA-B*15:02* (OR, 3.01; 95% CI, 1.56-5.80), and *HLA-B*38:02* (OR, 5.13; 95% CI, 1.96-13.47). No heterogeneities were observed in these 2 outcomes."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:02",
+                "variant_id": "PA165954769",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 7,
+            "Variant/Haplotypes": "HLA-B*38:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 5.13 (95% CI 1.96-13.47) compared with tolerant controls for SJS/TEN subgroup",
+            "Sentence": "HLA-B*38:02 is associated with increased risk of Stevens-Johnson syndrome/toxic epidermal necrolysis to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*38:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of Stevens-Johnson syndrome/toxic epidermal necrolysis to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the Stevens-Johnson syndrome/toxic epidermal necrolysis subgroup, significant associations were found in *HLA-B*15:02* (OR, 3.01; 95% CI, 1.56-5.80) and *HLA-B*38:02* (OR, 5.13; 95% CI, 1.96-13.47).",
+                "The *HLA-B*15:02* and *HLA-B*38:02* genotypes were significantly associated with SMX/CTX-induced Stevens-Johnson syndrome/toxic epidermal necrolysis (SJS/TEN), while the *HLA-A*68:01* and *HLA-B*39:01* genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms; the *HLA-B*13:01* allele showed an association with SMX/CTX-induced SJS/TEN and drug reaction with eosinophilia and systemic symptoms.",
+                "Significant associations were identified between the HLA-A*11:01, HLA-B*13:01, HLA-B*15:02, HLA-B*38:02, and HLA-C*08:01 genotypes and SMX/CTX-induced SCARs."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:02",
+                "variant_id": "PA165955505",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 8,
+            "Variant/Haplotypes": "HLA-A*68:01",
+            "Gene": "HLA-A",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 12.86 (95% CI 1.09-151.34) compared with tolerant controls for DRESS subgroup",
+            "Sentence": "HLA-A*68:01 is associated with increased risk of drug reaction with eosinophilia and systemic symptoms to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-A*68:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of drug reaction with eosinophilia and systemic symptoms to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the drug reaction with eosinophilia and systemic symptoms subgroup, significant associations were found in *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82).",
+                "The *HLA-B*15:02* and *HLA-B*38:02* genotypes were significantly associated with SMX/CTX-induced Stevens-Johnson syndrome/toxic epidermal necrolysis (SJS/TEN), while the *HLA-A*68:01* and *HLA-B*39:01* genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms",
+                "Regarding tolerant controls, significant associations were found in the *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), and *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82)."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-A*68:01",
+                "variant_id": "PA165954243",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 9,
+            "Variant/Haplotypes": "HLA-B*13:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 23.09 (95% CI 3.31-161.00) compared with tolerant controls for DRESS subgroup",
+            "Sentence": "HLA-B*13:01 is associated with increased risk of drug reaction with eosinophilia and systemic symptoms to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*13:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of drug reaction with eosinophilia and systemic symptoms to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the drug reaction with eosinophilia and systemic symptoms subgroup, significant associations were found in *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82).",
+                "Regarding tolerant controls, significant associations were found in the *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), and *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82).",
+                "The *HLA-B*13:01* allele showed an association with SMX/CTX-induced SJS/TEN and drug reaction with eosinophilia and systemic symptoms."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*13:01",
+                "variant_id": "PA165954643",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 10,
+            "Variant/Haplotypes": "HLA-B*39:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 4.56 (95% CI 1.31-15.82) compared with tolerant controls for DRESS subgroup",
+            "Sentence": "HLA-B*39:01 is associated with increased risk of drug reaction with eosinophilia and systemic symptoms to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*39:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of drug reaction with eosinophilia and systemic symptoms to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the drug reaction with eosinophilia and systemic symptoms subgroup, significant associations were found in *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82).",
+                "The *HLA-B*15:02* and *HLA-B*38:02* genotypes were significantly associated with SMX/CTX-induced Stevens-Johnson syndrome/toxic epidermal necrolysis (SJS/TEN), while the *HLA-A*68:01* and *HLA-B*39:01* genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*39:01",
+                "variant_id": "PA165955543",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 11,
+            "Variant/Haplotypes": "HLA-B*07:05",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.86 (95% CI 1.49-5.52) compared with healthy controls",
+            "Sentence": "HLA-B*07:05 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*07:05",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*07:05",
+                "variant_id": "PA165954397",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 12,
+            "Variant/Haplotypes": "HLA-B*38:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 4.26 (95% CI 1.43-12.71) compared with healthy controls in European descent population",
+            "Sentence": "HLA-B*38:01 is associated with increased risk of Stevens-Johnson syndrome/toxic epidermal necrolysis to sulfamethoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-B*38:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of Stevens-Johnson syndrome/toxic epidermal necrolysis to",
+            "Multiple drugs And/or": null,
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "In the SJS/TEN group, significant associations were found in *HLA-B*07:05* (OR, 2.80; 95% CI, 1.41-5.58), *HLA-B*13:01* (OR, 2.49; 95% CI, 1.74-3.58), *HLA-B*15:02* (OR, 3.09; 95% CI, 1.90-5.02), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 4.56; 95% CI, 2.65-7.85), *HLA-C*04:06* (OR, 3.37; 95% CI, 1.16-9.78), *HLA-C*07:27* (OR, 9.25; 95% CI, 1.22-70.20), and *HLA-C*08:01* (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls.",
+                "Conversely, in those with European descent, *HLA-B*38* has been predominantly associated with SMX-induced SJS/TEN."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:01",
+                "variant_id": "PA165955500",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 13,
+            "Variant/Haplotypes": "HLA-C*03:04",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.33 (95% CI 2.27-4.89) compared with healthy controls",
+            "Sentence": "HLA-C*03:04 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-C*03:04",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the HLA-A*11:01 (OR, 2.16; 95% CI, 1.26-3.69), HLA-B*07:05 (OR, 2.86; 95% CI, 1.49-5.52), HLA-B*13:01 (OR, 5.35; 95% CI, 3.36-8.50), HLA-B*15:02 (OR, 1.87; 95% CI, 1.39-2.52), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 3.21; 95% CI, 1.81-5.68), HLA-C*03:04 (OR, 3.33; 95% CI, 2.27-4.89), HLA-C*04:06 (OR, 3.28; 95% CI, 1.22-8.81), HLA-C*07:27 (OR, 11.38; 95% CI, 1.98-65.37), and HLA-C*08:01 (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*03:04",
+                "variant_id": "PA165956881",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 14,
+            "Variant/Haplotypes": "HLA-C*04:06",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.28 (95% CI 1.22-8.81) compared with healthy controls",
+            "Sentence": "HLA-C*04:06 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-C*04:06",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the HLA-A*11:01 (OR, 2.16; 95% CI, 1.26-3.69), HLA-B*07:05 (OR, 2.86; 95% CI, 1.49-5.52), HLA-B*13:01 (OR, 5.35; 95% CI, 3.36-8.50), HLA-B*15:02 (OR, 1.87; 95% CI, 1.39-2.52), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 3.21; 95% CI, 1.81-5.68), HLA-C*03:04 (OR, 3.33; 95% CI, 2.27-4.89), HLA-C*04:06 (OR, 3.28; 95% CI, 1.22-8.81), HLA-C*07:27 (OR, 11.38; 95% CI, 1.98-65.37), and HLA-C*08:01 (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*04:06",
+                "variant_id": "PA165957089",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 15,
+            "Variant/Haplotypes": "HLA-C*07:27",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole or cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 11.38 (95% CI 1.98-65.37) compared with healthy controls",
+            "Sentence": "HLA-C*07:27 is associated with increased risk of severe cutaneous adverse reactions to sulfamethoxazole or cotrimoxazole in people with various infections as compared to non-carriers.",
+            "Alleles": "HLA-C*07:27",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "PD/PK terms": "risk of severe cutaneous adverse reactions to",
+            "Multiple drugs And/or": "or",
+            "Population types": "in people with",
+            "Population Phenotypes or diseases": "Disease:various infections",
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "non-carriers",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the HLA-A*11:01 (OR, 2.16; 95% CI, 1.26-3.69), HLA-B*07:05 (OR, 2.86; 95% CI, 1.49-5.52), HLA-B*13:01 (OR, 5.35; 95% CI, 3.36-8.50), HLA-B*15:02 (OR, 1.87; 95% CI, 1.39-2.52), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 3.21; 95% CI, 1.81-5.68), HLA-C*03:04 (OR, 3.33; 95% CI, 2.27-4.89), HLA-C*04:06 (OR, 3.28; 95% CI, 1.22-8.81), HLA-C*07:27 (OR, 11.38; 95% CI, 1.98-65.37), and HLA-C*08:01 (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "The primary outcomes were the prevalence of SCARs in individuals with different HLA alleles, including HLA-A*11:01, HLA-B*07:05, HLA-B*13:01, HLA-B*15:02, HLA-B*38:01, HLA-B*38:02, HLA-C*03:04, HLA-C*04:06, HLA-C*07:27, and HLA-C*08:01, compared with healthy controls"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*07:27",
+                "variant_id": "PA165957457",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        }
+    ],
+    "var_fa_ann": [],
+    "study-parameters": {
+        "error": "litellm.BadGatewayError: AnthropicException BadGatewayError - <html>\r\n<head><title>502 Bad Gateway</title></head>\r\n<body>\r\n<center><h1>502 Bad Gateway</h1></center>\r\n<hr><center>cloudflare</center>\r\n</body>\r\n</html>\r\n"
+    },
+    "summary": "This systematic review and meta-analysis investigated the association between human leukocyte antigen (HLA) genotypes and sulfamethoxazole (SMX)/cotrimoxazole (CTX)-induced severe cutaneous adverse reactions (SCARs). The authors searched CENTRAL, MEDLINE, and Embase databases and included 6 case-control studies involving 322 patients with SCARs (236 with Stevens-Johnson syndrome/toxic epidermal necrolysis [SJS/TEN] and 86 with drug reaction with eosinophilia and systemic symptoms [DRESS]), along with 8,448 healthy controls and 229 tolerant controls. Populations studied included European, Japanese, Malaysian, Taiwanese, and Thai individuals.\n\nKey findings showed significant associations between SMX/CTX-induced SCARs and multiple HLA alleles when compared to tolerant controls: HLA-A*11:01 (OR 2.10), HLA-B*13:01 (OR 5.96), HLA-B*15:02 (OR 2.23), HLA-B*38:02 (OR 3.47), and HLA-C*08:01 (OR 2.63). Phenotype-specific associations were identified: HLA-B*15:02 and HLA-B*38:02 were associated with SJS/TEN, while HLA-A*68:01 and HLA-B*39:01 were associated with DRESS. HLA-B*13:01 showed associations with both SJS/TEN and DRESS. Geographic variation was observed, with HLA-B*13:01 showing associations across Malaysian, Taiwanese, and Thai populations, while HLA-B*38:01 and HLA-B*38:02 were associated with SCARs in European populations. These findings suggest multiple genetic factors contribute to SMX/CTX-induced SCARs pathogenesis.",
+    "title": "Human Leukocyte Antigens and Sulfamethoxazole/Cotrimoxazole\u2013Induced Severe Cutaneous Adverse Reactions: A Systematic Review and Meta-Analysis",
+    "pmid": "38568509",
+    "var_pheno_ann": [
+        {
+            "Variant Annotation ID": 1,
+            "Variant/Haplotypes": "HLA-A*11:01",
+            "Gene": "HLA-A",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.10 (95% CI 1.11-4.00) compared with tolerant controls; OR 2.16 (95% CI 1.26-3.69) compared with healthy controls. Meta-analysis of 4 studies.",
+            "Sentence": "HLA-A*11:01 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*11:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "significant associations were identified between the HLA-A*11:01, HLA-B*13:01, HLA-B*15:02, HLA-B*38:02, and HLA-C*08:01 genotypes and SMX/CTX-induced SCARs"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-A*11:01",
+                "variant_id": "PA165953358",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 2,
+            "Variant/Haplotypes": "HLA-B*13:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 5.96 (95% CI 1.58-22.56) compared with tolerant controls; OR 5.35 (95% CI 3.36-8.50) compared with healthy controls. Associated with both SJS/TEN and DRESS. Meta-analysis of 5 studies.",
+            "Sentence": "HLA-B*13:01 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*13:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "The *HLA-B*13:01* allele showed an association with SMX/CTX-induced SJS/TEN and DRESS, as evidenced by 3 studies involving Thai, Malaysian, and Taiwanese populations."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*13:01",
+                "variant_id": "PA165954643",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 3,
+            "Variant/Haplotypes": "HLA-B*15:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.23 (95% CI 1.20-4.14) compared with tolerant controls; OR 1.87 (95% CI 1.39-2.52) compared with healthy controls. Significantly associated with SJS/TEN subgroup (OR 3.01, 95% CI 1.56-5.80 vs tolerant controls).",
+            "Sentence": "HLA-B*15:02 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*15:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "In the SJS/TEN group, significant associations were found in *HLA-B*07:05* (OR, 2.80; 95% CI, 1.41-5.58), *HLA-B*13:01* (OR, 2.49; 95% CI, 1.74-3.58), *HLA-B*15:02* (OR, 3.09; 95% CI, 1.90-5.02), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 4.56; 95% CI, 2.65-7.85), *HLA-C*04:06* (OR, 3.37; 95% CI, 1.16-9.78), *HLA-C*07:27* (OR, 9.25; 95% CI, 1.22-70.20), and *HLA-C*08:01* (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls. Heterogeneities ranged from 0% to 55%. As for tolerant controls, significant associations were found in *HLA-B*15:02* (OR, 3.01; 95% CI, 1.56-5.80), and *HLA-B*38:02* (OR, 5.13; 95% CI, 1.96-13.47)."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:02",
+                "variant_id": "PA165954769",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 4,
+            "Variant/Haplotypes": "HLA-B*38:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.47 (95% CI 1.42-8.48) compared with tolerant controls; OR 3.21 (95% CI 1.81-5.68) compared with healthy controls. Significantly associated with SJS/TEN subgroup (OR 5.13, 95% CI 1.96-13.47 vs tolerant controls).",
+            "Sentence": "HLA-B*38:02 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*38:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in *HLA-A*11:01* (OR, 2.10; 95% CI, 1.11-4.00), *HLA-B*13:01* (OR, 5.96; 95% CI, 1.58-22.56), *HLA-B*15:02* (OR, 2.23; 95% CI, 1.20-4.14), *HLA-B*38:02 *(OR, 3.47; 95% CI, 1.42-8.48), and *HLA-C*08:01* (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "As for tolerant controls, significant associations were found in *HLA-B*15:02* (OR, 3.01; 95% CI, 1.56-5.80), and *HLA-B*38:02* (OR, 5.13; 95% CI, 1.96-13.47)."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:02",
+                "variant_id": "PA165955505",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 5,
+            "Variant/Haplotypes": "HLA-C*08:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.63 (95% CI 1.07-6.44) compared with tolerant controls; OR 1.47 (95% CI 1.02-2.11) compared with healthy controls.",
+            "Sentence": "HLA-C*08:01 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*08:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in HLA-A*11:01 (OR, 2.10; 95% CI, 1.11-4.00), HLA-B*13:01 (OR, 5.96; 95% CI, 1.58-22.56), HLA-B*15:02 (OR, 2.23; 95% CI, 1.20-4.14), HLA-B*38:02 (OR, 3.47; 95% CI, 1.42-8.48), and HLA-C*08:01 (OR, 2.63; 95% CI, 1.07-6.44) compared with tolerant controls.",
+                "Significant associations were found in the HLA-A*11:01 (OR, 2.16; 95% CI, 1.26-3.69), HLA-B*07:05 (OR, 2.86; 95% CI, 1.49-5.52), HLA-B*13:01 (OR, 5.35; 95% CI, 3.36-8.50), HLA-B*15:02 (OR, 1.87; 95% CI, 1.39-2.52), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 3.21; 95% CI, 1.81-5.68), HLA-C*03:04 (OR, 3.33; 95% CI, 2.27-4.89), HLA-C*04:06 (OR, 3.28; 95% CI, 1.22-8.81), HLA-C*07:27 (OR, 11.38; 95% CI, 1.98-65.37), and HLA-C*08:01 (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "In this systematic review and meta-analysis of 6 studies involving 322 patients with SCARs, significant associations were identified between the HLA-A*11:01, HLA-B*13:01, HLA-B*15:02, HLA-B*38:02, and HLA-C*08:01 genotypes and SMX/CTX-induced SCARs."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*08:01",
+                "variant_id": "PA166123426",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 6,
+            "Variant/Haplotypes": "HLA-B*15:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.01 (95% CI 1.56-5.80) compared with tolerant controls; OR 3.09 (95% CI 1.90-5.02) compared with healthy controls in SJS/TEN subgroup analysis.",
+            "Sentence": "HLA-B*15:02 is associated with increased risk of Side Effect:Stevens-Johnson Syndrome and Side Effect:Toxic Epidermal Necrolysis when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*15:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Stevens-Johnson Syndrome, Side Effect:Toxic Epidermal Necrolysis",
+            "Multiple phenotypes And/or": "and",
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the SJS/TEN group, significant associations were found in HLA-B*07:05 (OR, 2.80; 95% CI, 1.41-5.58), HLA-B*13:01 (OR, 2.49; 95% CI, 1.74-3.58), HLA-B*15:02 (OR, 3.09; 95% CI, 1.90-5.02), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 4.56; 95% CI, 2.65-7.85), HLA-C*04:06 (OR, 3.37; 95% CI, 1.16-9.78), HLA-C*07:27 (OR, 9.25; 95% CI, 1.22-70.20), and HLA-C*08:01 (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls. Heterogeneities ranged from 0% to 55%. As for tolerant controls, significant associations were found in HLA-B*15:02 (OR, 3.01; 95% CI, 1.56-5.80), and HLA-B*38:02 (OR, 5.13; 95% CI, 1.96-13.47).",
+                "The HLA-B*15:02 and HLA-B*38:02 genotypes were significantly associated with SMX/CTX-induced Stevens-Johnson syndrome/toxic epidermal necrolysis (SJS/TEN), while the HLA-A*68:01 and HLA-B*39:01 genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms; the HLA-B*13:01 allele showed an association with SMX/CTX-induced SJS/TEN and drug reaction with eosinophilia and systemic symptoms."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*15:02",
+                "variant_id": "PA165954769",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 7,
+            "Variant/Haplotypes": "HLA-B*38:02",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 5.13 (95% CI 1.96-13.47) compared with tolerant controls; OR 4.56 (95% CI 2.65-7.85) compared with healthy controls in SJS/TEN subgroup analysis.",
+            "Sentence": "HLA-B*38:02 is associated with increased risk of Side Effect:Stevens-Johnson Syndrome and Side Effect:Toxic Epidermal Necrolysis when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*38:02",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Stevens-Johnson Syndrome, Side Effect:Toxic Epidermal Necrolysis",
+            "Multiple phenotypes And/or": "and",
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the Stevens-Johnson syndrome/toxic epidermal necrolysis subgroup, significant associations were found in *HLA-B*15:02* (OR, 3.01; 95% CI, 1.56-5.80) and *HLA-B*38:02* (OR, 5.13; 95% CI, 1.96-13.47).",
+                "The *HLA-B*15:02* and *HLA-B*38:02* genotypes were significantly associated with SMX/CTX-induced Stevens-Johnson syndrome/toxic epidermal necrolysis (SJS/TEN), while the *HLA-A*68:01* and *HLA-B*39:01* genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms",
+                "In the SJS/TEN group, significant associations were found in *HLA-B*07:05* (OR, 2.80; 95% CI, 1.41-5.58), *HLA-B*13:01* (OR, 2.49; 95% CI, 1.74-3.58), *HLA-B*15:02* (OR, 3.09; 95% CI, 1.90-5.02), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 4.56; 95% CI, 2.65-7.85), *HLA-C*04:06* (OR, 3.37; 95% CI, 1.16-9.78), *HLA-C*07:27* (OR, 9.25; 95% CI, 1.22-70.20), and *HLA-C*08:01* (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:02",
+                "variant_id": "PA165955505",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 8,
+            "Variant/Haplotypes": "HLA-A*68:01",
+            "Gene": "HLA-A",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 12.86 (95% CI 1.09-151.34) compared with tolerant controls; OR 7.03 (95% CI 1.45-34.15) compared with healthy controls in DRESS subgroup analysis.",
+            "Sentence": "HLA-A*68:01 is associated with increased risk of Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*68:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the drug reaction with eosinophilia and systemic symptoms subgroup, significant associations were found in *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82).",
+                "In the DRESS group, significant associations were found in *HLA-A*68:01* (OR, 7.03; 95% CI, 1.45-34.15), *HLA-B*13:01* (OR, 23.93; 95% CI, 12.69\u201345.15), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*39:01* (OR, 3.70; 95% CI, 1.64-8.35), *HLA-C*03:04* (OR, 3.93; 95% CI, 2.71-5.69), and *HLA-C*07:27* (OR, 14.80; 95% CI, 1.88-116.34) compared with healthy controls.",
+                "the *HLA-A*68:01* and *HLA-B*39:01* genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-A*68:01",
+                "variant_id": "PA165954243",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 9,
+            "Variant/Haplotypes": "HLA-B*39:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 4.56 (95% CI 1.31-15.82) compared with tolerant controls; OR 3.70 (95% CI 1.64-8.35) compared with healthy controls in DRESS subgroup analysis.",
+            "Sentence": "HLA-B*39:01 is associated with increased risk of Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*39:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the drug reaction with eosinophilia and systemic symptoms subgroup, significant associations were found in *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82).",
+                "In the DRESS group, significant associations were found in *HLA-A*68:01* (OR, 7.03; 95% CI, 1.45-34.15), *HLA-B*13:01* (OR, 23.93; 95% CI, 12.69\u201345.15), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*39:01* (OR, 3.70; 95% CI, 1.64-8.35), *HLA-C*03:04* (OR, 3.93; 95% CI, 2.71-5.69), and *HLA-C*07:27* (OR, 14.80; 95% CI, 1.88-116.34) compared with healthy controls.",
+                "the *HLA-A*68:01* and *HLA-B*39:01* genotypes were associated with SMX/CTX-induced drug reaction with eosinophilia and systemic symptoms"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*39:01",
+                "variant_id": "PA165955543",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 10,
+            "Variant/Haplotypes": "HLA-B*13:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 23.09 (95% CI 3.31-161.00) compared with tolerant controls; OR 23.93 (95% CI 12.69-45.15) compared with healthy controls in DRESS subgroup analysis.",
+            "Sentence": "HLA-B*13:01 is associated with increased risk of Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*13:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "tolerant controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the drug reaction with eosinophilia and systemic symptoms subgroup, significant associations were found in *HLA-A*68:01* (OR, 12.86; 95% CI, 1.09-151.34), *HLA-B*13:01* (OR, 23.09; 95% CI, 3.31-161.00), *HLA-B*39:01* (OR, 4.56; 95% CI, 1.31-15.82).",
+                "In the DRESS group, significant associations were found in *HLA-A*68:01* (OR, 7.03; 95% CI, 1.45-34.15), *HLA-B*13:01* (OR, 23.93; 95% CI, 12.69\u201345.15), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*39:01* (OR, 3.70; 95% CI, 1.64-8.35), *HLA-C*03:04* (OR, 3.93; 95% CI, 2.71-5.69), and *HLA-C*07:27* (OR, 14.80; 95% CI, 1.88-116.34) compared with healthy controls.",
+                "The *HLA-B*13:01* allele showed an association with SMX/CTX-induced SJS/TEN and drug reaction with eosinophilia and systemic symptoms."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*13:01",
+                "variant_id": "PA165954643",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 11,
+            "Variant/Haplotypes": "HLA-B*07:05",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.86 (95% CI 1.49-5.52) compared with healthy controls. Meta-analysis of 3 studies.",
+            "Sentence": "HLA-B*07:05 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*07:05",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "HLA-B*07:05 | 3 | 2.86 (1.49-5.52) | .002 | 0"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*07:05",
+                "variant_id": "PA165954397",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 12,
+            "Variant/Haplotypes": "HLA-B*38:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 4.26 (95% CI 1.43-12.71) compared with healthy controls. Single study in European population.",
+            "Sentence": "HLA-B*38:01 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole.",
+            "Alleles": "*38:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "Conversely, in those with European descent, *HLA-B*38* has been predominantly associated with SMX-induced SJS/TEN."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*38:01",
+                "variant_id": "PA165955500",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 13,
+            "Variant/Haplotypes": "HLA-C*03:04",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.33 (95% CI 2.27-4.89) compared with healthy controls. Meta-analysis of 2 studies.",
+            "Sentence": "HLA-C*03:04 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*03:04",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "The primary outcomes were the prevalence of SCARs in individuals with different HLA alleles, including *HLA-A*11:01*,* HLA-B*07:05*,* HLA-B*13:01*,* HLA-B*15:02*,* HLA-B*38:01*,* HLA-B*38:02*,* HLA-C*03:04*,* HLA-C*04:06*,* HLA-C*07:27*, and *HLA-C*08:01*, compared with healthy controls"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*03:04",
+                "variant_id": "PA165956881",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 14,
+            "Variant/Haplotypes": "HLA-C*04:06",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.28 (95% CI 1.22-8.81) compared with healthy controls. Meta-analysis of 2 studies.",
+            "Sentence": "HLA-C*04:06 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*04:06",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "HLA-C*04:06 | 2 | 3.28 (1.22-8.81) | .02 | 0"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*04:06",
+                "variant_id": "PA165957089",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 15,
+            "Variant/Haplotypes": "HLA-C*07:27",
+            "Gene": "HLA-C",
+            "Drug(s)": "cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 11.38 (95% CI 1.98-65.37) compared with healthy controls. Single study.",
+            "Sentence": "HLA-C*07:27 is associated with increased risk of Side Effect:Severe Cutaneous Adverse Reactions when treated with cotrimoxazole.",
+            "Alleles": "*07:27",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Severe Cutaneous Adverse Reactions",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": null,
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "Significant associations were found in the HLA-A*11:01 (OR, 2.16; 95% CI, 1.26-3.69), HLA-B*07:05 (OR, 2.86; 95% CI, 1.49-5.52), HLA-B*13:01 (OR, 5.35; 95% CI, 3.36-8.50), HLA-B*15:02 (OR, 1.87; 95% CI, 1.39-2.52), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 3.21; 95% CI, 1.81-5.68), HLA-C*03:04 (OR, 3.33; 95% CI, 2.27-4.89), HLA-C*04:06 (OR, 3.28; 95% CI, 1.22-8.81), HLA-C*07:27 (OR, 11.38; 95% CI, 1.98-65.37), and HLA-C*08:01 (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls.",
+                "The primary outcomes were the prevalence of SCARs in individuals with different HLA alleles, including HLA-A*11:01, HLA-B*07:05, HLA-B*13:01, HLA-B*15:02, HLA-B*38:01, HLA-B*38:02, HLA-C*03:04, HLA-C*04:06, HLA-C*07:27, and HLA-C*08:01, compared with healthy controls"
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*07:27",
+                "variant_id": "PA165957457",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "clotrimazole",
+                "drug_id": "PA449057",
+                "confidence": 0.88
+            }
+        },
+        {
+            "Variant Annotation ID": 16,
+            "Variant/Haplotypes": "HLA-B*13:01",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.49 (95% CI 1.74-3.58) compared with healthy controls in SJS/TEN subgroup analysis. Meta-analysis of 5 studies.",
+            "Sentence": "HLA-B*13:01 is associated with increased risk of Side Effect:Stevens-Johnson Syndrome and Side Effect:Toxic Epidermal Necrolysis when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*13:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Stevens-Johnson Syndrome, Side Effect:Toxic Epidermal Necrolysis",
+            "Multiple phenotypes And/or": "and",
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the SJS/TEN group, significant associations were found in *HLA-B*07:05* (OR, 2.80; 95% CI, 1.41-5.58), *HLA-B*13:01* (OR, 2.49; 95% CI, 1.74-3.58), *HLA-B*15:02* (OR, 3.09; 95% CI, 1.90-5.02), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 4.56; 95% CI, 2.65-7.85), *HLA-C*04:06* (OR, 3.37; 95% CI, 1.16-9.78), *HLA-C*07:27* (OR, 9.25; 95% CI, 1.22-70.20), and *HLA-C*08:01* (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls.",
+                "The *HLA-B*13:01* allele showed an association with SMX/CTX-induced SJS/TEN and DRESS, as evidenced by 3 studies involving Thai, Malaysian, and Taiwanese populations."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*13:01",
+                "variant_id": "PA165954643",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 17,
+            "Variant/Haplotypes": "HLA-B*07:05",
+            "Gene": "HLA-B",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 2.80 (95% CI 1.41-5.58) compared with healthy controls in SJS/TEN subgroup analysis. Meta-analysis of 3 studies.",
+            "Sentence": "HLA-B*07:05 is associated with increased risk of Side Effect:Stevens-Johnson Syndrome and Side Effect:Toxic Epidermal Necrolysis when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*07:05",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Stevens-Johnson Syndrome, Side Effect:Toxic Epidermal Necrolysis",
+            "Multiple phenotypes And/or": "and",
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the SJS/TEN group, significant associations were found in *HLA-B*07:05* (OR, 2.80; 95% CI, 1.41-5.58), *HLA-B*13:01* (OR, 2.49; 95% CI, 1.74-3.58), *HLA-B*15:02* (OR, 3.09; 95% CI, 1.90-5.02), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 4.56; 95% CI, 2.65-7.85), *HLA-C*04:06* (OR, 3.37; 95% CI, 1.16-9.78), *HLA-C*07:27* (OR, 9.25; 95% CI, 1.22-70.20), and *HLA-C*08:01* (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-B*07:05",
+                "variant_id": "PA165954397",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 18,
+            "Variant/Haplotypes": "HLA-C*04:06",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.37 (95% CI 1.16-9.78) compared with healthy controls in SJS/TEN subgroup analysis. Meta-analysis of 2 studies.",
+            "Sentence": "HLA-C*04:06 is associated with increased risk of Side Effect:Stevens-Johnson Syndrome and Side Effect:Toxic Epidermal Necrolysis when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*04:06",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Stevens-Johnson Syndrome, Side Effect:Toxic Epidermal Necrolysis",
+            "Multiple phenotypes And/or": "and",
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the SJS/TEN group, significant associations were found in HLA-B*07:05 (OR, 2.80; 95% CI, 1.41-5.58), HLA-B*13:01 (OR, 2.49; 95% CI, 1.74-3.58), HLA-B*15:02 (OR, 3.09; 95% CI, 1.90-5.02), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 4.56; 95% CI, 2.65-7.85), HLA-C*04:06 (OR, 3.37; 95% CI, 1.16-9.78), HLA-C*07:27 (OR, 9.25; 95% CI, 1.22-70.20), and HLA-C*08:01 (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*04:06",
+                "variant_id": "PA165957089",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 19,
+            "Variant/Haplotypes": "HLA-C*08:01",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 1.66 (95% CI 1.13-2.44) compared with healthy controls in SJS/TEN subgroup analysis. Meta-analysis of 4 studies.",
+            "Sentence": "HLA-C*08:01 is associated with increased risk of Side Effect:Stevens-Johnson Syndrome and Side Effect:Toxic Epidermal Necrolysis when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*08:01",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Stevens-Johnson Syndrome, Side Effect:Toxic Epidermal Necrolysis",
+            "Multiple phenotypes And/or": "and",
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the SJS/TEN group, significant associations were found in HLA-B*07:05 (OR, 2.80; 95% CI, 1.41-5.58), HLA-B*13:01 (OR, 2.49; 95% CI, 1.74-3.58), HLA-B*15:02 (OR, 3.09; 95% CI, 1.90-5.02), HLA-B*38:01 (OR, 4.26; 95% CI, 1.43-12.71), HLA-B*38:02 (OR, 4.56; 95% CI, 2.65-7.85), HLA-C*04:06 (OR, 3.37; 95% CI, 1.16-9.78), HLA-C*07:27 (OR, 9.25; 95% CI, 1.22-70.20), and HLA-C*08:01 (OR, 1.66; 95% CI, 1.13-2.44) compared with healthy controls.",
+                "In East Asian populations, including Taiwanese, Thai, and Malaysian groups, the HLA-B*13:01 and HLA-B*15:02 alleles have shown significant associations with SMX/CTX-induced SCARs, particularly DRESS, while the HLA-C*08:01 allele has been associated with SMX/CTX-induced SJS/TEN."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*08:01",
+                "variant_id": "PA166123426",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        },
+        {
+            "Variant Annotation ID": 20,
+            "Variant/Haplotypes": "HLA-C*03:04",
+            "Gene": "HLA-C",
+            "Drug(s)": "sulfamethoxazole, cotrimoxazole",
+            "PMID": 38568509,
+            "Phenotype Category": "toxicity",
+            "Significance": "yes",
+            "Notes": "OR 3.93 (95% CI 2.71-5.69) compared with healthy controls in DRESS subgroup analysis. Meta-analysis of 3 studies.",
+            "Sentence": "HLA-C*03:04 is associated with increased risk of Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms when treated with sulfamethoxazole or cotrimoxazole.",
+            "Alleles": "*03:04",
+            "Specialty Population": null,
+            "Metabolizer types": null,
+            "isPlural": "Is",
+            "Is/Is Not associated": "Associated with",
+            "Direction of effect": "increased",
+            "Side effect/efficacy/other": "risk of",
+            "Phenotype": "Side Effect:Drug Reaction with Eosinophilia and Systemic Symptoms",
+            "Multiple phenotypes And/or": null,
+            "When treated with/exposed to/when assayed with": "when treated with",
+            "Multiple drugs And/or": "or",
+            "Population types": null,
+            "Population Phenotypes or diseases": null,
+            "Multiple phenotypes or diseases And/or": null,
+            "Comparison Allele(s) or Genotype(s)": "healthy controls",
+            "Comparison Metabolizer types": null,
+            "Citations": [
+                "In the DRESS group, significant associations were found in *HLA-A*68:01* (OR, 7.03; 95% CI, 1.45-34.15), *HLA-B*13:01* (OR, 23.93; 95% CI, 12.69\u201345.15), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*39:01* (OR, 3.70; 95% CI, 1.64-8.35), *HLA-C*03:04* (OR, 3.93; 95% CI, 2.71-5.69), and *HLA-C*07:27* (OR, 14.80; 95% CI, 1.88-116.34) compared with healthy controls.",
+                "Significant associations were found in the *HLA-A*11:01* (OR, 2.16; 95% CI, 1.26-3.69), *HLA-B*07:05* (OR, 2.86; 95% CI, 1.49-5.52), *HLA-B*13:01* (OR, 5.35; 95% CI, 3.36-8.50), *HLA-B*15:02* (OR, 1.87; 95% CI, 1.39-2.52), *HLA-B*38:01* (OR, 4.26; 95% CI, 1.43-12.71), *HLA-B*38:02* (OR, 3.21; 95% CI, 1.81-5.68), *HLA-C*03:04* (OR, 3.33; 95% CI, 2.27-4.89), *HLA-C*04:06* (OR, 3.28; 95% CI, 1.22-8.81), *HLA-C*07:27* (OR, 11.38; 95% CI, 1.98-65.37), and *HLA-C*08:01* (OR, 1.47; 95% CI, 1.02-2.11) compared with healthy controls."
+            ],
+            "Variant/Haplotypes_normalized": {
+                "normalized": "HLA-C*03:04",
+                "variant_id": "PA165956881",
+                "confidence": 1.0
+            },
+            "Drug(s)_normalized": {
+                "normalized": "sulfamethoxazole",
+                "drug_id": "PA451544",
+                "confidence": 1.0
+            }
+        }
+    ],
+    "timestamp": "2025-12-16T11:38:47.844120",
+    "prompts_used": {
+        "var-drug": "var-drug-v2",
+        "var-fa": "improved_v2",
+        "study-parameters": "study-parameters-v4",
+        "summary": "basic",
+        "var-pheno": "var-pheno-v6"
+    },
+    "term_mappings": {
+        "HLA-A*11:01": {
+            "raw_input": "HLA-A*11:01",
+            "id": "PA165953358",
+            "normalized_term": "HLA-A*11:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165953358",
+            "score": 1.0
+        },
+        "sulfamethoxazole, cotrimoxazole": {
+            "raw_input": "sulfamethoxazole, cotrimoxazole",
+            "id": "PA451544",
+            "normalized_term": "sulfamethoxazole",
+            "url": "https://www.clinpgx.org/chemical/PA451544",
+            "score": 1.0
+        },
+        "HLA-B*13:01": {
+            "raw_input": "HLA-B*13:01",
+            "id": "PA165954643",
+            "normalized_term": "HLA-B*13:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165954643",
+            "score": 1.0
+        },
+        "HLA-B*15:02": {
+            "raw_input": "HLA-B*15:02",
+            "id": "PA165954769",
+            "normalized_term": "HLA-B*15:02",
+            "url": "https://www.clinpgx.org/haplotype/PA165954769",
+            "score": 1.0
+        },
+        "HLA-B*38:02": {
+            "raw_input": "HLA-B*38:02",
+            "id": "PA165955505",
+            "normalized_term": "HLA-B*38:02",
+            "url": "https://www.clinpgx.org/haplotype/PA165955505",
+            "score": 1.0
+        },
+        "HLA-C*08:01": {
+            "raw_input": "HLA-C*08:01",
+            "id": "PA166123426",
+            "normalized_term": "HLA-C*08:01",
+            "url": "https://www.clinpgx.org/haplotype/PA166123426",
+            "score": 1.0
+        },
+        "HLA-A*68:01": {
+            "raw_input": "HLA-A*68:01",
+            "id": "PA165954243",
+            "normalized_term": "HLA-A*68:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165954243",
+            "score": 1.0
+        },
+        "HLA-B*39:01": {
+            "raw_input": "HLA-B*39:01",
+            "id": "PA165955543",
+            "normalized_term": "HLA-B*39:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165955543",
+            "score": 1.0
+        },
+        "HLA-B*07:05": {
+            "raw_input": "HLA-B*07:05",
+            "id": "PA165954397",
+            "normalized_term": "HLA-B*07:05",
+            "url": "https://www.clinpgx.org/haplotype/PA165954397",
+            "score": 1.0
+        },
+        "HLA-B*38:01": {
+            "raw_input": "HLA-B*38:01",
+            "id": "PA165955500",
+            "normalized_term": "HLA-B*38:01",
+            "url": "https://www.clinpgx.org/haplotype/PA165955500",
+            "score": 1.0
+        },
+        "sulfamethoxazole": {
+            "raw_input": "sulfamethoxazole",
+            "id": "PA451544",
+            "normalized_term": "sulfamethoxazole",
+            "url": "https://www.clinpgx.org/chemical/PA451544",
+            "score": 1.0
+        },
+        "HLA-C*03:04": {
+            "raw_input": "HLA-C*03:04",
+            "id": "PA165956881",
+            "normalized_term": "HLA-C*03:04",
+            "url": "https://www.clinpgx.org/haplotype/PA165956881",
+            "score": 1.0
+        },
+        "HLA-C*04:06": {
+            "raw_input": "HLA-C*04:06",
+            "id": "PA165957089",
+            "normalized_term": "HLA-C*04:06",
+            "url": "https://www.clinpgx.org/haplotype/PA165957089",
+            "score": 1.0
+        },
+        "HLA-C*07:27": {
+            "raw_input": "HLA-C*07:27",
+            "id": "PA165957457",
+            "normalized_term": "HLA-C*07:27",
+            "url": "https://www.clinpgx.org/haplotype/PA165957457",
+            "score": 1.0
+        },
+        "cotrimoxazole": {
+            "raw_input": "cotrimoxazole",
+            "id": "PA449057",
+            "normalized_term": "clotrimazole",
+            "url": "https://www.clinpgx.org/chemical/PA449057",
+            "score": 0.88
+        },
+        "sulfamethoxazole or cotrimoxazole": {
+            "raw_input": "sulfamethoxazole or cotrimoxazole",
+            "id": "PA451544",
+            "normalized_term": "sulfamethoxazole",
+            "url": "https://www.clinpgx.org/chemical/PA451544",
+            "score": 1.0
+        }
+    }
+}
